@@ -1,46 +1,79 @@
-function startEngine() {
+window.Engine = {
+  scene: null,
+  camera: null,
+  renderer: null,
+  clock: { last: performance.now() },
+  objects: {}
+};
 
-  log("✔ client.js loaded");
+function bootEngine() {
+  const E = Engine;
 
-  if (typeof THREE === "undefined") {
-    log("❌ THREE not loaded");
-    return;
-  }
+  // Scene
+  E.scene = new THREE.Scene();
+  E.scene.background = new THREE.Color(0x111111);
 
-  log("✔ THREE loaded");
-
-  window.Engine = {
-    scene: new THREE.Scene(),
-    camera: new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000),
-    renderer: new THREE.WebGLRenderer()
-  };
-
-  log("✔ Engine created");
-
-  Engine.renderer.setSize(innerWidth, innerHeight);
-  document.body.appendChild(Engine.renderer.domElement);
-
-  log("✔ Renderer attached");
-
-  const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(),
-    new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+  // Camera
+  E.camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
   );
+  E.camera.position.set(0, 2, 5);
 
-  Engine.scene.add(cube);
-  Engine.camera.position.z = 3;
+  // Renderer
+  E.renderer = new THREE.WebGLRenderer({ antialias: true });
+  E.renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(E.renderer.domElement);
 
-  log("✔ Cube added");
+  // LIGHT
+  const light = new THREE.DirectionalLight(0xffffff, 1);
+  light.position.set(5, 10, 5);
+  E.scene.add(light);
 
-  function loop() {
-    cube.rotation.y += 0.01;
-    Engine.renderer.render(Engine.scene, Engine.camera);
-    requestAnimationFrame(loop);
-  }
+  // GROUND (proof world layer works)
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(50, 50),
+    new THREE.MeshStandardMaterial({ color: 0x333333 })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  E.scene.add(ground);
 
-  loop();
+  // TEST CUBE (engine version)
+  const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshStandardMaterial({ color: 0x00ff00 })
+  );
+  cube.position.y = 1;
+  E.scene.add(cube);
 
-  log("✔ Loop running");
+  E.objects.cube = cube;
+
+  // resize
+  window.addEventListener("resize", () => {
+    E.camera.aspect = window.innerWidth / window.innerHeight;
+    E.camera.updateProjectionMatrix();
+    E.renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  animate();
 }
 
-window.addEventListener("load", startEngine);
+function animate() {
+  const E = Engine;
+  requestAnimationFrame(animate);
+
+  const now = performance.now();
+  const dt = (now - E.clock.last) / 1000;
+  E.clock.last = now;
+
+  // rotation proof
+  if (E.objects.cube) {
+    E.objects.cube.rotation.y += dt * 1.5;
+  }
+
+  E.renderer.render(E.scene, E.camera);
+}
+
+window.addEventListener("load", bootEngine);
