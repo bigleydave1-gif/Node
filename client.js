@@ -1,49 +1,46 @@
 function startEngine() {
 
+  log("✔ client.js loaded");
+
+  if (typeof THREE === "undefined") {
+    log("❌ THREE not loaded");
+    return;
+  }
+
+  log("✔ THREE loaded");
+
   window.Engine = {
     scene: new THREE.Scene(),
     camera: new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000),
-    renderer: new THREE.WebGLRenderer({ antialias:true }),
-    net: {},
-    remotePlayers: {}
+    renderer: new THREE.WebGLRenderer()
   };
+
+  log("✔ Engine created");
 
   Engine.renderer.setSize(innerWidth, innerHeight);
   document.body.appendChild(Engine.renderer.domElement);
 
-  Engine.camera.position.set(0,2,5);
+  log("✔ Renderer attached");
 
-  initWorld(Engine);
-  initNet(Engine);
+  const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(),
+    new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+  );
 
-  console.log("ENGINE READY");
+  Engine.scene.add(cube);
+  Engine.camera.position.z = 3;
 
-  let last = performance.now();
+  log("✔ Cube added");
 
   function loop() {
-
-    const now = performance.now();
-    const dt = (now - last) / 1000;
-    last = now;
-
-    if (Engine.updateRemotePlayers)
-      Engine.updateRemotePlayers(Engine, dt);
-
+    cube.rotation.y += 0.01;
     Engine.renderer.render(Engine.scene, Engine.camera);
-
     requestAnimationFrame(loop);
   }
 
   loop();
 
-  if (window.startMain) {
-    window.startMain(
-      { position:{x:0,y:1.6,z:0} },
-      Engine.camera,
-      Engine.renderer,
-      Engine.scene
-    );
-  }
+  log("✔ Loop running");
 }
 
 window.addEventListener("load", startEngine);
