@@ -1,42 +1,55 @@
 function startMain(player, camera, renderer, scene) {
 
-  let keys = {};
-  let yaw = 0;
-  let pitch = 0;
+  console.log("[MAIN] START");
 
-  document.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
-  document.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+  try {
 
-  document.addEventListener("mousemove",(e)=>{
+    const keys = {};
+    let yaw = 0;
+    let pitch = 0;
 
-    if (document.pointerLockElement !== document.body) return;
+    document.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
+    document.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
 
-    yaw -= e.movementX * 0.002;
-    pitch -= e.movementY * 0.002;
+    document.addEventListener("mousemove", (e) => {
+      if (document.pointerLockElement !== document.body) return;
 
-    pitch = Math.max(-1.4,Math.min(1.4,pitch));
+      yaw -= e.movementX * 0.0022;
+      pitch -= e.movementY * 0.0022;
 
-    camera.rotation.order = "YXZ";
-    camera.rotation.y = yaw;
-    camera.rotation.x = pitch;
-  });
+      pitch = Math.max(-1.4, Math.min(1.4, pitch));
 
-  function shoot() {
-    const dir = new THREE.Vector3(0,0,-1);
-    dir.applyQuaternion(camera.quaternion);
+      camera.rotation.order = "YXZ";
+      camera.rotation.y = yaw;
+      camera.rotation.x = pitch;
+    });
 
-    if (Engine?.socket) {
-      Engine.socket.emit("shoot", {
-        x: player.position.x,
-        y: player.position.y,
-        z: player.position.z,
-        dx: dir.x,
-        dy: dir.y,
-        dz: dir.z,
-        t: Date.now()
-      });
+    function loop() {
+
+      try {
+
+        requestAnimationFrame(loop);
+
+        // HARD SAFETY CHECKS
+        if (!renderer || !scene || !camera) {
+          console.error("[MAIN] Missing core engine refs");
+          return;
+        }
+
+        renderer.render(scene, camera);
+
+      } catch (err) {
+        console.error("[MAIN LOOP ERROR]", err);
+      }
     }
-  }
 
-  document.addEventListener("click", shoot);
+    loop();
+
+    console.log("[MAIN] LOOP STARTED");
+
+  } catch (err) {
+    console.error("[MAIN CRASH]", err);
+  }
 }
+
+window.startMain = startMain;
