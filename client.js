@@ -1,48 +1,33 @@
-// =============================
-// client.js - RENDER TEST ONLY
-// =============================
-
 function startEngine() {
 
-  console.log("[ENGINE] Boot starting...");
-
-  // -------------------------
-  // CORE ENGINE
-  // -------------------------
   window.Engine = {
     scene: new THREE.Scene(),
-    camera: new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    ),
-    renderer: new THREE.WebGLRenderer({ antialias: true }),
-
-    remotePlayers: {},
-    net: {}
+    camera: new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000),
+    renderer: new THREE.WebGLRenderer({ antialias:true }),
+    net: {},
+    remotePlayers: {}
   };
 
-  Engine.renderer.setSize(window.innerWidth, window.innerHeight);
+  Engine.renderer.setSize(innerWidth, innerHeight);
   document.body.appendChild(Engine.renderer.domElement);
 
-  Engine.camera.position.set(0, 2, 5);
+  Engine.camera.position.set(0,2,5);
 
-  // -------------------------
-  // BASIC TEST OBJECT
-  // -------------------------
-  const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-  );
+  initWorld(Engine);
+  initNet(Engine);
 
-  Engine.scene.add(cube);
+  console.log("ENGINE READY");
 
-  // -------------------------
-  // SIMPLE LOOP
-  // -------------------------
+  let last = performance.now();
+
   function loop() {
-    cube.rotation.y += 0.01;
+
+    const now = performance.now();
+    const dt = (now - last) / 1000;
+    last = now;
+
+    if (Engine.updateRemotePlayers)
+      Engine.updateRemotePlayers(Engine, dt);
 
     Engine.renderer.render(Engine.scene, Engine.camera);
 
@@ -51,8 +36,14 @@ function startEngine() {
 
   loop();
 
-  console.log("[ENGINE] Running (green cube should appear)");
+  if (window.startMain) {
+    window.startMain(
+      { position:{x:0,y:1.6,z:0} },
+      Engine.camera,
+      Engine.renderer,
+      Engine.scene
+    );
+  }
 }
 
-// auto-start
 window.addEventListener("load", startEngine);
