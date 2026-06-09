@@ -1,53 +1,32 @@
-function initWorld(Engine) {
+function initWorld(E) {
 
-  const scene = Engine.scene;
+  E.scene = new THREE.Scene();
 
-  const light = new THREE.HemisphereLight(0xffffff,0x444444,1.2);
-  scene.add(light);
-
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(200,200),
-    new THREE.MeshStandardMaterial({ color:0x222222 })
+  E.camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
   );
 
-  ground.rotation.x = -Math.PI/2;
-  scene.add(ground);
+  E.camera.position.set(0, 2, 5);
 
-  Engine.updateRemotePlayers = function(Engine, dt) {
+  E.renderer = new THREE.WebGLRenderer({ antialias: true });
+  E.renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(E.renderer.domElement);
 
-    const state = Engine.serverState;
-    if (!state || !state.players) return;
+  const light = new THREE.DirectionalLight(0xffffff, 1.2);
+  light.position.set(5, 10, 5);
+  E.scene.add(light);
 
-    const seen = new Set();
+  const ambient = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+  E.scene.add(ambient);
 
-    for (let id in state.players) {
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(200, 200),
+    new THREE.MeshStandardMaterial({ color: 0x222222 })
+  );
 
-      seen.add(id);
-
-      const p = state.players[id];
-
-      if (!Engine.remotePlayers[id]) {
-        const mesh = new THREE.Mesh(
-          new THREE.CapsuleGeometry(0.5,1.2),
-          new THREE.MeshStandardMaterial({ color:0xff4444 })
-        );
-
-        Engine.scene.add(mesh);
-        Engine.remotePlayers[id] = mesh;
-      }
-
-      const obj = Engine.remotePlayers[id];
-
-      obj.position.x += (p.x - obj.position.x) * 0.2;
-      obj.position.y += (p.y - obj.position.y) * 0.2;
-      obj.position.z += (p.z - obj.position.z) * 0.2;
-    }
-
-    for (let id in Engine.remotePlayers) {
-      if (!seen.has(id)) {
-        Engine.scene.remove(Engine.remotePlayers[id]);
-        delete Engine.remotePlayers[id];
-      }
-    }
-  };
+  ground.rotation.x = -Math.PI / 2;
+  E.scene.add(ground);
 }

@@ -1,25 +1,36 @@
-export function movePlayer(player, input, colliders) {
+function simulatePlayer(p, input) {
 
-  const speed = 0.09;
+  const speed = 0.08;
 
-  const forward = new THREE.Vector3(Math.sin(input.yaw), 0, Math.cos(input.yaw));
-  const right = new THREE.Vector3(Math.sin(input.yaw + Math.PI / 2), 0, Math.cos(input.yaw + Math.PI / 2));
+  const forwardX = Math.sin(p.yaw);
+  const forwardZ = Math.cos(p.yaw);
 
-  let next = player.position.clone();
+  const rightX = Math.sin(p.yaw + Math.PI / 2);
+  const rightZ = Math.cos(p.yaw + Math.PI / 2);
 
-  if (input.w) next.addScaledVector(forward, -speed);
-  if (input.s) next.addScaledVector(forward, speed);
-  if (input.a) next.addScaledVector(right, -speed);
-  if (input.d) next.addScaledVector(right, speed);
-
-  // capsule collision approximation (ray-based)
-  for (let c of colliders) {
-    const box = new THREE.Box3().setFromObject(c);
-
-    if (box.containsPoint(next)) {
-      return player.position; // blocked
-    }
+  if (input.w) {
+    p.x -= forwardX * speed;
+    p.z -= forwardZ * speed;
+  }
+  if (input.s) {
+    p.x += forwardX * speed;
+    p.z += forwardZ * speed;
+  }
+  if (input.a) {
+    p.x -= rightX * speed;
+    p.z -= rightZ * speed;
+  }
+  if (input.d) {
+    p.x += rightX * speed;
+    p.z += rightZ * speed;
   }
 
-  return next;
+  // gravity
+  p.vy -= 0.01;
+  p.y += p.vy;
+
+  if (p.y < 1) {
+    p.y = 1;
+    p.vy = 0;
+  }
 }

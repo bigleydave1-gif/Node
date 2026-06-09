@@ -1,32 +1,24 @@
-function initNet(Engine) {
+function initNet(E) {
 
   const socket = io("http://localhost:3000");
-  Engine.socket = socket;
+  E.socket = socket;
 
-  Engine.net = {
-    inputSeq: 0,
-    buffer: []
-  };
+  socket.on("state", (state) => {
+    E.serverState = state;
 
-  Engine.sendInput = function(input) {
-    input.seq = Engine.net.inputSeq++;
-    input.t = Date.now();
-    socket.emit("input", input);
-  };
-
-  socket.on("snapshot", (state) => {
-    Engine.serverState = state;
-
-    Engine.net.buffer.push({
+    // push for interpolation
+    E.renderBuffer.push({
       t: Date.now(),
       state
     });
 
-    if (Engine.net.buffer.length > 20)
-      Engine.net.buffer.shift();
+    if (E.renderBuffer.length > 30)
+      E.renderBuffer.shift();
+
+    reconcile(E, state);
   });
 
-  Engine.getBufferedState = function() {
-    return Engine.net.buffer;
+  E.sendInput = function(input) {
+    socket.emit("input", input);
   };
 }

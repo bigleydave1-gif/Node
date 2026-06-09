@@ -1,55 +1,124 @@
-function startMain(player, camera, renderer, scene) {
+// =============================
+// MAIN ENTRY (V7 FPS ENGINE)
+// =============================
 
-  console.log("[MAIN] START");
+window.addEventListener("load", async () => {
 
-  try {
+  const E = Engine;
 
-    const keys = {};
-    let yaw = 0;
-    let pitch = 0;
+  console.log("[ENGINE] Booting V7 FPS Game Layer...");
 
-    document.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
-    document.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+  // -----------------------------
+  // CORE WORLD INIT (Three.js)
+  // -----------------------------
+  initWorld(E);
 
-    document.addEventListener("mousemove", (e) => {
-      if (document.pointerLockElement !== document.body) return;
+  // -----------------------------
+  // NETWORK
+  // -----------------------------
+  initNet(E);
 
-      yaw -= e.movementX * 0.0022;
-      pitch -= e.movementY * 0.0022;
+  // -----------------------------
+  // PLAYER
+  // -----------------------------
+  createPlayer(E);
 
-      pitch = Math.max(-1.4, Math.min(1.4, pitch));
+  // -----------------------------
+  // UI SYSTEMS (V7 LAYER)
+  // -----------------------------
+  initMenu(E);
+  initHUD(E);
+  initChat(E);
+  initViewModel(E);
 
-      camera.rotation.order = "YXZ";
-      camera.rotation.y = yaw;
-      camera.rotation.x = pitch;
+  // -----------------------------
+  // LOADERS (GLB SUPPORT)
+  // -----------------------------
+  if (typeof GLTFLoader !== "undefined") {
+    await loadPlayerModel(E, GLTFLoader);
+    loadWorld(E, GLTFLoader);
+  } else {
+    console.warn("[ENGINE] GLTFLoader missing — skipping models");
+  }
+
+  // -----------------------------
+  // INPUT SYSTEM
+  // -----------------------------
+  document.addEventListener("keydown", (e) => {
+    E.keys[e.key.toLowerCase()] = true;
+  });
+
+  document.addEventListener("keyup", (e) => {
+    E.keys[e.key.toLowerCase()] = false;
+  });
+
+  // pointer lock for FPS camera
+  document.body.addEventListener("click", () => {
+    document.body.requestPointerLock();
+  });
+
+  // -----------------------------
+  // SHOOT INPUT (LEFT CLICK)
+  // -----------------------------
+  document.addEventListener("mousedown", (e) => {
+
+    if (e.button !== 0) return;
+
+    if (!E.player) return;
+
+    // simple shot packet (server authoritative in V6/V7)
+    E.socket.emit("shoot", {
+      x: E.camera.position.x,
+      y: E.camera.position.y,
+      z: E.camera.position.z,
+
+      dx: Math.sin(E.camera.rotation.y),
+      dy: Math.sin(E.camera.rotation.x),
+      dz: Math.cos(E.camera.rotation.y),
+
+      weapon: "AK47",
+      t: Date.now(),
+      index: E.inputSeq || 0
     });
+  });
 
-    function loop() {
+  // -----------------------------
+  // MAIN GAME LOOP
+  // -----------------------------
+  function animate() {
 
-      try {
+    requestAnimationFrame(animate);
 
-        requestAnimationFrame(loop);
+    const dt = E.clock.getDelta();
 
-        // HARD SAFETY CHECKS
-        if (!renderer || !scene || !camera) {
-          console.error("[MAIN] Missing core engine refs");
-          return;
-        }
-
-        renderer.render(scene, camera);
-
-      } catch (err) {
-        console.error("[MAIN LOOP ERROR]", err);
-      }
+    // -----------------------------
+    // PLAYER MOVEMENT (V6 physics)
+    // -----------------------------
+    if (typeof movePlayer === "function") {
+      movePlayer(E, dt);
     }
 
-    loop();
+    // -----------------------------
+    // WEAPON ANIMATION UPDATE
+    // -----------------------------
+    if (E.anim && E.anim.mixer) {
+      E.anim.mixer.update(dt);
+    }
 
-    console.log("[MAIN] LOOP STARTED");
+    // -----------------------------
+    // REMOTE PLAYER INTERPOLATION (if exists)
+    // -----------------------------
+    if (typeof interpolateRemote === "function") {
+      interpolateRemote(E);
+    }
 
-  } catch (err) {
-    console.error("[MAIN CRASH]", err);
+    // -----------------------------
+    // RENDER
+    // -----------------------------
+    E.renderer.render(E.scene, E.camera);
   }
-}
 
-window.startMain = startMain;
+  animate();
+
+  console.log("[ENGINE] V7 Fully Running");
+});
