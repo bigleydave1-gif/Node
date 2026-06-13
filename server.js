@@ -1,147 +1,52 @@
-// ================================
-// V8 FPS SERVER (MATCHMAKING + ROUNDS + SCOREBOARD)
-// ================================
+const WebSocket = require("ws");
+const wss = new WebSocket.Server({ port: 8080 });
 
-const express = require("express");
-const http = require("http");
-const { Server } = require("socket.io");
+let players = {};
+let boss = {
+  hp: 100,
+  x: 0,
+  y: 20,
+  z: -50
+};
 
-const { joinQueue } = require("./matchmaking");
-const { initPlayer, addKill, getScoreboard } = require("./gamemode");
-const { startScoreboardSync } = require("./scoreboard");
-const { handleShot, bindServerState } = require("./hitreg");
-const { history, saveHistory, getRewindPosition } = require("./rewind");
+function broadcast(data){
+  const msg = JSON.stringify(data);
+  wss.clients.forEach(c=>{
+    if(c.readyState === 1) c.send(msg);
+  });
+}
 
-// ------------------ SETUP ------------------
-const app = express();
-const server = http.createServer(app);
+wss.on("connection",(ws)=>{
 
-const io = new Server(server, {
-  cors: { origin: "*" }
-});
+  let id = Math.random().toString(36).substring(2,9);
 
-const TICK_RATE = 64;
-const TICK_MS = 1000 / TICK_RATE;
-
-// ------------------ GAME STATE ------------------
-const players = {};
-
-// bind rewind system to hitreg
-bindServerState(players, history);
-
-// start scoreboard stream
-startScoreboardSync(io);
-
-// ------------------ SOCKET SYSTEM ------------------
-io.on("connection", (socket) => {
-
-  console.log("[CONNECT]", socket.id);
-
-  // init player stats
-  initPlayer(socket.id);
-
-  players[socket.id] = {
-    x: 0,
-    y: 1,
-    z: 0,
-    vx: 0,
-    vy: 0,
-    vz: 0,
-    yaw: 0,
-    hp: 100,
-    team: Math.random() > 0.5 ? 1 : 2
+  players[id] = {
+    x:0,y:3,z:10,
+    yaw:0
   };
 
-  // matchmaking
-  joinQueue(socket, io);
+  ws.send(JSON.stringify({type:"init", id, boss, players}));
 
-  // ---------------- INPUT (movement prediction system) ----------------
-  socket.on("input", (input) => {
+  ws.on("message",(msg)=>{
+    const data = JSON.parse(msg);
 
-    const p = players[socket.id];
-    if (!p) return;
-
-    const speed = 0.08;
-
-    const forwardX = Math.sin(p.yaw);
-    const forwardZ = Math.cos(p.yaw);
-
-    const rightX = Math.sin(p.yaw + Math.PI / 2);
-    const rightZ = Math.cos(p.yaw + Math.PI / 2);
-
-    if (input.w) {
-      p.x -= forwardX * speed;
-      p.z -= forwardZ * speed;
-    }
-    if (input.s) {
-      p.x += forwardX * speed;
-      p.z += forwardZ * speed;
-    }
-    if (input.a) {
-      p.x -= rightX * speed;
-      p.z -= rightZ * speed;
-    }
-    if (input.d) {
-      p.x += rightX * speed;
-      p.z += rightZ * speed;
+    if(data.type==="move"){
+      players[id] = data.state;
     }
 
-    // gravity
-    p.y += p.vy;
-    p.vy -= 0.01;
-
-    if (p.y < 1) {
-      p.y = 1;
-      p.vy = 0;
+    if(data.type==="hitBoss"){
+      boss.hp -= 2;
     }
 
-    // save rewind history
-    saveHistory(socket.id, p, Date.now());
+    broadcast({
+      type:"state",
+      players,
+      boss
+    });
   });
 
-  // ---------------- SHOOTING (V6/V8 COMBAT SYSTEM) ----------------
-  socket.on("shoot", (shot) => {
-
-    handleShot(socket.id, shot, players, getRewindPosition);
-
+  ws.on("close",()=>{
+    delete players[id];
   });
 
-  // ---------------- KILL EVENT (score tracking) ----------------
-  socket.on("kill", ({ killer, victim }) => {
-
-    addKill(killer, victim);
-
-    if (players[victim]) {
-      players[victim].hp = 100;
-      players[victim].x = 0;
-      players[victim].y = 1;
-      players[victim].z = 0;
-    }
-  });
-
-  // ---------------- DISCONNECT ----------------
-  socket.on("disconnect", () => {
-
-    console.log("[DISCONNECT]", socket.id);
-
-    delete players[socket.id];
-  });
-
-});
-
-// ------------------ MAIN TICK LOOP ------------------
-setInterval(() => {
-
-  io.emit("state", {
-    players,
-    t: Date.now()
-  });
-
-}, TICK_MS);
-
-// ------------------ START SERVER ------------------
-const PORT = 3000;
-
-server.listen(PORT, () => {
-  console.log(`[SERVER] V8 FPS running on port ${PORT}`);
 });
