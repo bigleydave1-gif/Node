@@ -1,0 +1,329 @@
+snow_town map
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>AAA FPS + SOLDIER ANIM</title>
+
+<style>
+html,body{
+  margin:0;
+  overflow:hidden;
+  width:100%;
+  height:100%;
+  touch-action:none;
+}
+canvas{display:block;}
+
+#joy{
+  position:fixed;
+  bottom:70px;
+  left:70px;
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  border:2px solid rgba(255,255,255,0.2);
+}
+#stick{
+  position:absolute;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:rgba(0,255,0,0.35);
+  left:37px;
+  top:37px;
+}
+</style>
+
+<script type="importmap">
+{
+  "imports":{
+    "three":"https://unpkg.com/three@0.166.1/build/three.module.js",
+    "three/addons/":"https://unpkg.com/three@0.166.1/examples/jsm/"
+  }
+}
+</script>
+</head>
+
+<body>
+
+<canvas id="city"></canvas>
+<div id="joy"><div id="stick"></div></div>
+
+<script type="module">
+
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+/* ================= SCENE ================= */
+const canvas=document.getElementById("city");
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x87ceeb);
+
+const camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,10000);
+
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setSize(innerWidth,innerHeight);
+
+/* LIGHT */
+scene.add(new THREE.HemisphereLight(0xffffff,0x444444,1.3));
+const sun=new THREE.DirectionalLight(0xffffff,2);
+sun.position.set(100,200,100);
+scene.add(sun);
+
+/* ================= WORLD ================= */
+const ground=new THREE.Mesh(
+  new THREE.PlaneGeometry(3000,3000),
+  new THREE.MeshStandardMaterial({color:0x2ecc71})
+);
+ground.rotation.x=-Math.PI/2;
+scene.add(ground);
+
+/* ================= COLLIDERS ================= */
+const colliders=[];
+
+/* ================= GLB LOADER (SAFE CDN ONLY) ================= */
+const loader=new GLTFLoader();
+
+function loadGLB(urls,onLoad){
+  let i=0;
+
+  function tryNext(){
+    if(i>=urls.length){
+      console.warn("GLB failed:",urls);
+      return;
+    }
+
+    loader.load(
+      urls[i],
+      onLoad,
+      undefined,
+      ()=>{ i++; tryNext(); }
+    );
+  }
+
+  tryNext();
+}
+
+/* ================= TOWN ================= */
+loadGLB([
+  "https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/snow_town.glb",
+  "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/Box/glTF/Box.gltf"
+], (gltf)=>{
+
+  const city=gltf.scene;
+  scene.add(city);
+
+  const box=new THREE.Box3().setFromObject(city);
+  const size=box.getSize(new THREE.Vector3());
+  const center=box.getCenter(new THREE.Vector3());
+
+  const scale=200/Math.max(size.x,size.y,size.z);
+
+  city.scale.setScalar(scale);
+  city.position.sub(center.multiplyScalar(scale));
+  city.position.y+= 36.5;
+
+  city.traverse(o=>{
+    if(o.isMesh) colliders.push(o);
+  });
+
+});
+
+/* ================= PLAYER ================= */
+const player=new THREE.Group();
+scene.add(player);
+
+player.position.set(-20,10,-20);
+
+
+camera.position.set(0,1.7,0);
+player.add(camera);
+
+/* ================= SOLDIER ================= */
+let mixer, soldier;
+
+loadGLB([
+  "https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/soldier.glb",
+  "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/Fox/glTF/Fox.gltf"
+], (gltf)=>{
+
+  soldier=gltf.scene;
+  player.add(soldier);
+
+  soldier.position.set(0,0,0);
+
+  mixer=new THREE.AnimationMixer(soldier);
+
+  if(gltf.animations && gltf.animations.length>0){
+    const action=mixer.clipAction(gltf.animations[0]);
+    action.play();
+  }
+
+});
+
+/* ================= INPUT ================= */
+const keys={};
+addEventListener("keydown",e=>keys[e.key.toLowerCase()]=true);
+addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+
+/* joystick */
+const joy=document.getElementById("joy");
+const stick=document.getElementById("stick");
+
+let joyX=0,joyY=0,drag=false;
+
+joy.addEventListener("touchstart",()=>drag=true);
+
+joy.addEventListener("touchend",()=>{
+  drag=false;
+  joyX=0;joyY=0;
+  stick.style.left="37px";
+  stick.style.top="37px";
+});
+
+joy.addEventListener("touchmove",e=>{
+  if(!drag)return;
+
+  const t=e.touches[0];
+  const r=joy.getBoundingClientRect();
+
+  let x=(t.clientX-r.left-r.width/2)/(r.width/2);
+  let y=(t.clientY-r.top-r.height/2)/(r.height/2);
+
+  const len=Math.min(1,Math.hypot(x,y));
+  const ang=Math.atan2(y,x);
+
+  joyX=Math.cos(ang)*len;
+  joyY=Math.sin(ang)*len;
+
+  stick.style.left=(65+joyX*45-27)+"px";
+  stick.style.top=(65+joyY*45-27)+"px";
+});
+
+/* ================= LOOK ================= */
+let yaw=0,pitch=0,last=null;
+
+addEventListener("touchstart",e=>{
+  if(e.touches.length===1) last=e.touches[0];
+});
+
+addEventListener("touchmove",e=>{
+  if(!last)return;
+
+  const t=e.touches[0];
+
+  if(t.clientX>innerWidth/2){
+    yaw-=(t.clientX-last.clientX)*0.003;
+    pitch-=(t.clientY-last.clientY)*0.003;
+    pitch=Math.max(-1.2,Math.min(1.2,pitch));
+    last=t;
+  }
+});
+
+/* ================= PHYSICS ================= */
+const ray=new THREE.Raycaster();
+
+const velocity=new THREE.Vector3();
+const moveDir=new THREE.Vector3();
+
+const speed=0.35;
+const gravity=0.02;
+const friction=0.85;
+
+let grounded=false;
+
+const height=1.7;
+
+/* ================= COLLISION ================= */
+function wallHit(pos,dir){
+  ray.set(pos.clone().add(new THREE.Vector3(0,1,0)),dir.clone().normalize());
+  const hits=ray.intersectObjects(colliders,true);
+  return hits.length && hits[0].distance<0.5;
+}
+
+function groundHit(pos){
+  ray.set(pos.clone().add(new THREE.Vector3(0,2,0)),new THREE.Vector3(0,-1,0));
+  const hits=ray.intersectObjects([ground,...colliders],true);
+  return hits.length?hits[0]:null;
+}
+
+/* ================= LOOP ================= */
+function animate(){
+requestAnimationFrame(animate);
+
+player.rotation.y=yaw;
+camera.rotation.x=pitch;
+
+/* INPUT */
+let f=(keys["w"]?1:0)-(keys["s"]?1:0)+joyY;
+let s=(keys["d"]?1:0)-(keys["a"]?1:0)+joyX;
+
+moveDir.set(s,0,f);
+if(moveDir.length()>1)moveDir.normalize();
+
+moveDir.applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
+
+/* MOVE */
+if(!wallHit(player.position,moveDir)){
+  velocity.x=moveDir.x*speed;
+  velocity.z=moveDir.z*speed;
+}else{
+  velocity.x*=0.2;
+  velocity.z*=0.2;
+}
+
+player.position.x+=velocity.x;
+player.position.z+=velocity.z;
+
+/* GRAVITY */
+grounded=false;
+
+const g=groundHit(player.position);
+
+if(g && player.position.y<=g.point.y+height){
+  player.position.y=g.point.y;
+  velocity.y=0;
+  grounded=true;
+}
+
+if(!grounded){
+  velocity.y-=gravity;
+}else{
+  velocity.y=0;
+}
+
+player.position.y+=velocity.y;
+
+/* FALLBACK */
+if(player.position.y<-10){
+  player.position.set(-20,10,-20);
+  velocity.set(0,0,0);
+}
+
+/* FRICTION */
+velocity.x*=friction;
+velocity.z*=friction;
+
+/* ANIMATION */
+if(mixer) mixer.update(0.016);
+
+renderer.render(scene,camera);
+}
+
+animate();
+
+/* RESIZE */
+addEventListener("resize",()=>{
+camera.aspect=innerWidth/innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(innerWidth,innerHeight);
+});
+
+</script>
+</body>
+</html>
