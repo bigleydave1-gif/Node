@@ -1,8 +1,8 @@
 html,body{
 margin:0;
 overflow:hidden;
-touch-action:none;
 background:black;
+touch-action:none;
 }
 
 canvas{
@@ -16,6 +16,6 @@ top:50%;
 transform:translate(-50%,-50%);
 color:white;
 font-size:28px;
-font-family:arial;
+font-family:Arial;
 pointer-events:none;
 }

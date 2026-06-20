@@ -1,9 +1,3 @@
 const scene = new THREE.Scene();
-
-scene.background = new THREE.Color(0x87CEEB);
-
-scene.fog = new THREE.Fog(
-0x87CEEB,
-100,
-1200
-);
+scene.background = new THREE.Color(0x87ceeb);
+scene.fog = new THREE.Fog(0x87ceeb, 10, 200);

@@ -1,78 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>CS-Style FPS Client</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: black;
-      font-family: Arial;
-    }
+<title>Snowtown FPS</title>
 
-    canvas {
-      display: block;
-    }
+<link rel="stylesheet" href="style.css">
 
-    /* 🎯 Crosshair */
-    #crosshair {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 10px;
-      height: 10px;
-      transform: translate(-50%, -50%);
-      border: 2px solid white;
-      border-radius: 50%;
-      pointer-events: none;
-    }
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 
-    /* 🔫 Hitmarker */
-    #hitmarker {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 18px;
-      height: 18px;
-      transform: translate(-50%, -50%);
-      border: 2px solid white;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* 🧾 UI */
-    #ui {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      color: white;
-      z-index: 10;
-    }
-
-    button {
-      padding: 10px;
-      cursor: pointer;
-    }
-  </style>
 </head>
 
 <body>
 
-<div id="ui">
-  <button id="start">Start Game</button>
-  <div>WASD Move • Mouse Aim • Click Shoot</div>
-</div>
+<div id="crosshair">+</div>
 
-<div id="crosshair"></div>
-<div id="hitmarker"></div>
-
-<!-- SOCKET -->
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-
-<!-- START GAME (MODULE ENTRY POINT) -->
-<script type="module" src="./main.js"></script>
+<script src="scene.js"></script>
+<script src="camera.js"></script>
+<script src="renderer.js"></script>
+<script src="controls.js"></script>
+<script src="main.js"></script>
 
 </body>
 </html>
