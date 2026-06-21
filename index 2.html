@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Self-Scripting AI Control Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-panel: #12121a;
+            --bg-input: #1a1a2e;
+            --border: #2a2a3e;
+            --accent: #00ff88;
+            --accent-dim: #00cc6a;
+            --danger: #ff4444;
+            --warning: #ffaa00;
+            --info: #4488ff;
+            --text: #e0e0e0;
+            --text-dim: #8888a0;
+            --font-mono: 'Courier New', monospace;
+            --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            font-family: var(--font-ui);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Avatar Background Layer */
+        #avatar-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 8px;
+            gap: 8px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        
+        .header h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--danger);
+            transition: background 0.3s;
+        }
+        
+        .status-indicator.running { background: var(--accent); }
+        .status-indicator.paused { background: var(--warning); }
+        
+        .header-controls {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: var(--font-ui);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        
+        .btn:hover {
+            background: var(--border);
+            border-color: var(--accent-dim);
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-dim);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: var(--bg-dark);
+            border-color: var(--warning);
+        }
+        
+        .btn-icon {
+            padding: 6px;
+            font-size: 16px;
+        }
+        
+        /* Content Area */
+        .content {
+            display: flex;
+            flex: 1;
+            gap: 8px;
+            overflow: hidden;
+            min-height: 0;
+        }
+        
+        /* Panels */
+        .panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .panel-body {
+            flex: 1;
+            overflow: auto;
+            padding: 8px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        /* File Browser */
+        .file-browser {
+            width: 200px;
+            flex-shrink: 0;
+        }
+        
+        .file-list {
+            list-style: none;
+        }
+        
+        .file-item {
+            padding: 6px 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+        
+        .file-item:hover {
+            background: var(--bg-input);
+        }
+        
+        .file-item.active {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+        
+        .file-icon {
+            font-size: 14px;
+        }
+        
+        /* Code Editor */
+        .code-panel {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .code-editor {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-input);
+            color: var(--text);
+            border: none;
+            padding: 12px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            tab-size: 4;
+        }
+        
+        /* Command Window */
+        .command-panel {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .command-output {
+            height: 100%;
+            overflow-y: auto;
+            padding: 8px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        
+        .log-entry {
+            margin-bottom: 4px;
+            padding: 2px 0;
+        }
+        
+        .log-timestamp {
+            color: var(--text-dim);
+            font-size: 11px;
+        }
+        
+        .log-info { color: var(--info); }
+        .log-success { color: var(--accent); }
+        .log-error { color: var(--danger); }
+        .log-warning { color: var(--warning); }
+        
+        /* Input Area */
+        .input-area {
+            display: flex;
+            gap: 8px;
+            padding: 8px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        
+        .command-input {
+            flex: 1;
+            background: var(--bg-input);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            outline: none;
+        }
+        
+        .command-input:focus {
+            border-color: var(--accent);
+        }
+        
+        /* Control Bar */
+        .control-bar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .rewind-control {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .rewind-input {
+            width: 60px;
+            background: var(--bg-input);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 13px;
+            text-align: center;
+        }
+        
+        .divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border);
+            margin: 0 4px;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .file-browser {
+                width: 100%;
+                height: 120px;
+            }
+            
+            .header h1 {
+                font-size: 14px;
+            }
+            
+            .btn {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+            
+            .control-bar {
+                gap: 4px;
+            }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-dim);
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Speech indicator */
+        .speech-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+        
+        .speech-indicator.active {
+            color: var(--accent);
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .modal h2 {
+            margin-bottom: 12px;
+            color: var(--warning);
+        }
+        
+        .modal p {
+            margin-bottom: 16px;
+            color: var(--text-dim);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <!-- Avatar Background Canvas -->
+    <canvas id="avatar-canvas"></canvas>
+    
+    <div class="main-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <span class="status-indicator" id="status-indicator"></span>
+                Self-Scripting AI
+            </h1>
+            <div class="header-controls">
+                <div class="speech-indicator" id="speech-indicator">
+                    <span>🎤</span>
+                    <span id="speech-status">Off</span>
+                </div>
+                <button class="btn btn-icon" id="btn-mute" title="Toggle Mute">🔊</button>
+                <button class="btn btn-icon" id="btn-speech" title="Voice Input">🎤</button>
+            </div>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="content">
+            <!-- File Browser -->
+            <div class="panel file-browser">
+                <div class="panel-header">
+                    <span>📁 Files</span>
+                    <button class="btn btn-icon" id="btn-refresh-files" title="Refresh">🔄</button>
+                </div>
+                <div class="panel-body">
+                    <ul class="file-list" id="file-list">
+                        <li class="file-item">Loading...</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Code Editor -->
+            <div class="panel code-panel">
+                <div class="panel-header">
+                    <span id="current-file">📝 Code Editor</span>
+                    <div>
+                        <button class="btn" id="btn-save">💾 Save</button>
+                        <button class="btn" id="btn-run">▶️ Run</button>
+                    </div>
+                </div>
+                <textarea class="code-editor" id="code-editor" placeholder="Select a file or type code here..."></textarea>
+            </div>
+            
+            <!-- Command Window -->
+            <div class="panel command-panel">
+                <div class="panel-header">
+                    <span>📋 Command Output</span>
+                    <button class="btn btn-icon" id="btn-clear-output" title="Clear">🗑️</button>
+                </div>
+                <div class="command-output" id="command-output">
+                    <div class="log-entry">Welcome to Self-Scripting AI Control Interface</div>
+                    <div class="log-entry">Connect to backend to begin...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Input Area -->
+        <div class="input-area">
+            <input type="text" class="command-input" id="command-input" 
+                   placeholder="Enter command or message..." autocomplete="off">
+            <div class="control-bar">
+                <button class="btn btn-primary" id="btn-start">▶️ Start</button>
+                <button class="btn btn-warning" id="btn-pause">⏸️ Pause</button>
+                <button class="btn btn-danger" id="btn-stop">⏹️ Stop</button>
+                <div class="divider"></div>
+                <div class="rewind-control">
+                    <button class="btn" id="btn-rewind">⏪ Rollback</button>
+                    <input type="number" class="rewind-input" id="rewind-steps" value="1" min="1">
+                    <span>steps</span>
+                </div>
+                <div class="divider"></div>
+                <button class="btn btn-danger" id="btn-shutdown">🔌 Shutdown</button>
+                <button class="btn btn-warning" id="btn-clear" title="Clear All (Lightning Bolt)">⚡ Clear All</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <h2 id="modal-title">Confirm</h2>
+            <p id="modal-message">Are you sure?</p>
+            <div class="modal-buttons">
+                <button class="btn" id="modal-cancel">Cancel</button>
+                <button class="btn btn-danger" id="modal-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        const API_BASE = window.location.origin;
+        const WS_URL = `ws://${window.location.host}/ws`;
+        
+        // ==================== STATE ====================
+        let ws = null;
+        let isRunning = false;
+        let isPaused = false;
+        let isMuted = false;
+        let isListening = false;
+        let currentFile = null;
+        let speechRecognition = null;
+        let speechSynthesis = window.speechSynthesis;
+        
+        // ==================== DOM ELEMENTS ====================
+        const statusIndicator = document.getElementById('status-indicator');
+        const commandOutput = document.getElementById('command-output');
+        const commandInput = document.getElementById('command-input');
+        const codeEditor = document.getElementById('code-editor');
+        const fileList = document.getElementById('file-list');
+        const currentFileLabel = document.getElementById('current-file');
+        const speechIndicator = document.getElementById('speech-indicator');
+        const speechStatus = document.getElementById('speech-status');
+        
+        // ==================== WEBSOCKET ====================
+        function connectWebSocket() {
+            ws = new WebSocket(WS_URL);
+            
+            ws.onopen = () => {
+                log('Connected to AI Engine', 'success');
+                ws.send(JSON.stringify({command: 'get_status'}));
+                ws.send(JSON.stringify({command: 'get_files'}));
+                ws.send(JSON.stringify({command: 'subscribe_logs'}));
+            };
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleWebSocketMessage(data);
+            };
+            
+            ws.onclose = () => {
+                log('Disconnected from AI Engine', 'warning');
+                setTimeout(connectWebSocket, 3000);
+            };
+            
+            ws.onerror = (error) => {
+                log('WebSocket error', 'error');
+            };
+        }
+        
+        function handleWebSocketMessage(data) {
+            switch(data.type) {
+                case 'status':
+                    updateStatus(data.data);
+                    break;
+                case 'log':
+                    log(data.message, 'info');
+                    break;
+                case 'files':
+                    updateFileList(data.data);
+                    break;
+                case 'history':
+                    // Handle history if needed
+                    break;
+                case 'error':
+                    log(data.message, 'error');
+                    break;
+                case 'control':
+                    log(`Control: ${data.action}`, 'info');
+                    if (data.status) updateStatus(data.status);
+                    break;
+                case 'execution':
+                    handleExecutionResult(data.result);
+                    break;
+                case 'file_modified':
+                    log(`File modified: ${data.result.filepath}`, 'success');
+                    refreshFiles();
+                    break;
+                case 'rollback':
+                    log(`Rollback: ${data.result.message || data.result.error}`, 
+                        data.result.success ? 'success' : 'error');
+                    break;
+                case 'clear':
+                    log('All data cleared', 'warning');
+                    refreshFiles();
+                    break;
+            }
+        }
+        
+        // ==================== STATUS ====================
+        function updateStatus(status) {
+            isRunning = status.is_running;
+            isPaused = status.is_paused;
+            
+            statusIndicator.className = 'status-indicator';
+            if (isRunning && !isPaused) {
+                statusIndicator.classList.add('running');
+            } else if (isPaused) {
+                statusIndicator.classList.add('paused');
+            }
+            
+            log(`Status: ${isRunning ? (isPaused ? 'PAUSED' : 'RUNNING') : 'STOPPED'}`, 'info');
+        }
+        
+        // ==================== LOGGING ====================
+        function log(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> ${escapeHtml(message)}`;
+            commandOutput.appendChild(entry);
+            commandOutput.scrollTop = commandOutput.scrollHeight;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // ==================== FILE BROWSER ====================
+        async function refreshFiles() {
+            try {
+                const response = await fetch(`${API_BASE}/api/files`);
+                const data = await response.json();
+                updateFileList(data.files);
+            } catch (e) {
+                log('Failed to load files', 'error');
+            }
+        }
+        
+        function updateFileList(files) {
+            fileList.innerHTML = '';
+            if (!files || files.length === 0) {
+                fileList.innerHTML = '<li class="file-item">No files</li>';
+                return;
+            }
+            
+            files.forEach(file => {
+                const li = document.createElement('li');
+                li.className = 'file-item';
+                if (currentFile === file.path) {
+                    li.classList.add('active');
+                }
+                li.innerHTML = `<span class="file-icon">📄</span> ${escapeHtml(file.path)}`;
+                li.onclick = () => loadFile(file.path);
+                fileList.appendChild(li);
+            });
+        }
+        
+        async function loadFile(filepath) {
+            try {
+                const response = await fetch(`${API_BASE}/api/file/${encodeURIComponent(filepath)}`);
+                const data = await response.json();
+                codeEditor.value = data.content;
+                currentFile = filepath;
+                currentFileLabel.textContent = `📝 ${filepath}`;
+                
+                // Update active state
+                document.querySelectorAll('.file-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.target.closest('.file-item')?.classList.add('active');
+            } catch (e) {
+                log(`Failed to load ${filepath}`, 'error');
+            }
+        }
+        
+        // ==================== CODE EDITOR ====================
+        async function saveFile() {
+            if (!currentFile) {
+                log('No file selected', 'warning');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/modify`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        filepath: currentFile,
+                        content: codeEditor.value,
+                        description: 'Manual edit via web interface'
+                    })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    log(`Saved ${currentFile}`, 'success');
+                } else {
+                    log(`Save failed: ${result.error}`, 'error');
+                }
+            } catch (e) {
+                log('Save failed', 'error');
+            }
+        }
+        
+        async function runCode() {
+            const code = codeEditor.value;
+            if (!code.trim()) {
+                log('No code to run', 'warning');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/execute`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({code: code})
+                });
+                const result = await response.json();
+                handleExecutionResult(result);
+            } catch (e) {
+                log('Execution failed', 'error');
+            }
+        }
+        
+        function handleExecutionResult(result) {
+            if (result.success) {
+                log(`Execution successful (Step ${result.step_id})`, 'success');
+                if (result.output) {
+                    log(result.output, 'info');
+                }
+            } else {
+                log(`Execution failed (Step ${result.step_id})`, 'error');
+                if (result.error) {
+                    log(result.error, 'error');
+                }
+            }
+        }
+        
+        // ==================== CONTROLS ====================
+        async function sendControl(endpoint, method = 'POST') {
+            try {
+                const response = await fetch(`${API_BASE}/api/${endpoint}`, {
+                    method: method,
+                    headers: {'Content-Type': 'application/json'}
+                });
+                return await response.json();
+            } catch (e) {
+                log(`Control failed: ${endpoint}`, 'error');
+                return null;
+            }
+        }
+        
+        // ==================== BUTTON HANDLERS ====================
+        document.getElementById('btn-start').onclick = () => {
+            sendControl('start');
+            log('Starting AI Engine...', 'info');
+        };
+        
+        document.getElementById('btn-pause').onclick = () => {
+            sendControl('pause');
+            log('Pausing AI Engine...', 'info');
+        };
+        
+        document.getElementById('btn-stop').onclick = () => {
+            sendControl('stop');
+            log('Stopping AI Engine...', 'info');
+        };
+        
+        document.getElementById('btn-rewind').onclick = async () => {
+            const steps = parseInt(document.getElementById('rewind-steps').value) || 1;
+            const result = await sendControl('rollback', 'POST');
+            if (result && result.body) {
+                // Need to send steps in body
+                const response = await fetch(`${API_BASE}/api/rollback`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({steps: steps})
+                });
+                const data = await response.json();
+                if (data.success) {
+                    log(`Rolled back ${steps} steps`, 'success');
+                } else {
+                    log(`Rollback failed: ${data.error}`, 'error');
+                }
+            }
+        };
+        
+        document.getElementById('btn-shutdown').onclick = () => {
+            showModal('Shutdown', 'Are you sure you want to shutdown the AI Engine?', async () => {
+                await sendControl('stop');
+                log('AI Engine shutdown', 'warning');
+            });
+        };
+        
+        document.getElementById('btn-clear').onclick = () => {
+            showModal('Clear All', '⚡ This will clear ALL scripts and history. Are you sure?', async () => {
+                const response = await fetch(`${API_BASE}/api/clear`, {method: 'POST'});
+                const data = await response.json();
+                if (data.success) {
+                    log('All data cleared - reset to initial state', 'warning');
+                    codeEditor.value = '';
+                    currentFile = null;
+                    currentFileLabel.textContent = '📝 Code Editor';
+                }
+            });
+        };
+        
+        document.getElementById('btn-save').onclick = saveFile;
+        document.getElementById('btn-run').onclick = runCode;
+        document.getElementById('btn-refresh-files').onclick = refreshFiles;
+        document.getElementById('btn-clear-output').onclick = () => {
+            commandOutput.innerHTML = '';
+        };
+        
+        // ==================== COMMAND INPUT ====================
+        commandInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const command = commandInput.value.trim();
+                if (command) {
+                    log(`> ${command}`, 'info');
+                    // Send as code execution for now
+                    fetch(`${API_BASE}/api/execute`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({code: command})
+                    });
+                    commandInput.value = '';
+                }
+            }
+        });
+        
+        // ==================== MODAL ====================
+        function showModal(title, message, onConfirm) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            document.getElementById('modal-overlay').classList.add('show');
+            
+            const confirmBtn = document.getElementById('modal-confirm');
+            const cancelBtn = document.getElementById('modal-cancel');
+            
+            confirmBtn.onclick = () => {
+                document.getElementById('modal-overlay').classList.remove('show');
+                onConfirm();
+            };
+            
+            cancelBtn.onclick = () => {
+                document.getElementById('modal-overlay').classList.remove('show');
+            };
+        }
+        
+        // ==================== SPEECH ====================
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                speechRecognition = new SpeechRecognition();
+                speechRecognition.continuous = false;
+                speechRecognition.interimResults = false;
+                
+                speechRecognition.onstart = () => {
+                    isListening = true;
+                    speechIndicator.classList.add('active');
+                    speechStatus.textContent = 'Listening...';
+                    log('Speech recognition started', 'info');
+                };
+                
+                speechRecognition.onend = () => {
+                    isListening = false;
+                    speechIndicator.classList.remove('active');
+                    speechStatus.textContent = 'Off';
+                };
+                
+                speechRecognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    log(`Voice input: ${transcript}`, 'info');
+                    commandInput.value = transcript;
+                    // Auto-submit
+                    fetch(`${API_BASE}/api/execute`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({code: transcript})
+                    });
+                };
+                
+                speechRecognition.onerror = (event) => {
+                    log(`Speech error: ${event.error}`, 'error');
+                };
+            } else {
+                log('Speech recognition not supported', 'warning');
+            }
+        }
+        
+        function speak(text) {
+            if (isMuted || !speechSynthesis) return;
+            
+            // Cancel current speech
+            speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            
+            speechSynthesis.speak(utterance);
+        }
+        
+        document.getElementById('btn-speech').onclick = () => {
+            if (!speechRecognition) {
+                initSpeechRecognition();
+            }
+            if (speechRecognition) {
+                if (isListening) {
+                    speechRecognition.stop();
+                } else {
+                    speechRecognition.start();
+                }
+            }
+        };
+        
+        document.getElementById('btn-mute').onclick = () => {
+            isMuted = !isMuted;
+            document.getElementById('btn-mute').textContent = isMuted ? '🔇' : '🔊';
+            log(isMuted ? 'Muted' : 'Unmuted', 'info');
+        };
+        
+        // ==================== AVATAR CANVAS ====================
+        function initAvatar() {
+            const canvas = document.getElementById('avatar-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+            
+            // Particle system for avatar background
+            const particles = [];
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    size: Math.random() * 3 + 1,
+                    opacity: Math.random() * 0.5 + 0.2
+                });
+            }
+            
+            function drawAvatar() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw central "AI core" circle
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const time = Date.now() * 0.001;
+                
+                // Pulsing core
+                const coreRadius = 80 + Math.sin(time * 2) * 10;
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, coreRadius * 2);
+                gradient.addColorStop(0, 'rgba(0, 255, 136, 0.3)');
+                gradient.addColorStop(0.5, 'rgba(0, 204, 106, 0.1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, coreRadius * 2, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Core circle
+                ctx.strokeStyle = 'rgba(0, 255, 136, 0.4)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, coreRadius, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Orbiting rings
+                for (let i = 0; i < 3; i++) {
+                    const ringRadius = coreRadius + 40 + i * 30;
+                    const rotation = time * (0.5 + i * 0.2);
+                    
+                    ctx.strokeStyle = `rgba(0, 255, 136, ${0.2 - i * 0.05})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    
+                    for (let angle = 0; angle < Math.PI * 2; angle += 0.1) {
+                        const x = centerX + Math.cos(angle + rotation) * ringRadius;
+                        const y = centerY + Math.sin(angle + rotation) * ringRadius * 0.6;
+                        if (angle === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                
+                // Particles
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+                    
+                    ctx.fillStyle = `rgba(0, 255, 136, ${p.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                // Connection lines between nearby particles
+                particles.forEach((p1, i) => {
+                    particles.slice(i + 1).forEach(p2 => {
+                        const dx = p1.x - p2.x;
+                        const dy = p1.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (dist < 150) {
+                            ctx.strokeStyle = `rgba(0, 255, 136, ${0.1 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath();
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    });
+                });
+                
+                requestAnimationFrame(drawAvatar);
+            }
+            
+            drawAvatar();
+        }
+        
+        // ==================== INITIALIZATION ====================
+        function init() {
+            connectWebSocket();
+            initSpeechRecognition();
+            initAvatar();
+            refreshFiles();
+            
+            log('Interface initialized', 'success');
+            log('Waiting for backend connection...', 'info');
+        }
+        
+        // Start
+        init();
+    </script>
+</body>
+</html>
