@@ -1,0 +1,1053 @@
+New c city infiltration 
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="https://select-orange-ysztkkgf.edgeone.app/">
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+      <title>Snowtown FPS</title>
+      <style>
+html,body{margin:0;overflow:hidden;width:100%;height:100%;touch-action:none;background:#000;color:#fff;font-family:Arial,sans-serif;}
+canvas{display:block;}
+#menu{position:fixed;inset:0;z-index:100;background:linear-gradient(160deg,#0b1220,#1a2540);display:flex;align-items:center;justify-content:center;}
+#menu .box{background:rgba(10,16,30,.92);border:1px solid #00e5ff55;border-radius:10px;padding:24px;width:min(420px,92vw);box-shadow:0 20px 60px #000a;}
+#menu h1{margin:0 0 12px;color:#00e5ff;text-align:center;letter-spacing:2px;}
+#menu label{display:block;font-size:13px;margin:10px 0 4px;color:#9fd;}
+#menu input,#menu select{width:100%;box-sizing:border-box;padding:10px;background:#0b1530;color:#fff;border:1px solid #00e5ff55;border-radius:6px;}
+.teamrow{display:flex;gap:8px;}
+.teamrow button{flex:1;padding:10px;border:2px solid transparent;border-radius:6px;background:#1a2540;color:#fff;cursor:pointer;font-weight:bold;}
+.teamrow button.red{background:#7a1f2b;}
+.teamrow button.blue{background:#1f3a7a;}
+.teamrow button.sel{border-color:#00e5ff;}
+#playBtn{margin-top:14px;width:100%;padding:12px;background:#00e5ff;color:#000;border:0;border-radius:6px;font-weight:bold;font-size:16px;cursor:pointer;}
+#scores{margin-top:14px;max-height:160px;overflow:auto;font-size:12px;background:#0008;padding:8px;border-radius:6px;}
+#scores h3{margin:0 0 6px;color:#00e5ff;font-size:13px;}
+.scoreRow{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #fff1;}
+.charRow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.charRow button{padding:8px 4px;border:2px solid transparent;border-radius:6px;background:#1a2540;color:#fff;cursor:pointer;font-size:11px;font-weight:bold;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.charRow button.sel{border-color:#00e5ff;}
+.charSwatch{width:28px;height:28px;border-radius:50%;border:2px solid #fff3;}
+
+#hud{position:fixed;top:10px;left:10px;color:#fff;z-index:5;font-size:13px;line-height:1.4;text-shadow:0 1px 2px #000;}
+#hud .hp{width:160px;height:8px;background:#222;border:1px solid #555;border-radius:4px;overflow:hidden;margin-top:3px;}
+#hud .hp i{display:block;height:100%;background:#10b981;width:100%;transition:width .15s;}
+#scoreboard{position:fixed;top:10px;right:10px;color:#fff;z-index:5;font-size:12px;text-align:right;text-shadow:0 1px 2px #000;background:#0006;padding:6px 10px;border-radius:6px;}
+.tred{color:#ff5b6e;}.tblue{color:#5bb8ff;}
+
+#crosshair{position:fixed;top:50%;left:50%;width:22px;height:22px;transform:translate(-50%,-50%);pointer-events:none;z-index:10;}
+#crosshair::before,#crosshair::after{content:"";position:absolute;background:#00e5ff;box-shadow:0 0 8px #00e5ff;}
+#crosshair::before{left:50%;top:0;width:2px;height:22px;transform:translateX(-50%);}
+#crosshair::after{top:50%;left:0;width:22px;height:2px;transform:translateY(-50%);}
+#crosshair.locked::before,#crosshair.locked::after{background:#ff3b4d;box-shadow:0 0 10px #ff3b4d;}
+#hitmarker{position:fixed;top:50%;left:50%;width:24px;height:24px;transform:translate(-50%,-50%) rotate(45deg);pointer-events:none;z-index:11;opacity:0;}
+#hitmarker::before,#hitmarker::after{content:"";position:absolute;background:#fff;}
+#hitmarker::before{left:50%;top:0;width:2px;height:24px;transform:translateX(-50%);}
+#hitmarker::after{top:50%;left:0;width:24px;height:2px;transform:translateY(-50%);}
+
+#joy{position:fixed;bottom:70px;left:70px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2);z-index:4;}
+#stick{position:absolute;width:55px;height:55px;border-radius:50%;background:rgba(0,255,0,.35);left:37px;top:37px;}
+
+#fireBtn{
+  position:fixed;
+  bottom:40px;
+  right:20px;
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:rgba(255,60,80,.35);
+  border:3px solid #ff3b4d;
+  color:#fff;
+  font-weight:bold;
+  z-index:4;
+  font-size:14px;
+  touch-action:none;
+}
+
+#chatLog{position:fixed;bottom:220px;left:10px;width:min(340px,55vw);max-height:160px;overflow:hidden;z-index:5;font-size:12px;color:#fff;text-shadow:0 1px 2px #000;pointer-events:none;}
+#chatLog div{background:#0007;padding:3px 6px;margin-top:2px;border-radius:3px;}
+#chatInput{position:fixed;bottom:10px;left:10px;width:min(340px,55vw);padding:8px;background:#0009;color:#fff;border:1px solid #00e5ff;border-radius:4px;display:none;z-index:50;}
+#chatBtn{position:fixed;top:10px;right:200px;background:#0008;color:#fff;border:1px solid #00e5ff;border-radius:4px;padding:6px 10px;z-index:5;font-size:12px;}
+#killfeed{position:fixed;top:50px;right:10px;z-index:5;font-size:12px;text-align:right;color:#fff;text-shadow:0 1px 2px #000;}
+#killfeed div{background:#0007;padding:3px 6px;margin-top:2px;border-radius:3px;}
+
+.hidden{display:none!important;}
+</style>
+      <script type="importmap">
+{"imports":{
+"three":"https://unpkg.com/three@0.166.1/build/three.module.js",
+"three/addons/":"https://unpkg.com/three@0.166.1/examples/jsm/",
+"@supabase/supabase-js":"https://esm.sh/@supabase/supabase-js@2"
+}}
+</script>
+    </head>
+    <body>
+      <div id="menu">
+        <div class="box">
+          <h1>SNOWTOWN FPS</h1>
+          <label>Player name</label>
+          <input id="nameIn" maxlength="16" placeholder="Operator"/>
+          <label>Team</label>
+          <div class="teamrow">
+            <button id="teamRed" class="red sel">RED</button>
+            <button id="teamBlue" class="blue">BLUE</button>
+          </div>
+          <label>Character</label>
+          <div class="charRow" id="charRow">
+          </div>
+          <button id="playBtn">DEPLOY</button>
+          <div id="scores">
+            <h3>LIVE LEADERBOARD</h3>
+            <div id="scoreList">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="hud" class="hidden">
+        <div>
+          <b id="hName">Operator</b> <span id="hTeam" class="tred">RED</span>
+        </div>
+        <div>
+          HP <span id="hHP">100</span>
+        </div>
+        <div class="hp">
+          <i id="hHPbar">
+          </i>
+        </div>
+        <div>K <span id="hK">0</span> · D <span id="hD">0</span>
+      </div>
+    </div>
+    <div id="scoreboard" class="hidden">
+      <div>
+        <span class="tred">RED</span> <b id="sRed">0</b>
+      </div>
+      <div>
+        <span class="tblue">BLUE</span> <b id="sBlue">0</b>
+      </div>
+    </div>
+    <div id="killfeed" class="hidden">
+    </div>
+    <div id="crosshair" class="hidden">
+    </div>
+    <div id="hitmarker">
+    </div>
+    <div id="joy" class="hidden">
+      <div id="stick">
+      </div>
+    </div>
+    <button id="fireBtn" class="hidden">FIRE</button>
+    <button id="chatBtn" class="hidden">CHAT (T)</button>
+    <div id="chatLog" class="hidden">
+    </div>
+    <input id="chatInput" placeholder="Say something… (Enter)"/>
+    <script type="module">
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
+import { createClient } from "@supabase/supabase-js";
+
+
+/* ============ SUPABASE ============ */
+const supabase = createClient(
+  "https://hvgmpvfgookpwveolnjn.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2Z21wdmZnb29rcHd2ZW9sbmpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2NDY2ODYsImV4cCI6MjA5NTIyMjY4Nn0.EyXmbvs-xhG3_U3cshKKfAH33HZWYQ9AyLH2O_6dnO8"
+);
+
+/* ============ STATE ============ */
+const localID = crypto.randomUUID();
+let myName = "Operator";
+let myTeam = "red";
+let myChar = 0;
+let myHP = 100;
+let kills = 0, deaths = 0;
+let teamScore = {red:0, blue:0};
+let started = false;
+let lastDamageFrom = null;
+
+const clock = new THREE.Clock();
+
+/* =========================================================
+   ★ ADD YOUR CHARACTERS HERE ★
+   Each entry: { name, url, color, scale, weapon, proj }
+     name   – label shown on the start-menu button
+     url    – direct link to a .glb file (CORS-enabled host)
+     color  – tint blended over the team color (hex int)
+     scale  – per-character scale hint (still read/used below)
+     weapon – "bullet" (tiny fast blue dot) or "proj" (flies a
+              proj#.glb model). Stu and blake use bullets;
+              everyone else fires a projectile model.
+     proj   – which PROJECTILES entry to use when weapon:"proj"
+   ========================================================= */
+const CHARACTERS = [
+  { name:"Stu",         url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/Stu.glb",         color:0xffffff, scale:0.25,  weapon:"bullet" },
+  { name:"blake",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/blake.glb",        color:0x00e5ff, scale:3.0,   weapon:"bullet" },
+  { name:"miss",        url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/miss.glb",         color:0xffffff, scale:0.65,  weapon:"proj", proj:"proj1" },
+  { name:"Clown",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/clown.glb",        color:0x222222, scale:0.65,  weapon:"proj", proj:"proj2" },
+  { name:"shooter_bot", url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/shooter_bot.glb",  color:0x222222, scale:0.68,  weapon:"proj", proj:"proj3" },
+  { name:"Unicorn",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/unicorn_fly_loop.glb", color:0x222222, scale:1.5, weapon:"proj", proj:"proj4" },
+  { name:"woman",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/woman.glb",        color:0x222222, scale:0.013, weapon:"proj", proj:"proj6" }
+];
+
+/* =========================================================
+   ★ PROJECTILES ★ (proj5 intentionally excluded)
+   ========================================================= */
+const PROJECTILES = {
+  proj1:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj1.glb" },
+  proj2:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj2.glb" },
+  proj3:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj3.glb" },
+  proj4:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj4.glb" },
+  proj6:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj6.glb" }
+};
+
+const PLAYER_HEIGHT = 6.0;   // uniform height every character is rescaled to
+const PROJ_SIZE     = 1.0;   // uniform bounding size every proj#.glb is rescaled to
+const PLAYER_HIT_RADIUS = 1.3; // sphere radius used for shot-vs-player hits
+const PROJ_HIT_RADIUS   = 0.35; // sphere radius used for proj#.glb-vs-wall hits
+const BULLET_HIT_RADIUS = 0.15; // sphere radius used for bullet-vs-wall hits
+
+/* weapon tuning, per your spec:
+   - bullets (Stu, blake): tiny blue dot, high velocity, 3s lifespan
+   - proj#.glb (everyone else): slow rate of fire (~1-2/sec), lifespan
+     scaled off travel speed/range so slow-firing shots don't linger forever */
+const BULLET_SPEED    = 6.5;   // world units / frame — "high velocity"
+const BULLET_LIFE_MS  = 3000;  // fixed 3 second lifespan
+const BULLET_DAMAGE   = 20;
+const BULLET_FIRE_RATE= 160;   // ms between shots (~6/sec, unchanged from original)
+
+const PROJ_SPEED       = 2.2;  // slower, visible flight
+const PROJ_DAMAGE       = 20;
+const PROJ_FIRE_RATE   = 750;  // ms between shots (~1.3/sec — "1 to 2 per second if that")
+
+/* GLB caches so each file only ever loads/parses once */
+const charGLBCache = {};
+const projGLBCache = {};
+
+/* live shared leaderboard (broadcast-based) */
+const globalScores = {}; // id -> {name,team,char,kills,deaths,t}
+
+/* =========================================================
+   ★ SHARED HELPER: rescale + recenter any loaded model ★
+   Guarantees every instance (character or projectile) has the
+   exact same height/size and stands with its feet at y=0,
+   regardless of how the source .glb was authored/exported.
+   ========================================================= */
+function normalizeToHeight(model, desiredHeight){
+  model.scale.set(1,1,1);
+  model.position.set(0,0,0);
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const dim = Math.max(size.y, 0.0001);
+  const scale = desiredHeight / dim;
+  model.scale.setScalar(scale);
+
+  const newBox = new THREE.Box3().setFromObject(model);
+  const center = newBox.getCenter(new THREE.Vector3());
+  model.position.x -= center.x;
+  model.position.z -= center.z;
+  model.position.y -= newBox.min.y;
+}
+
+/* ============ MENU ============ */
+const menu = document.getElementById("menu");
+const nameIn = document.getElementById("nameIn");
+const teamRed = document.getElementById("teamRed");
+const teamBlue = document.getElementById("teamBlue");
+const playBtn = document.getElementById("playBtn");
+const scoreList = document.getElementById("scoreList");
+
+nameIn.value = localStorage.getItem("snow_name") || "";
+teamRed.onclick=()=>{myTeam="red";teamRed.classList.add("sel");teamBlue.classList.remove("sel");};
+teamBlue.onclick=()=>{myTeam="blue";teamBlue.classList.add("sel");teamRed.classList.remove("sel");};
+
+/* character picker */
+const charRow = document.getElementById("charRow");
+CHARACTERS.forEach((c,i)=>{
+  const b=document.createElement("button");
+  b.innerHTML=`<span class="charSwatch" style="background:#${c.color.toString(16).padStart(6,"0")}"></span>${c.name}`;
+  if(i===0) b.classList.add("sel");
+  b.onclick=()=>{
+    myChar=i;
+    [...charRow.children].forEach(x=>x.classList.remove("sel"));
+    b.classList.add("sel");
+  };
+  charRow.appendChild(b);
+});
+const savedChar = parseInt(localStorage.getItem("snow_char")||"0",10);
+if(savedChar>=0 && savedChar<CHARACTERS.length){ charRow.children[savedChar].click(); }
+
+/* shared live leaderboard from broadcast */
+function renderLeaderboard(){
+  const rows = Object.values(globalScores)
+    .sort((a,b)=>(b.kills-b.deaths)-(a.kills-a.deaths) || b.kills-a.kills)
+    .slice(0,10);
+  scoreList.innerHTML = rows.map(r=>
+    `<div class="scoreRow"><span class="t${r.team}">${r.name}</span><span>${r.kills||0}K / ${r.deaths||0}D</span></div>`
+  ).join("") || "<div>Waiting for players…</div>";
+}
+renderLeaderboard();
+
+playBtn.onclick=()=>{
+  myName = (nameIn.value||"Operator").slice(0,16);
+  localStorage.setItem("snow_name", myName);
+  localStorage.setItem("snow_char", String(myChar));
+  menu.classList.add("hidden");
+  document.querySelectorAll("#hud,#scoreboard,#killfeed,#crosshair,#joy,#fireBtn,#chatBtn,#chatLog").forEach(e=>e.classList.remove("hidden"));
+  document.getElementById("hName").textContent = myName;
+  const t=document.getElementById("hTeam"); t.textContent=myTeam.toUpperCase(); t.className="t"+myTeam;
+  started = true;
+  globalScores[localID] = {name:myName,team:myTeam,char:myChar,kills:0,deaths:0,t:Date.now()};
+  channel.send({type:"broadcast",event:"join",payload:{id:localID,name:myName,team:myTeam,char:myChar,kills,deaths}});
+  broadcastScore();
+};
+
+/* ============ SCENE ============ */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb);
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 10000);
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xffffff,0xffffff,1.2));
+
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(3000,3000),
+  new THREE.MeshStandardMaterial({color:0xeaf2f8})
+);
+ground.rotation.x=-Math.PI/2;
+scene.add(ground);
+
+const loader = new GLTFLoader();
+
+/* raw meshes collected while the city loads (used once to bake bounds) */
+const colliders = [];
+
+/* =========================================================
+   ★ BAKED COLLISION ★
+   Instead of raycasting the full city mesh every frame, we
+   compute a static list of axis-aligned bounding boxes (+ a
+   bounding-sphere for cheap rejection) ONE TIME when the city
+   finishes loading. All runtime collision (player movement,
+   ground height, projectile impacts) is then done with plain
+   sphere/box math — no THREE.Raycaster anywhere in the game.
+   ========================================================= */
+const cityColliderBoxes = [];
+
+function bakeCityCollision(){
+  cityColliderBoxes.length = 0;
+  for(const o of colliders){
+    o.updateWorldMatrix(true,false);
+    const box = new THREE.Box3().setFromObject(o);
+    if(box.isEmpty()) continue;
+    const sphere = box.getBoundingSphere(new THREE.Sphere());
+    cityColliderBoxes.push({
+      min:box.min.clone(), max:box.max.clone(),
+      center:sphere.center.clone(), radius:sphere.radius
+    });
+  }
+  // free the raw mesh references, we only need the baked boxes from now on
+  colliders.length = 0;
+}
+
+function sphereIntersectsBox(center, radius, b){
+  const cx = Math.max(b.min.x, Math.min(center.x, b.max.x));
+  const cy = Math.max(b.min.y, Math.min(center.y, b.max.y));
+  const cz = Math.max(b.min.z, Math.min(center.z, b.max.z));
+  const dx = center.x-cx, dy = center.y-cy, dz = center.z-cz;
+  return (dx*dx+dy*dy+dz*dz) <= radius*radius;
+}
+
+function citySphereBlocked(center, radius){
+  for(const b of cityColliderBoxes){
+    const dx=center.x-b.center.x, dy=center.y-b.center.y, dz=center.z-b.center.z;
+    const rr=radius+b.radius;
+    if(dx*dx+dy*dy+dz*dz > rr*rr) continue; // cheap reject
+    if(sphereIntersectsBox(center, radius, b)) return true;
+  }
+  return false;
+}
+
+/* highest baked box "roof" under a given XZ, else the flat ground plane (y=0) */
+function groundLevelAt(pos){
+  let top = 0;
+  for(const b of cityColliderBoxes){
+    if(pos.x>=b.min.x-0.5 && pos.x<=b.max.x+0.5 && pos.z>=b.min.z-0.5 && pos.z<=b.max.z+0.5){
+      if(b.max.y>top) top=b.max.y;
+    }
+  }
+  return top;
+}
+
+loader.load(
+  "https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/ccity.glb",
+  (gltf) => {
+
+    const city = gltf.scene;
+    city.position.y = 1;
+    scene.add(city);
+
+    // Scale map
+    city.scale.setScalar(0.03);
+
+    // Recompute bounds AFTER scaling
+    const box = new THREE.Box3().setFromObject(city);
+
+    // Center X/Z
+    const center = box.getCenter(new THREE.Vector3());
+    city.position.x -= center.x;
+    city.position.z -= center.z;
+
+    // Put bottom of map on y=0
+    city.position.y += 1;
+
+    // Enable double-sided materials and shadows
+    city.traverse(o => {
+      if (o.isMesh) {
+
+        // Fix transparent faces
+        o.material = o.material.clone();
+        o.material.side = THREE.DoubleSide;
+
+        // Disable accidental transparency
+        o.material.transparent = false;
+        o.material.opacity = 1;
+
+        o.castShadow = true;
+        o.receiveShadow = true;
+
+        colliders.push(o);
+      }
+    });
+
+    // bake capsule/sphere-friendly collision bounds once, then discard raw refs
+    bakeCityCollision();
+  }
+);
+
+/* ============ PLAYER ============ */
+const player = new THREE.Group();
+scene.add(player);
+function spawnPos(){
+  return myTeam==="red" ? new THREE.Vector3(-125,200,-25) : new THREE.Vector3(125,200,125);
+}
+player.position.copy(spawnPos());
+camera.position.set(0,3.5,0);
+
+player.add(camera);
+
+/* ============ INPUT ============ */
+const keys={};
+addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    if(chatInput.style.display==="block"){ sendChat(); }
+    return;
+  }
+  if(e.key.toLowerCase()==="t" && started && chatInput.style.display!=="block"){ openChat(); e.preventDefault(); return; }
+  keys[e.key.toLowerCase()]=true;
+});
+addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+
+const joy=document.getElementById("joy"), stick=document.getElementById("stick");
+let joyX=0,joyY=0,joyDrag=false,joyId=null;
+joy.addEventListener("touchstart",e=>{
+  const t=e.changedTouches[0]; joyDrag=true; joyId=t.identifier;
+},{passive:true});
+addEventListener("touchend",e=>{
+  for(const t of e.changedTouches){
+    if(t.identifier===joyId){ joyDrag=false; joyId=null; joyX=joyY=0;
+      stick.style.left="37px"; stick.style.top="37px"; }
+    if(t.identifier===lookTouch.id){ lookTouch.active=false; lookTouch.id=null; }
+  }
+},{passive:true});
+addEventListener("touchmove",e=>{
+  for(const t of e.touches){
+    if(t.identifier===joyId){
+      const r=joy.getBoundingClientRect();
+      let x=(t.clientX-r.left-r.width/2)/(r.width/2);
+      let y=(t.clientY-r.top-r.height/2)/(r.height/2);
+      const len=Math.min(1,Math.hypot(x,y)), ang=Math.atan2(y,x);
+      joyX=Math.cos(ang)*len; joyY=Math.sin(ang)*len;
+      stick.style.left=(37+joyX*37)+"px";
+      stick.style.top=(37+joyY*37)+"px";
+    } else if(lookTouch.active && t.identifier===lookTouch.id){
+      const dx=t.clientX-lookTouch.lastX, dy=t.clientY-lookTouch.lastY;
+      yaw-=dx*0.008; pitch-=dy*0.008;
+      pitch=Math.max(-1.2,Math.min(1.2,pitch));
+      lookTouch.lastX=t.clientX; lookTouch.lastY=t.clientY;
+    }
+  }
+},{passive:true});
+
+let yaw=0,pitch=0;
+const lookTouch={active:false,id:null,lastX:0,lastY:0};
+addEventListener("touchstart",e=>{
+  for(const t of e.changedTouches){
+    const onJoy = t.target===joy || t.target===stick;
+    const onFire = t.target.id==="fireBtn";
+    if(!onJoy && !onFire && t.clientX>innerWidth*0.35 && !lookTouch.active){
+      lookTouch.active=true; lookTouch.id=t.identifier;
+      lookTouch.lastX=t.clientX; lookTouch.lastY=t.clientY;
+    }
+  }
+},{passive:true});
+
+// mouse look
+let mouseLook=false;
+renderer.domElement.addEventListener("click",()=>{
+  if(!started) return;
+  renderer.domElement.requestPointerLock?.();
+});
+document.addEventListener("pointerlockchange",()=>{ mouseLook=!!document.pointerLockElement; });
+addEventListener("mousemove",e=>{
+  if(!mouseLook) return;
+  yaw -= e.movementX*0.002;
+  pitch -= e.movementY*0.002;
+  pitch=Math.max(-1.2,Math.min(1.2,pitch));
+});
+
+/* ============ FIRE ============ */
+const fireBtn = document.getElementById("fireBtn");
+let manualFire=false;
+fireBtn.addEventListener("touchstart",e=>{e.preventDefault();manualFire=true;},{passive:false});
+fireBtn.addEventListener("touchend",e=>{e.preventDefault();manualFire=false;},{passive:false});
+addEventListener("mousedown",e=>{ if(started && mouseLook) manualFire=true; });
+addEventListener("mouseup",()=>manualFire=false);
+
+/* ============ MOVEMENT (capsule/sphere collision, zero raycasts) ============ */
+const velocity=new THREE.Vector3();
+const moveDir=new THREE.Vector3();
+const speed=0.25, gravity=0.02, friction=0.72, height=1.7;
+const PLAYER_MOVE_RADIUS=0.6;
+let grounded=false;
+
+/* ============ WEAPONS: bullets (Stu/blake) + proj#.glb (everyone else) ============ */
+const MAX_RANGE=200;
+const PROJ_LIFE_MS = (MAX_RANGE/PROJ_SPEED) * (1000/60) + 300; // depends on proj velocity/range
+const activeProjectiles = [];
+const activeBullets = [];
+
+/* shared tiny-blue-dot geometry/material — bullets are identical and static,
+   so every bullet instance reuses these instead of allocating new buffers */
+const BULLET_GEO = new THREE.SphereGeometry(0.15, 6, 6);
+const BULLET_MAT = new THREE.MeshBasicMaterial({color:0x2fc3ff});
+
+function loadProjectileModel(url, onReady){
+  if(projGLBCache[url]){ onReady(projGLBCache[url]); return; }
+  new GLTFLoader().load(url, (gltf)=>{ projGLBCache[url]=gltf; onReady(gltf); });
+}
+
+/* ---- proj#.glb (slow-firing model projectiles) ---- */
+function spawnProjectile(origin, dir, ownerId, ownerTeam, charIdx, resolveHits){
+  const charDef = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  const def = PROJECTILES[charDef.proj] || PROJECTILES.proj1;
+  const dirN = dir.clone().normalize();
+  const proj = {
+    mesh:null, mixer:null,
+    pos:origin.clone(), dir:dirN,
+    ownerId, ownerTeam,
+    born:performance.now(),
+    resolveHits: !!resolveHits,
+    alive:true, traveled:0
+  };
+  activeProjectiles.push(proj);
+
+  loadProjectileModel(def.url, (gltf)=>{
+    if(!proj.alive) return; // removed before it finished loading
+    const inst = SkeletonUtils.clone(gltf.scene);
+    normalizeToHeight(inst, PROJ_SIZE);
+
+    // each projectile gets its own material instances so tinting/opacity
+    // never leaks between simultaneously-flying shots
+    inst.traverse(o=>{
+      if(o.isMesh){
+        o.material = o.material.clone();
+        o.material.side = THREE.DoubleSide;
+      }
+    });
+
+    const quat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,-1), dirN);
+    inst.quaternion.copy(quat);
+    inst.position.copy(origin);
+    scene.add(inst);
+    proj.mesh = inst;
+
+    const clips = gltf.animations||[];
+    if(clips.length){
+      proj.mixer = new THREE.AnimationMixer(inst);
+      proj.mixer.clipAction(clips[0]).play();
+    }
+  });
+}
+
+function removeProjectile(p){
+  p.alive=false;
+  if(p.mesh){ scene.remove(p.mesh); }
+}
+
+function updateProjectiles(){
+  const now = performance.now();
+  for(let i=activeProjectiles.length-1;i>=0;i--){
+    const p = activeProjectiles[i];
+    if(!p.alive){ activeProjectiles.splice(i,1); continue; }
+
+    const step = p.dir.clone().multiplyScalar(PROJ_SPEED);
+    p.pos.add(step);
+    p.traveled += PROJ_SPEED;
+    if(p.mesh) p.mesh.position.copy(p.pos);
+    if(p.mixer) p.mixer.update(0.016);
+
+    let hit=false;
+
+    // wall / city impact (sphere vs baked box, no raycast)
+    if(citySphereBlocked(p.pos, PROJ_HIT_RADIUS)) hit=true;
+
+    // enemy impact — only the shooter's own client resolves damage
+    if(!hit && p.resolveHits){
+      for(const id in remote){
+        const rp=remote[id];
+        if(!rp || rp.team===p.ownerTeam || rp.hp<=0) continue;
+        const center = rp.mesh.position.clone().add(new THREE.Vector3(0,PLAYER_HEIGHT*0.5,0));
+        const dx=p.pos.x-center.x, dy=p.pos.y-center.y, dz=p.pos.z-center.z;
+        const rr = PLAYER_HIT_RADIUS+PROJ_HIT_RADIUS;
+        if(dx*dx+dy*dy+dz*dz <= rr*rr){
+          channel.send({type:"broadcast",event:"hit",payload:{
+            target:id, from:p.ownerId, fromName:myName, fromTeam:p.ownerTeam, damage:PROJ_DAMAGE
+          }});
+          flashHitmarker();
+          hit=true;
+          break;
+        }
+      }
+    }
+
+    if(hit || p.traveled>=MAX_RANGE || (now-p.born)>=PROJ_LIFE_MS){
+      removeProjectile(p);
+      activeProjectiles.splice(i,1);
+    }
+  }
+}
+
+/* ---- bullets: tiny blue dot, high velocity, fixed 3s lifespan ---- */
+function spawnBullet(origin, dir, ownerId, ownerTeam, resolveHits){
+  const dirN = dir.clone().normalize();
+  const mesh = new THREE.Mesh(BULLET_GEO, BULLET_MAT);
+  mesh.position.copy(origin);
+  scene.add(mesh);
+  activeBullets.push({
+    mesh, pos:origin.clone(), dir:dirN,
+    ownerId, ownerTeam,
+    born:performance.now(),
+    resolveHits: !!resolveHits,
+    alive:true
+  });
+}
+
+function removeBullet(b){
+  b.alive=false;
+  if(b.mesh) scene.remove(b.mesh);
+}
+
+function updateBullets(){
+  const now = performance.now();
+  for(let i=activeBullets.length-1;i>=0;i--){
+    const b = activeBullets[i];
+    if(!b.alive){ activeBullets.splice(i,1); continue; }
+
+    b.pos.addScaledVector(b.dir, BULLET_SPEED);
+    b.mesh.position.copy(b.pos);
+
+    let hit=false;
+    if(citySphereBlocked(b.pos, BULLET_HIT_RADIUS)) hit=true;
+
+    if(!hit && b.resolveHits){
+      for(const id in remote){
+        const rp=remote[id];
+        if(!rp || rp.team===b.ownerTeam || rp.hp<=0) continue;
+        const center = rp.mesh.position.clone().add(new THREE.Vector3(0,PLAYER_HEIGHT*0.5,0));
+        const dx=b.pos.x-center.x, dy=b.pos.y-center.y, dz=b.pos.z-center.z;
+        const rr = PLAYER_HIT_RADIUS+BULLET_HIT_RADIUS;
+        if(dx*dx+dy*dy+dz*dz <= rr*rr){
+          channel.send({type:"broadcast",event:"hit",payload:{
+            target:id, from:b.ownerId, fromName:myName, fromTeam:b.ownerTeam, damage:BULLET_DAMAGE
+          }});
+          flashHitmarker();
+          hit=true;
+          break;
+        }
+      }
+    }
+
+    if(hit || (now-b.born)>=BULLET_LIFE_MS){
+      removeBullet(b);
+      activeBullets.splice(i,1);
+    }
+  }
+}
+
+let lastFire=0;
+function tryFire(){
+  const wpn = (CHARACTERS[myChar] && CHARACTERS[myChar].weapon) || "bullet";
+  const rate = wpn==="bullet" ? BULLET_FIRE_RATE : PROJ_FIRE_RATE;
+  if(performance.now()-lastFire < rate) return;
+  lastFire=performance.now();
+  const dir=new THREE.Vector3(); camera.getWorldDirection(dir);
+  const origin=camera.getWorldPosition(new THREE.Vector3());
+  if(wpn==="bullet"){
+    spawnBullet(origin,dir,localID,myTeam,true);
+  } else {
+    spawnProjectile(origin,dir,localID,myTeam,myChar,true);
+  }
+  channel.send({type:"broadcast",event:"bullet",payload:{
+    x:origin.x,y:origin.y,z:origin.z,dx:dir.x,dy:dir.y,dz:dir.z,id:localID,team:myTeam,char:myChar,wpn
+  }});
+}
+
+/* ============ AIM ASSIST / AUTO FIRE (pure vector math, no raycast) ============ */
+const crosshairEl = document.getElementById("crosshair");
+const AIM_MAX_RANGE=200, AIM_MAX_ANGLE_COS=Math.cos(THREE.MathUtils.degToRad(3.5));
+let aimTick=0, lastAimEnemy=null;
+const _fwd=new THREE.Vector3(), _origin=new THREE.Vector3(), _toEnemy=new THREE.Vector3();
+function aimedAtEnemy(){
+  camera.getWorldDirection(_fwd);
+  camera.getWorldPosition(_origin);
+  let best=null, bestCos=AIM_MAX_ANGLE_COS;
+  for(const id in remote){
+    const p=remote[id];
+    if(!p || p.team===myTeam || p.hp<=0) continue;
+    const center = p.mesh.position.clone().add(new THREE.Vector3(0,PLAYER_HEIGHT*0.5,0));
+    _toEnemy.copy(center).sub(_origin);
+    const dist=_toEnemy.length();
+    if(dist>AIM_MAX_RANGE || dist<0.001) continue;
+    _toEnemy.normalize();
+    const c=_fwd.dot(_toEnemy);
+    if(c>bestCos){
+      // make sure a building isn't standing directly between us
+      const steps=6;
+      let blocked=false;
+      for(let s=1;s<=steps;s++){
+        const t=(dist*s)/steps;
+        const testPt=_origin.clone().addScaledVector(_toEnemy,t);
+        if(citySphereBlocked(testPt, 0.4)){ blocked=true; break; }
+      }
+      if(!blocked){ bestCos=c; best=id; }
+    }
+  }
+  return best;
+}
+
+/* ============ REMOTE PLAYERS ============ */
+const remote={};
+function makeRemote(id,team,name,charIdx){
+  const group=new THREE.Group();
+  const teamColor = team==="red"?0xff3b4d:0x3b8fff;
+  const cc = CHARACTERS[charIdx||0] || CHARACTERS[0];
+
+  // nameplate — a fresh canvas/texture per player, never shared
+  const cv=document.createElement("canvas"); cv.width=256; cv.height=64;
+  const ctx=cv.getContext("2d");
+  ctx.fillStyle = team==="red"?"#ff3b4d":"#3b8fff";
+  ctx.font="bold 32px Arial"; ctx.textAlign="center";
+  ctx.fillText(name||"player", 128, 42);
+  const tex=new THREE.CanvasTexture(cv);
+  const spr=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true}));
+  spr.scale.set(1,1,1); spr.position.y=PLAYER_HEIGHT-0.5; group.add(spr);
+  scene.add(group);
+
+  const p={
+    mesh:group, target:new THREE.Vector3(), yaw:0,
+    mixer:null, actions:{}, current:null,
+    team:team||"red", name:name||"player", hp:100, char:charIdx||0
+  };
+
+  const charUrl = cc.url;
+  const onGLB = (gltf)=>{
+    // clone so each player has fully independent transforms, mixer & materials
+    const av = SkeletonUtils.clone(gltf.scene);
+    normalizeToHeight(av, PLAYER_HEIGHT); // <- every character ends up the same height
+    av.rotation.y = Math.PI;
+
+    av.traverse(o=>{
+      if(o.isMesh){
+        const srcTex = o.material && o.material.map ? o.material.map : null;
+        o.material = new THREE.MeshStandardMaterial({
+          map: srcTex,
+          color: 0xffffff,
+          roughness: 0.8,
+          metalness: 0.1,
+          skinning: true
+        });
+        o.castShadow = true;
+        o.receiveShadow = true;
+      }
+    });
+    group.add(av);
+
+    // own mixer + own action instances (nothing shared with other players)
+    const mixer=new THREE.AnimationMixer(av);
+    p.mixer=mixer;
+    const clips=gltf.animations||[];
+    const pick=(...names)=>{
+      for(const n of names){
+        const c=clips.find(c=>c.name.toLowerCase().includes(n));
+        if(c) return c;
+      }
+      return null;
+    };
+    const idle = pick("idle","stand") || clips[0];
+    const walk = pick("walk") || clips[1] || idle;
+    const run  = pick("run","sprint") || walk;
+    const shoot= pick("shoot","fire","attack") || idle;
+    if(idle){ p.actions.idle=mixer.clipAction(idle); p.actions.idle.play(); p.current=p.actions.idle; }
+    if(walk && walk!==idle) p.actions.walk=mixer.clipAction(walk);
+    if(run && run!==walk) p.actions.run=mixer.clipAction(run);
+    if(shoot && shoot!==idle){ p.actions.shoot=mixer.clipAction(shoot); p.actions.shoot.setLoop(THREE.LoopOnce); }
+  };
+  if(charGLBCache[charUrl]){ onGLB(charGLBCache[charUrl]); }
+  else {
+    new GLTFLoader().load(charUrl, (gltf)=>{ charGLBCache[charUrl]=gltf; onGLB(gltf); });
+  }
+  return p;
+}
+function setAnim(p, name){
+  if(!p.actions[name] || p.current===p.actions[name]) return;
+  const next=p.actions[name];
+  if(p.current) p.current.fadeOut(0.15);
+  next.reset().fadeIn(0.15).play();
+  p.current=next;
+}
+function playShoot(p){
+  if(p.actions.shoot){ p.actions.shoot.reset().play(); }
+}
+
+/* ============ CHANNEL ============ */
+const channel = supabase.channel("snowtown-room", { config:{broadcast:{self:false}} });
+channel.on("broadcast",{event:"join"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  if(!remote[payload.id]) remote[payload.id]=makeRemote(payload.id,payload.team,payload.name,payload.char);
+  globalScores[payload.id] = {
+    name:payload.name,team:payload.team,char:payload.char||0,
+    kills:payload.kills||0,deaths:payload.deaths||0,t:Date.now()
+  };
+  renderLeaderboard();
+  // reply with our state so they see us
+  if(started){
+    channel.send({type:"broadcast",event:"join",payload:{id:localID,name:myName,team:myTeam,char:myChar,kills,deaths}});
+  }
+});
+channel.on("broadcast",{event:"bullet"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  const origin=new THREE.Vector3(payload.x,payload.y,payload.z);
+  const dir=new THREE.Vector3(payload.dx,payload.dy,payload.dz);
+  if(payload.wpn==="bullet"){
+    spawnBullet(origin,dir,payload.id,payload.team,false);
+  } else {
+    spawnProjectile(origin,dir,payload.id,payload.team,payload.char,false);
+  }
+  const p=remote[payload.id]; if(p) playShoot(p);
+});
+channel.on("broadcast",{event:"state"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  let p=remote[payload.id];
+  if(!p){ p = remote[payload.id] = makeRemote(payload.id,payload.team,payload.name,payload.char); }
+  p.target.set(payload.x,payload.y,payload.z);
+  p.yaw=payload.yaw;
+  p.moving = !!payload.moving;
+  p.running = !!payload.running;
+  if(typeof payload.hp==="number") p.hp=payload.hp;
+});
+channel.on("broadcast",{event:"score"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  globalScores[payload.id] = {
+    name:payload.name,team:payload.team,char:payload.char||0,
+    kills:payload.kills||0,deaths:payload.deaths||0,t:Date.now()
+  };
+  renderLeaderboard();
+});
+channel.on("broadcast",{event:"scoreReq"},()=>{
+  if(started) broadcastScore();
+});
+channel.on("broadcast",{event:"hit"},({payload})=>{
+  if(!payload) return;
+  if(payload.target===localID){
+    myHP = Math.max(0, myHP - payload.damage);
+    lastDamageFrom = payload.from;
+    updateHUD();
+    if(myHP<=0){ die(payload.from, payload.fromName, payload.fromTeam); }
+  }
+});
+channel.on("broadcast",{event:"kill"},({payload})=>{
+  if(!payload) return;
+  teamScore[payload.killerTeam] = (teamScore[payload.killerTeam]||0) + 1;
+  updateScoreboard();
+  addKillFeed(`${payload.killerName} ▶ ${payload.victimName}`, payload.killerTeam);
+  if(payload.killer===localID){ kills++; document.getElementById("hK").textContent=kills; broadcastScore(); }
+  if(globalScores[payload.killer]){ globalScores[payload.killer].kills=(globalScores[payload.killer].kills||0)+1; }
+  if(globalScores[payload.victim]){ globalScores[payload.victim].deaths=(globalScores[payload.victim].deaths||0)+1; }
+  renderLeaderboard();
+});
+channel.on("broadcast",{event:"chat"},({payload})=>{
+  if(!payload) return;
+  addChat(payload.name, payload.team, payload.text);
+});
+channel.subscribe();
+// when the menu is open, ask everyone to announce their score
+setTimeout(()=>channel.send({type:"broadcast",event:"scoreReq",payload:{}}), 800);
+
+function broadcastScore(){
+  globalScores[localID] = {name:myName,team:myTeam,char:myChar,kills,deaths,t:Date.now()};
+  renderLeaderboard();
+  channel.send({type:"broadcast",event:"score",payload:{
+    id:localID,name:myName,team:myTeam,char:myChar,kills,deaths
+  }});
+}
+
+let lastSend=0;
+function sync(){
+  if(!started) return;
+  const now=performance.now();
+  if(now-lastSend<100) return;
+  lastSend=now;
+  const mv = Math.hypot(velocity.x,velocity.z);
+  channel.send({type:"broadcast",event:"state",payload:{
+    id:localID,name:myName,team:myTeam, char: myChar,
+    x:player.position.x,y:player.position.y,z:player.position.z,
+    yaw, hp:myHP, moving:mv>0.02, running:mv>0.15
+  }});
+}
+
+/* ============ DAMAGE / DEATH ============ */
+function updateHUD(){
+  document.getElementById("hHP").textContent = myHP;
+  document.getElementById("hHPbar").style.width = myHP+"%";
+  document.getElementById("hHPbar").style.background = myHP>50?"#10b981":myHP>25?"#f59e0b":"#ef4444";
+}
+function updateScoreboard(){
+  document.getElementById("sRed").textContent = teamScore.red||0;
+  document.getElementById("sBlue").textContent = teamScore.blue||0;
+}
+function die(killerId, killerName, killerTeam){
+  deaths++; document.getElementById("hD").textContent=deaths;
+  channel.send({type:"broadcast",event:"kill",payload:{
+    killer:killerId, killerName, killerTeam,
+    victim:localID, victimName:myName, victimTeam:myTeam
+  }});
+  broadcastScore();
+  // respawn
+  setTimeout(()=>{
+    player.position.copy(spawnPos());
+    velocity.set(0,0,0); myHP=100; updateHUD();
+  }, 1200);
+}
+function addKillFeed(text,team){
+  const kf=document.getElementById("killfeed");
+  const d=document.createElement("div"); d.innerHTML=`<span class="t${team}">${text}</span>`;
+  kf.appendChild(d); if(kf.children.length>5) kf.removeChild(kf.firstChild);
+  setTimeout(()=>d.remove(), 5000);
+}
+function flashHitmarker(){
+  const hm=document.getElementById("hitmarker");
+  hm.style.opacity=1; setTimeout(()=>hm.style.opacity=0,120);
+}
+
+/* ============ CHAT ============ */
+const chatLog=document.getElementById("chatLog");
+const chatInput=document.getElementById("chatInput");
+document.getElementById("chatBtn").onclick=openChat;
+function openChat(){ chatInput.style.display="block"; chatInput.focus(); }
+function sendChat(){
+  const t=chatInput.value.trim(); chatInput.value=""; chatInput.style.display="none";
+  if(!t) return;
+  addChat(myName,myTeam,t);
+  channel.send({type:"broadcast",event:"chat",payload:{name:myName,team:myTeam,text:t}});
+}
+function addChat(name,team,text){
+  const d=document.createElement("div");
+  d.innerHTML=`<span class="t${team}"><b>${name}:</b></span> ${text.replace(/[<>]/g,"")}`;
+  chatLog.appendChild(d);
+  while(chatLog.children.length>6) chatLog.removeChild(chatLog.firstChild);
+  setTimeout(()=>d.remove(),8000);
+}
+
+/* ============ LOOP ============ */
+function updateMovement(){
+  let f=(keys["w"]?1:0)-(keys["s"]?1:0) + (-joyY);
+  let s=(keys["d"]?1:0)-(keys["a"]?1:0) + joyX;
+  moveDir.set(s,0,-f);
+  if(moveDir.length()>1) moveDir.normalize();
+  moveDir.applyAxisAngle(new THREE.Vector3(0,1,0), yaw);
+
+  // capsule (approximated as a sphere at chest height) vs baked city boxes
+  const nextX = player.position.x + moveDir.x*speed;
+  const nextZ = player.position.z + moveDir.z*speed;
+  const testPoint = new THREE.Vector3(nextX, player.position.y+1.0, nextZ);
+  const blocked = moveDir.lengthSq()>0.0001 && citySphereBlocked(testPoint, PLAYER_MOVE_RADIUS);
+
+  if(!blocked){
+    velocity.x=moveDir.x*speed; velocity.z=moveDir.z*speed;
+  } else {
+    velocity.x*=0.2; velocity.z*=0.2;
+  }
+  player.position.x+=velocity.x; player.position.z+=velocity.z;
+
+  grounded=false;
+  const groundY = groundLevelAt(player.position);
+  const targetY = groundY + height;
+
+  if(player.position.y<=targetY || velocity.y<=0){
+    player.position.y = targetY;
+    velocity.y = 0;
+    grounded = true;
+  }
+
+  if(!grounded) velocity.y-=gravity;
+  player.position.y+=velocity.y;
+  velocity.x*=friction; velocity.z*=friction;
+}
+
+function updateRemotes(){
+  for(const id in remote){
+    const r=remote[id];
+    r.mesh.position.lerp(r.target,0.25);
+    r.mesh.rotation.y=r.yaw;
+    if(r.mixer) r.mixer.update(0.016);
+    if(r.actions.run && r.running) setAnim(r,"run");
+    else if(r.actions.walk && r.moving) setAnim(r,"walk");
+    else setAnim(r,"idle");
+  }
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  if(started){
+    updateMovement();
+    player.rotation.y=yaw;
+    camera.rotation.x=pitch;
+    updateProjectiles();
+    updateBullets();
+    updateRemotes();
+
+    // auto fire when enemy in crosshair (throttled — pure vector math, no raycast)
+    aimTick=(aimTick+1)%3;
+    if(aimTick===0){
+      lastAimEnemy = aimedAtEnemy();
+      if(lastAimEnemy) crosshairEl.classList.add("locked");
+      else crosshairEl.classList.remove("locked");
+    }
+
+    if(manualFire || lastAimEnemy){
+      tryFire();
+    }
+
+    sync();
+  }
+  renderer.render(scene,camera);
+}
+animate();
+
+addEventListener("resize",()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+  </body>
+</html>
