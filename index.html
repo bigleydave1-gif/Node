@@ -3,242 +3,570 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+      content="width=device-width,initial-scale=1,
+               maximum-scale=1,user-scalable=no">
 
-<title>Vision Bridge v0.1</title>
+<title>Vision Cortex v0.6</title>
 
 <style>
 *{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
 
 html,body{
-    margin:0;
-    min-height:100%;
-    background:#11151a;
-    color:#eef2f5;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  margin:0;
+  min-height:100%;
+  background:#0b1015;
+  color:#edf2f7;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Segoe UI",sans-serif;
 }
 
-body{
-    padding:16px;
-}
+body{padding:14px}
 
-h1{
-    margin:0 0 4px;
-    font-size:26px;
-}
+h1{margin:0;font-size:28px}
+h2,h3{margin-top:0}
 
 .subtitle{
-    color:#9da8b3;
-    margin-bottom:18px;
+  color:#8794a0;
+  margin:4px 0 16px;
 }
 
 .panel{
-    background:#1a2027;
-    border:1px solid #303943;
-    border-radius:16px;
-    padding:16px;
-    margin-bottom:14px;
+  background:#151c23;
+  border:1px solid #303b45;
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:13px;
 }
 
 button{
-    appearance:none;
-    border:0;
-    border-radius:12px;
-    padding:13px 16px;
-    margin:4px;
-    background:#2d3742;
-    color:white;
-    font-size:15px;
-    font-weight:600;
+  border:0;
+  border-radius:11px;
+  padding:12px 15px;
+  margin:4px 3px;
+  background:#29343e;
+  color:#fff;
+  font-size:15px;
+  font-weight:600;
 }
 
 button:active{
-    transform:scale(.97);
+  transform:scale(.97);
 }
 
+button.primary{background:#3c596e}
+button.green{background:#315941}
+button.orange{background:#5c4b30}
+
 input[type=file]{
-    width:100%;
-    padding:12px;
-    border-radius:12px;
-    background:#252d35;
-    color:white;
+  width:100%;
+  padding:11px;
+  border-radius:11px;
+  background:#202830;
+  color:white;
+}
+
+input[type=number],
+textarea{
+  width:100%;
+  padding:10px;
+  border-radius:9px;
+  border:1px solid #394650;
+  background:#0c1218;
+  color:#fff;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
 }
 
 canvas{
-    width:100%;
-    max-width:640px;
-    display:block;
-    margin:10px auto;
-    border-radius:12px;
-    image-rendering:auto;
-    background:#000;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-}
-
-.metric{
-    background:#11161b;
-    border-radius:10px;
-    padding:10px;
-}
-
-.metric b{
-    display:block;
-    font-size:20px;
-}
-
-.metric span{
-    color:#8e9aa5;
-    font-size:12px;
-}
-
-pre{
-    white-space:pre-wrap;
-    word-break:break-word;
-    background:#0c1014;
-    padding:14px;
-    border-radius:12px;
-    max-height:420px;
-    overflow:auto;
-    font-size:11px;
-    line-height:1.45;
-}
-
-#status{
-    color:#8ed6a8;
-    margin-top:8px;
+  width:100%;
+  max-width:900px;
+  display:block;
+  margin:9px auto;
+  background:#000;
+  border-radius:11px;
 }
 
 #video{
-    width:100%;
-    max-width:640px;
-    display:none;
-    border-radius:12px;
-    margin:10px auto;
+  width:100%;
+  display:none;
+  border-radius:12px;
+  margin-top:10px;
+}
+
+pre{
+  background:#080c10;
+  padding:13px;
+  border-radius:11px;
+  overflow:auto;
+  max-height:550px;
+  white-space:pre-wrap;
+  word-break:break-word;
+  font-size:11px;
+  line-height:1.45;
+}
+
+.status{
+  color:#91d6a7;
+  margin-top:9px;
+  line-height:1.5;
 }
 
 .small{
-    color:#89949e;
-    font-size:12px;
-    line-height:1.5;
+  color:#8794a0;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.metric{
+  background:#0d141a;
+  padding:10px;
+  border-radius:10px;
+}
+
+.metric b{
+  display:block;
+  font-size:18px;
+}
+
+.metric span{
+  color:#7d8994;
+  font-size:11px;
+}
+
+.object{
+  background:#0d141a;
+  border-radius:12px;
+  padding:12px;
+  margin:8px 0;
+}
+
+.objectTitle{
+  font-size:16px;
+  font-weight:700;
+}
+
+.bar{
+  height:7px;
+  background:#303943;
+  border-radius:8px;
+  overflow:hidden;
+  margin:5px 0 8px;
+}
+
+.fill{
+  height:100%;
+  width:0%;
+  background:#91d6a7;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  margin:2px;
+  border-radius:999px;
+  background:#29343e;
+  font-size:11px;
+}
+
+.layer{
+  border-left:3px solid #46535e;
+  padding-left:10px;
+  margin:10px 0;
+}
+
+.request{
+  background:#0d1319;
+  border:1px solid #394650;
+  padding:12px;
+  border-radius:12px;
+  margin-top:10px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+
+.success{color:#91d6a7}
+.warning{color:#e3c98e}
+.error{color:#e49393}
+
+@media(max-width:500px){
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 </style>
 </head>
 
 <body>
 
-<h1>👁️ Vision Bridge</h1>
+<h1>👁️ Vision Cortex</h1>
 
 <div class="subtitle">
-Universal visual representation — v0.1
-</div>
-
-<div class="panel">
-
-    <input id="fileInput"
-           type="file"
-           accept="image/*">
-
-    <div style="margin-top:10px">
-        <button id="cameraBtn">📷 Camera</button>
-        <button id="analyzeBtn">🔬 Analyze</button>
-        <button id="downloadBtn">💾 Vision JSON</button>
-    </div>
-
-    <video id="video"
-           autoplay
-           playsinline></video>
-
-    <canvas id="sourceCanvas"></canvas>
-
-    <div id="status">
-        Waiting for an image…
-    </div>
-
+Algorithmic perception engine — v0.6
 </div>
 
 
+<!-- =====================================================
+     INPUT
+===================================================== -->
+
 <div class="panel">
 
-    <h3>Visual Layers</h3>
+<input id="fileInput"
+       type="file"
+       accept="image/*">
 
-    <div class="grid">
+<div>
 
-        <div class="metric">
-            <b id="res16">—</b>
-            <span>16×16</span>
-        </div>
+<button id="cameraButton">
+📷 Camera
+</button>
 
-        <div class="metric">
-            <b id="res32">—</b>
-            <span>32×32</span>
-        </div>
+<button id="analyzeButton"
+        class="primary">
+🔬 Analyze
+</button>
 
-        <div class="metric">
-            <b id="res64">—</b>
-            <span>64×64</span>
-        </div>
+<button id="downloadScene"
+        class="green">
+💾 Scene JSON
+</button>
 
-        <div class="metric">
-            <b id="regionCount">—</b>
-            <span>Regions</span>
-        </div>
+<button id="downloadRaw">
+💾 Evidence JSON
+</button>
 
-        <div class="metric">
-            <b id="edgeDensity">—</b>
-            <span>Edges</span>
-        </div>
+</div>
 
-        <div class="metric">
-            <b id="contrast">—</b>
-            <span>Contrast</span>
-        </div>
+<video id="video"
+       autoplay
+       playsinline>
+</video>
 
-    </div>
+<canvas id="sourceCanvas"></canvas>
+
+<div id="status"
+     class="status">
+Vision Cortex v0.6 ready.
+</div>
 
 </div>
 
 
+<!-- =====================================================
+     METRICS
+===================================================== -->
+
 <div class="panel">
 
-    <h3>🔬 Coarse Visual Reconstruction</h3>
+<h3>Perception Statistics</h3>
 
-    <canvas id="preview16"
-            width="16"
-            height="16"></canvas>
+<div class="grid">
 
-    <canvas id="preview32"
-            width="32"
-            height="32"></canvas>
+<div class="metric">
+<b id="metricObjects">—</b>
+<span>Objects</span>
+</div>
 
-    <canvas id="preview64"
-            width="64"
-            height="64"></canvas>
+<div class="metric">
+<b id="metricBackground">—</b>
+<span>Background</span>
+</div>
+
+<div class="metric">
+<b id="metricEdges">—</b>
+<span>Edge density</span>
+</div>
+
+<div class="metric">
+<b id="metricContrast">—</b>
+<span>Contrast</span>
+</div>
+
+<div class="metric">
+<b id="metricPixels">—</b>
+<span>Pixels</span>
+</div>
+
+<div class="metric">
+<b id="metricConfidence">—</b>
+<span>Confidence</span>
+</div>
+
+</div>
 
 </div>
 
 
+<!-- =====================================================
+     PYRAMID
+===================================================== -->
+
 <div class="panel">
 
-    <h3>📐 Geometry</h3>
+<h3>Resolution Pyramid</h3>
 
-    <pre id="geometryOutput">No analysis yet.</pre>
+<div class="small">
+The same scene is inspected at multiple scales.
+Objects must demonstrate evidence across scales
+before becoming strong candidates.
+</div>
+
+<canvas id="canvas24"></canvas>
+<canvas id="canvas48"></canvas>
+<canvas id="canvas96"></canvas>
 
 </div>
 
 
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
 <div class="panel">
 
-    <h3>🧠 Vision Packet</h3>
+<h3>🌄 Background Model</h3>
 
-    <pre id="packetOutput">No packet yet.</pre>
+<div id="backgroundOutput">
+No background model yet.
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     SCENE GRAPH
+===================================================== -->
+
+<div class="panel">
+
+<h3>🧠 Scene Graph</h3>
+
+<div class="small">
+Measured evidence is separated from semantic identity.
+The algorithm does not pretend that geometry alone
+proves what an object is.
+</div>
+
+<div id="sceneGraph">
+No scene analyzed yet.
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     RELATIONSHIPS
+===================================================== -->
+
+<div class="panel">
+
+<h3>📐 Spatial Relationships</h3>
+
+<pre id="relationships">
+No relationships yet.
+</pre>
+
+</div>
+
+
+<!-- =====================================================
+     SHAPE
+===================================================== -->
+
+<div class="panel">
+
+<h3>🔷 Geometry Evidence</h3>
+
+<div id="shapeOutput">
+No geometry analysis yet.
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     COLOR
+===================================================== -->
+
+<div class="panel">
+
+<h3>🎨 Appearance Evidence</h3>
+
+<div id="colorOutput">
+No color analysis yet.
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     ACTIVE VISION
+===================================================== -->
+
+<div class="panel">
+
+<h3>🔎 Active Vision</h3>
+
+<div class="small">
+The LLM can request more evidence for a particular
+region instead of receiving the entire image.
+</div>
+
+<div class="request">
+
+<div class="row">
+
+<div>
+<label>X</label>
+<input id="zoomX"
+       type="number"
+       min="0"
+       max="1"
+       step=".01"
+       value=".25">
+</div>
+
+<div>
+<label>Y</label>
+<input id="zoomY"
+       type="number"
+       min="0"
+       max="1"
+       step=".01"
+       value=".15">
+</div>
+
+<div>
+<label>Width</label>
+<input id="zoomW"
+       type="number"
+       min=".01"
+       max="1"
+       step=".01"
+       value=".35">
+</div>
+
+<div>
+<label>Height</label>
+<input id="zoomH"
+       type="number"
+       min=".01"
+       max="1"
+       step=".01"
+       value=".50">
+</div>
+
+</div>
+
+<button id="zoomButton"
+        class="primary">
+🔎 Inspect Region
+</button>
+
+<canvas id="zoomCanvas"></canvas>
+
+<pre id="zoomOutput">
+No inspection yet.
+</pre>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     LLM
+===================================================== -->
+
+<div class="panel">
+
+<h3>🤖 LLM Controller</h3>
+
+<div class="small">
+The LLM can request targeted visual evidence.
+For example:
+</div>
+
+<pre>{
+  "type":"ZOOM_REQUEST",
+  "objectId":2,
+  "reason":"Need more detail",
+  "requestedLongSide":256
+}</pre>
+
+<textarea id="llmRequest"
+placeholder="Paste LLM JSON request here..."></textarea>
+
+<button id="executeRequest"
+        class="primary">
+🤖 Execute Request
+</button>
+
+<div id="requestStatus"
+     class="small">
+Waiting for request.
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     MOTION
+===================================================== -->
+
+<div class="panel">
+
+<h3>🎥 Temporal Vision</h3>
+
+<pre id="motionOutput">
+No temporal data yet.
+</pre>
+
+</div>
+
+
+<!-- =====================================================
+     PACKET
+===================================================== -->
+
+<div class="panel">
+
+<h3>🧠 LLM Vision Packet</h3>
+
+<pre id="scenePacket">
+No packet yet.
+</pre>
+
+</div>
+
+
+<!-- =====================================================
+     RAW
+===================================================== -->
+
+<div class="panel">
+
+<h3>🔬 Raw Evidence</h3>
+
+<pre id="rawPacket">
+No evidence yet.
+</pre>
 
 </div>
 
@@ -248,1173 +576,3985 @@ Universal visual representation — v0.1
 "use strict";
 
 
-/* =========================================================
-   VISION BRIDGE
-   ========================================================= */
+/* =====================================================
+   STATE
+===================================================== */
 
-const state = {
+const state={
 
-    image:null,
+  image:null,
 
-    packet:null,
+  scene:null,
 
-    cameraStream:null
+  raw:null,
+
+  cameraStream:null,
+
+  previousFrame:null,
+
+  motion:null,
+
+  zoomHistory:[]
 
 };
 
 
-/* =========================================================
+/* =====================================================
    ELEMENTS
-   ========================================================= */
+===================================================== */
 
-const fileInput =
-    document.getElementById("fileInput");
+const fileInput=
+  document.getElementById("fileInput");
 
-const sourceCanvas =
-    document.getElementById("sourceCanvas");
+const sourceCanvas=
+  document.getElementById("sourceCanvas");
 
-const sourceCtx =
-    sourceCanvas.getContext("2d",{willReadFrequently:true});
+const sourceCtx=
+  sourceCanvas.getContext(
+    "2d",
+    {willReadFrequently:true}
+  );
 
-const status =
-    document.getElementById("status");
+const video=
+  document.getElementById("video");
 
-const analyzeBtn =
-    document.getElementById("analyzeBtn");
-
-const downloadBtn =
-    document.getElementById("downloadBtn");
-
-const cameraBtn =
-    document.getElementById("cameraBtn");
-
-const video =
-    document.getElementById("video");
+const status=
+  document.getElementById("status");
 
 
-/* =========================================================
-   FILE LOADING
-   ========================================================= */
+/* =====================================================
+   HELPERS
+===================================================== */
 
-fileInput.addEventListener("change",async e=>{
+function clamp(v,min,max){
+  return Math.max(
+    min,
+    Math.min(max,v)
+  );
+}
 
-    const file = e.target.files[0];
+function round(v,n=4){
+  return Number(
+    Number(v).toFixed(n)
+  );
+}
 
-    if(!file) return;
+function hex(r,g,b){
+  return "#"+
+    [r,g,b]
+    .map(
+      x=>x.toString(16).padStart(2,"0")
+    )
+    .join("");
+}
 
-    try{
+function lum(r,g,b){
+  return(
+    .2126*r+
+    .7152*g+
+    .0722*b
+  );
+}
 
-        const url =
-            URL.createObjectURL(file);
 
-        const img =
-            new Image();
+/* =====================================================
+   COLOR
+===================================================== */
 
-        img.onload=()=>{
+function rgbHSV(r,g,b){
 
-            state.image=img;
+  r/=255;
+  g/=255;
+  b/=255;
 
-            drawSource();
+  const max=Math.max(r,g,b);
+  const min=Math.min(r,g,b);
+  const d=max-min;
 
-            status.textContent =
-                `Loaded ${img.naturalWidth} × ${img.naturalHeight}`;
+  let h=0;
 
-            URL.revokeObjectURL(url);
+  if(d){
 
-        };
+    if(max===r)
+      h=60*((g-b)/d%6);
 
-        img.src=url;
+    else if(max===g)
+      h=60*((b-r)/d+2);
 
-    }catch(err){
+    else
+      h=60*((r-g)/d+4);
 
-        status.textContent =
-            "Image loading failed: "+err.message;
+  }
 
+  if(h<0)h+=360;
+
+  const s=
+    max===0?0:d/max;
+
+  return{
+    h,
+    s,
+    v:max
+  };
+}
+
+
+function colorEvidence(r,g,b){
+
+  const hsv=rgbHSV(r,g,b);
+
+  let family="mixed";
+
+  if(hsv.v<.12)
+    family="black";
+
+  else if(
+    hsv.v>.88 &&
+    hsv.s<.12
+  )
+    family="white";
+
+  else if(hsv.s<.16)
+    family=
+      hsv.v<.5
+      ?"gray"
+      :"light-gray";
+
+  else if(
+    hsv.h<15 ||
+    hsv.h>=345
+  )
+    family="red";
+
+  else if(hsv.h<45)
+    family="orange";
+
+  else if(hsv.h<70)
+    family="yellow";
+
+  else if(hsv.h<165)
+    family="green";
+
+  else if(hsv.h<200)
+    family="cyan";
+
+  else if(hsv.h<255)
+    family="blue";
+
+  else if(hsv.h<300)
+    family="purple";
+
+  else
+    family="magenta";
+
+  return{
+
+    rgb:[r,g,b],
+
+    hex:hex(r,g,b),
+
+    family,
+
+    confidence:
+      round(
+        hsv.s<.16
+        ?1-hsv.s/.16
+        :clamp(hsv.s*1.15,0,1)
+      ),
+
+    hsv:{
+      h:round(hsv.h),
+      s:round(hsv.s),
+      v:round(hsv.v)
     }
 
-});
+  };
+}
 
 
-/* =========================================================
-   SOURCE IMAGE
-   ========================================================= */
+/* =====================================================
+   IMAGE LOAD
+===================================================== */
+
+fileInput.addEventListener(
+  "change",
+  e=>{
+
+    const file=
+      e.target.files[0];
+
+    if(!file)return;
+
+    const url=
+      URL.createObjectURL(file);
+
+    const img=
+      new Image();
+
+    img.onload=()=>{
+
+      state.image=img;
+
+      drawSource();
+
+      status.textContent=
+        `Loaded ${img.naturalWidth} × ${
+          img.naturalHeight
+        }.`;
+
+      URL.revokeObjectURL(url);
+
+    };
+
+    img.onerror=()=>{
+
+      status.textContent=
+        "Unable to load image.";
+
+      URL.revokeObjectURL(url);
+
+    };
+
+    img.src=url;
+
+  }
+);
+
+
+/* =====================================================
+   SOURCE
+===================================================== */
 
 function drawSource(){
 
-    if(!state.image) return;
+  if(!state.image)return;
 
-    const img=state.image;
+  const img=state.image;
 
-    const maxWidth=900;
-
-    const scale =
-        Math.min(1,maxWidth/img.naturalWidth);
-
-    const w =
-        Math.max(1,
-            Math.round(img.naturalWidth*scale));
-
-    const h =
-        Math.max(1,
-            Math.round(img.naturalHeight*scale));
-
-    sourceCanvas.width=w;
-    sourceCanvas.height=h;
-
-    sourceCtx.clearRect(
-        0,0,w,h
+  const scale=
+    Math.min(
+      1,
+      900/img.naturalWidth
     );
 
-    sourceCtx.drawImage(
-        img,
+  const w=Math.max(
+    1,
+    Math.round(
+      img.naturalWidth*scale
+    )
+  );
+
+  const h=Math.max(
+    1,
+    Math.round(
+      img.naturalHeight*scale
+    )
+  );
+
+  sourceCanvas.width=w;
+  sourceCanvas.height=h;
+
+  sourceCtx.drawImage(
+    img,
+    0,
+    0,
+    w,
+    h
+  );
+}
+
+
+/* =====================================================
+   REPRESENTATION
+===================================================== */
+
+function makeRep(longSide){
+
+  const img=state.image;
+
+  const aspect=
+    img.naturalWidth/
+    img.naturalHeight;
+
+  let w,h;
+
+  if(aspect>=1){
+
+    w=longSide;
+
+    h=Math.max(
+      1,
+      Math.round(
+        longSide/aspect
+      )
+    );
+
+  }else{
+
+    h=longSide;
+
+    w=Math.max(
+      1,
+      Math.round(
+        longSide*aspect
+      )
+    );
+
+  }
+
+  const canvas=
+    document.createElement("canvas");
+
+  canvas.width=w;
+  canvas.height=h;
+
+  const ctx=
+    canvas.getContext(
+      "2d",
+      {willReadFrequently:true}
+    );
+
+  ctx.drawImage(
+    img,
+    0,
+    0,
+    w,
+    h
+  );
+
+  return{
+
+    canvas,
+    width:w,
+    height:h,
+
+    data:
+      ctx.getImageData(
         0,
         0,
         w,
         h
-    );
+      ).data
 
+  };
 }
 
 
-/* =========================================================
-   RESIZE / SAMPLE
-   ========================================================= */
+/* =====================================================
+   GRAYSCALE
+===================================================== */
 
-function makeRepresentation(size){
+function grayscale(rep){
 
-    const canvas =
-        document.createElement("canvas");
-
-    canvas.width=size;
-    canvas.height=size;
-
-    const ctx =
-        canvas.getContext(
-            "2d",
-            {willReadFrequently:true}
-        );
-
-    ctx.drawImage(
-        state.image,
-        0,
-        0,
-        size,
-        size
+  const result=
+    new Float32Array(
+      rep.width*
+      rep.height
     );
 
-    const imageData =
-        ctx.getImageData(
-            0,
-            0,
-            size,
-            size
-        );
+  for(
+    let i=0,p=0;
+    i<rep.data.length;
+    i+=4,p++
+  ){
 
-    return {
+    result[p]=lum(
+      rep.data[i],
+      rep.data[i+1],
+      rep.data[i+2]
+    );
 
-        size,
+  }
 
-        canvas,
+  return result;
+}
 
-        data:imageData.data
 
+/* =====================================================
+   GLOBAL STATISTICS
+===================================================== */
+
+function statistics(rep){
+
+  const gray=
+    grayscale(rep);
+
+  let sum=0;
+
+  for(const v of gray)
+    sum+=v;
+
+  const mean=
+    sum/gray.length;
+
+  let variance=0;
+
+  for(const v of gray){
+
+    const d=v-mean;
+
+    variance+=d*d;
+
+  }
+
+  variance/=gray.length;
+
+  return{
+
+    mean,
+
+    sd:Math.sqrt(variance)
+
+  };
+}
+
+
+/* =====================================================
+   BACKGROUND MODEL
+===================================================== */
+
+function estimateBackground(rep){
+
+  const w=rep.width;
+  const h=rep.height;
+
+  /*
+   * Sample a border band.
+   */
+
+  const samples=[];
+
+  const band=
+    Math.max(
+      1,
+      Math.floor(
+        Math.min(w,h)*.12
+      )
+    );
+
+
+  for(let y=0;y<h;y++){
+
+    for(let x=0;x<w;x++){
+
+      if(
+        x<band ||
+        y<band ||
+        x>=w-band ||
+        y>=h-band
+      ){
+
+        const i=
+          (y*w+x)*4;
+
+        samples.push([
+          rep.data[i],
+          rep.data[i+1],
+          rep.data[i+2]
+        ]);
+
+      }
+
+    }
+
+  }
+
+
+  if(!samples.length){
+
+    return{
+      rgb:[128,128,128],
+      confidence:0
     };
 
-}
+  }
 
 
-/* =========================================================
-   RGB
-   ========================================================= */
+  /*
+   * Median-like robust estimate.
+   */
 
-function pixelRGB(data,index){
+  const channels=[
+    [],
+    [],
+    []
+  ];
 
-    return {
+  for(const s of samples){
 
-        r:data[index],
+    channels[0].push(s[0]);
+    channels[1].push(s[1]);
+    channels[2].push(s[2]);
 
-        g:data[index+1],
-
-        b:data[index+2]
-
-    };
-
-}
+  }
 
 
-/* =========================================================
-   LUMINANCE
-   ========================================================= */
+  const median=arr=>{
 
-function luminance(r,g,b){
-
-    return (
-        0.2126*r+
-        0.7152*g+
-        0.0722*b
+    arr.sort(
+      (a,b)=>a-b
     );
 
-}
+    return arr[
+      Math.floor(
+        arr.length/2
+      )
+    ];
 
+  };
 
-/* =========================================================
-   REPRESENTATION ANALYSIS
-   ========================================================= */
 
-function analyzeRepresentation(rep){
+  const rgb=[
+    median(channels[0]),
+    median(channels[1]),
+    median(channels[2])
+  ];
 
-    const size=rep.size;
-    const data=rep.data;
 
-    const pixels=[];
+  /*
+   * Estimate how uniform the border is.
+   */
 
-    let totalLum=0;
-    let totalLum2=0;
-    let edgePixels=0;
+  let deviation=0;
 
-    const gray =
-        new Float32Array(
-            size*size
-        );
+  for(const s of samples){
 
+    deviation+=
+      Math.abs(s[0]-rgb[0])+
+      Math.abs(s[1]-rgb[1])+
+      Math.abs(s[2]-rgb[2]);
 
-    /* -------------------------
-       READ PIXELS
-       ------------------------- */
+  }
 
-    for(let y=0;y<size;y++){
+  deviation/=
+    samples.length*3;
 
-        for(let x=0;x<size;x++){
 
-            const i=
-                (y*size+x)*4;
-
-            const p=
-                pixelRGB(data,i);
-
-            const lum=
-                luminance(
-                    p.r,
-                    p.g,
-                    p.b
-                );
-
-            gray[y*size+x]=lum;
-
-            totalLum+=lum;
-            totalLum2+=lum*lum;
-
-            pixels.push([
-                p.r,
-                p.g,
-                p.b
-            ]);
-
-        }
-
-    }
-
-
-    const count=size*size;
-
-    const mean=
-        totalLum/count;
-
-    const variance=
-        Math.max(
-            0,
-            totalLum2/count-
-            mean*mean
-        );
-
-    const std=
-        Math.sqrt(variance);
-
-
-    /* -------------------------
-       EDGES
-       ------------------------- */
-
-    const edges=
-        new Uint8Array(
-            size*size
-        );
-
-    let edgeSum=0;
-
-
-    for(let y=1;y<size-1;y++){
-
-        for(let x=1;x<size-1;x++){
-
-            const p=
-                y*size+x;
-
-            const gx=
-                gray[p+1]-
-                gray[p-1];
-
-            const gy=
-                gray[p+size]-
-                gray[p-size];
-
-            const magnitude=
-                Math.sqrt(
-                    gx*gx+
-                    gy*gy
-                );
-
-            if(magnitude>35){
-
-                edges[p]=1;
-
-                edgePixels++;
-
-            }
-
-            edgeSum+=magnitude;
-
-        }
-
-    }
-
-
-    const edgeDensity=
-        edgePixels/count;
-
-
-    /* -------------------------
-       SALIENT MASK
-       ------------------------- */
-
-    const mask=
-        new Uint8Array(
-            size*size
-        );
-
-    const threshold=
-        Math.max(
-            20,
-            std*0.55
-        );
-
-
-    for(let i=0;i<count;i++){
-
-        if(
-            Math.abs(gray[i]-mean)>=threshold ||
-            edges[i]
-        ){
-
-            mask[i]=1;
-
-        }
-
-    }
-
-
-    /* -------------------------
-       REGIONS
-       ------------------------- */
-
-    const regions=
-        findRegions(
-            mask,
-            size
-        );
-
-
-    /* -------------------------
-       RELATIONSHIPS
-       ------------------------- */
-
-    const relationships=
-        [];
-
-    for(
-        let a=0;
-        a<Math.min(regions.length,24);
-        a++
-    ){
-
-        for(
-            let b=a+1;
-            b<Math.min(regions.length,24);
-            b++
-        ){
-
-            const A=regions[a];
-            const B=regions[b];
-
-            const rel=
-                [];
-
-            if(
-                B.center.x >
-                A.center.x+0.05
-            )
-                rel.push("RIGHT_OF");
-
-            if(
-                B.center.x <
-                A.center.x-0.05
-            )
-                rel.push("LEFT_OF");
-
-            if(
-                B.center.y >
-                A.center.y+0.05
-            )
-                rel.push("BELOW");
-
-            if(
-                B.center.y <
-                A.center.y-0.05
-            )
-                rel.push("ABOVE");
-
-
-            const dx=
-                B.center.x-
-                A.center.x;
-
-            const dy=
-                B.center.y-
-                A.center.y;
-
-            const distance=
-                Math.sqrt(
-                    dx*dx+
-                    dy*dy
-                );
-
-
-            if(rel.length){
-
-                relationships.push({
-
-                    a:A.id,
-
-                    b:B.id,
-
-                    relations:rel,
-
-                    centerDistance:
-                        Number(
-                            distance.toFixed(4)
-                        )
-
-                });
-
-            }
-
-        }
-
-    }
-
-
-    return {
-
-        resolution:[
-            size,
-            size
-        ],
-
-        meanLuminance:
-            Number(mean.toFixed(3)),
-
-        contrast:
-            Number(std.toFixed(3)),
-
-        edgeDensity:
-            Number(edgeDensity.toFixed(4)),
-
-        pixelsRGB:pixels,
-
-        regions,
-
-        relationships
-
-    };
-
-}
-
-
-/* =========================================================
-   REGION DETECTION
-   ========================================================= */
-
-function findRegions(mask,size){
-
-    const visited=
-        new Uint8Array(
-            size*size
-        );
-
-    const regions=[];
-
-    const minimumArea=
-        Math.max(
-            2,
-            Math.floor(
-                size*size/2500
-            )
-        );
-
-
-    for(let y=0;y<size;y++){
-
-        for(let x=0;x<size;x++){
-
-            const start=
-                y*size+x;
-
-            if(
-                !mask[start] ||
-                visited[start]
-            )
-                continue;
-
-
-            const queue=[
-                [x,y]
-            ];
-
-            visited[start]=1;
-
-            const points=[];
-
-
-            while(queue.length){
-
-                const [px,py]=
-                    queue.pop();
-
-                points.push([
-                    px,
-                    py
-                ]);
-
-
-                const neighbors=[
-                    [px+1,py],
-                    [px-1,py],
-                    [px,py+1],
-                    [px,py-1]
-                ];
-
-
-                for(
-                    const [nx,ny]
-                    of neighbors
-                ){
-
-                    if(
-                        nx<0 ||
-                        ny<0 ||
-                        nx>=size ||
-                        ny>=size
-                    )
-                        continue;
-
-
-                    const ni=
-                        ny*size+nx;
-
-
-                    if(
-                        mask[ni] &&
-                        !visited[ni]
-                    ){
-
-                        visited[ni]=1;
-
-                        queue.push([
-                            nx,
-                            ny
-                        ]);
-
-                    }
-
-                }
-
-            }
-
-
-            if(
-                points.length<
-                minimumArea
-            )
-                continue;
-
-
-            let minX=size;
-            let minY=size;
-            let maxX=0;
-            let maxY=0;
-
-            let sumX=0;
-            let sumY=0;
-
-
-            for(
-                const [px,py]
-                of points
-            ){
-
-                minX=
-                    Math.min(
-                        minX,
-                        px
-                    );
-
-                minY=
-                    Math.min(
-                        minY,
-                        py
-                    );
-
-                maxX=
-                    Math.max(
-                        maxX,
-                        px
-                    );
-
-                maxY=
-                    Math.max(
-                        maxY,
-                        py
-                    );
-
-                sumX+=px;
-                sumY+=py;
-
-            }
-
-
-            const area=
-                points.length;
-
-            regions.push({
-
-                id:regions.length+1,
-
-                areaPixels:area,
-
-                areaFraction:
-                    Number(
-                        (
-                            area/
-                            (size*size)
-                        ).toFixed(6)
-                    ),
-
-                bbox:{
-
-                    x:minX,
-
-                    y:minY,
-
-                    width:
-                        maxX-minX+1,
-
-                    height:
-                        maxY-minY+1
-
-                },
-
-                bboxNormalized:{
-
-                    x:Number(
-                        (minX/size)
-                        .toFixed(4)
-                    ),
-
-                    y:Number(
-                        (minY/size)
-                        .toFixed(4)
-                    ),
-
-                    width:Number(
-                        (
-                            (maxX-minX+1)/
-                            size
-                        ).toFixed(4)
-                    ),
-
-                    height:Number(
-                        (
-                            (maxY-minY+1)/
-                            size
-                        ).toFixed(4)
-                    )
-
-                },
-
-                center:{
-
-                    x:Number(
-                        (
-                            sumX/
-                            area/
-                            Math.max(1,size-1)
-                        ).toFixed(4)
-                    ),
-
-                    y:Number(
-                        (
-                            sumY/
-                            area/
-                            Math.max(1,size-1)
-                        ).toFixed(4)
-                    )
-
-                }
-
-            });
-
-        }
-
-    }
-
-
-    regions.sort(
-        (a,b)=>
-            b.areaPixels-
-            a.areaPixels
+  const confidence=
+    clamp(
+      1-deviation/70,
+      0,
+      1
     );
 
 
-    return regions.slice(
-        0,
-        64
-    );
+  return{
 
+    rgb,
+
+    color:
+      colorEvidence(
+        rgb[0],
+        rgb[1],
+        rgb[2]
+      ),
+
+    confidence:
+      round(confidence),
+
+    sampleCount:
+      samples.length,
+
+    borderDeviation:
+      round(deviation)
+
+  };
 }
 
 
-/* =========================================================
-   PREVIEW
-   ========================================================= */
+/* =====================================================
+   LOCAL CONTRAST
+===================================================== */
 
-function drawPreview(
-    rep,
-    canvasId
+function localContrast(
+  rep,
+  background
 ){
 
-    const canvas=
-        document.getElementById(
-            canvasId
+  const w=rep.width;
+  const h=rep.height;
+
+  const result=
+    new Float32Array(
+      w*h
+    );
+
+
+  const br=
+    background.rgb[0];
+
+  const bg=
+    background.rgb[1];
+
+  const bb=
+    background.rgb[2];
+
+
+  for(
+    let y=0;
+    y<h;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<w;
+      x++
+    ){
+
+      const i=
+        (y*w+x)*4;
+
+      const dr=
+        rep.data[i]-br;
+
+      const dg=
+        rep.data[i+1]-bg;
+
+      const db=
+        rep.data[i+2]-bb;
+
+
+      result[y*w+x]=
+        Math.sqrt(
+          dr*dr+
+          dg*dg+
+          db*db
         );
 
-    const ctx=
-        canvas.getContext("2d");
+    }
 
-    canvas.width=
-        rep.size;
+  }
 
-    canvas.height=
-        rep.size;
 
-    ctx.imageSmoothingEnabled=false;
-
-    ctx.drawImage(
-        rep.canvas,
-        0,
-        0
-    );
+  return result;
 
 }
 
 
-/* =========================================================
-   MAIN ANALYSIS
-   ========================================================= */
+/* =====================================================
+   EDGE DETECTOR
+===================================================== */
 
-function analyzeImage(){
+function edgeMap(
+  rep,
+  background
+){
 
-    if(!state.image){
+  const w=rep.width;
+  const h=rep.height;
 
-        status.textContent=
-            "Please select an image first.";
+  const gray=
+    grayscale(rep);
 
-        return;
-
-    }
-
-
-    status.textContent=
-        "Scanning visual information…";
-
-
-    const rep16=
-        makeRepresentation(16);
-
-    const rep32=
-        makeRepresentation(32);
-
-    const rep64=
-        makeRepresentation(64);
-
-
-    const a16=
-        analyzeRepresentation(rep16);
-
-    const a32=
-        analyzeRepresentation(rep32);
-
-    const a64=
-        analyzeRepresentation(rep64);
-
-
-    drawPreview(
-        rep16,
-        "preview16"
-    );
-
-    drawPreview(
-        rep32,
-        "preview32"
-    );
-
-    drawPreview(
-        rep64,
-        "preview64"
+  const edges=
+    new Uint8Array(
+      w*h
     );
 
 
-    const packet={
-
-        visionBridge:"0.1",
-
-        type:"image",
-
-        source:{
-
-            width:
-                state.image.naturalWidth,
-
-            height:
-                state.image.naturalHeight,
-
-            aspectRatio:
-                Number(
-                    (
-                        state.image.naturalWidth/
-                        state.image.naturalHeight
-                    ).toFixed(5)
-                )
-
-        },
-
-        coordinateSystem:{
-
-            origin:"top-left",
-
-            x:"right",
-
-            y:"down",
-
-            normalizedRange:
-                "0.0-1.0"
-
-        },
-
-        representations:{
-
-            "16x16":a16,
-
-            "32x32":a32,
-
-            "64x64":a64
-
-        },
-
-        llmInstructions:
-
-            "Treat this packet as visual observation data. "+
-            "Use color and pixel information for appearance. "+
-            "Use regions and geometry for structure. "+
-            "Use relationships for spatial reasoning. "+
-            "Do not invent visual information unsupported by "+
-            "the packet. Request a higher-resolution crop "+
-            "when additional detail is required."
-
-    };
+  let edgeCount=0;
 
 
-    state.packet=packet;
+  for(
+    let y=1;
+    y<h-1;
+    y++
+  ){
+
+    for(
+      let x=1;
+      x<w-1;
+      x++
+    ){
+
+      const p=y*w+x;
 
 
-    document.getElementById(
-        "res16"
-    ).textContent="READY";
-
-    document.getElementById(
-        "res32"
-    ).textContent="READY";
-
-    document.getElementById(
-        "res64"
-    ).textContent="READY";
+      const gx=
+        -gray[p-w-1]
+        -2*gray[p-1]
+        -gray[p+w-1]
+        +gray[p-w+1]
+        +2*gray[p+1]
+        +gray[p+w+1];
 
 
-    document.getElementById(
-        "regionCount"
-    ).textContent=
-        a64.regions.length;
+      const gy=
+        -gray[p-w-1]
+        -2*gray[p-w]
+        -gray[p-w+1]
+        +gray[p+w-1]
+        +2*gray[p+w]
+        +gray[p+w+1];
 
 
-    document.getElementById(
-        "edgeDensity"
-    ).textContent=
-        a64.edgeDensity;
-
-
-    document.getElementById(
-        "contrast"
-    ).textContent=
-        a64.contrast;
-
-
-    document.getElementById(
-        "geometryOutput"
-    ).textContent=
-        JSON.stringify({
-
-            resolution:"64x64",
-
-            regions:a64.regions,
-
-            relationships:
-                a64.relationships
-
-        },null,2);
-
-
-    document.getElementById(
-        "packetOutput"
-    ).textContent=
-        JSON.stringify(
-            packet,
-            null,
-            2
+      const magnitude=
+        Math.sqrt(
+          gx*gx+
+          gy*gy
         );
 
 
-    status.textContent=
-        "Vision scan complete.";
+      /*
+       * Adaptive edge threshold.
+       */
 
-}
-
-
-/* =========================================================
-   DOWNLOAD JSON
-   ========================================================= */
-
-downloadBtn.addEventListener(
-    "click",
-    ()=>{
-
-        if(!state.packet){
-
-            status.textContent=
-                "Analyze an image first.";
-
-            return;
-
-        }
-
-
-        const blob=
-            new Blob(
-                [
-                    JSON.stringify(
-                        state.packet,
-                        null,
-                        2
-                    )
-                ],
-                {
-                    type:
-                        "application/json"
-                }
-            );
-
-
-        const url=
-            URL.createObjectURL(blob);
-
-        const a=
-            document.createElement("a");
-
-        a.href=url;
-
-        a.download=
-            "vision_packet.json";
-
-        document.body.appendChild(a);
-
-        a.click();
-
-        a.remove();
-
-        URL.revokeObjectURL(url);
-
-    }
-);
-
-
-/* =========================================================
-   CAMERA
-   ========================================================= */
-
-cameraBtn.addEventListener(
-    "click",
-    async()=>{
-
-        try{
-
-            if(state.cameraStream){
-
-                state.cameraStream
-                    .getTracks()
-                    .forEach(
-                        track=>
-                            track.stop()
-                    );
-
-                state.cameraStream=null;
-
-                video.style.display=
-                    "none";
-
-                cameraBtn.textContent=
-                    "📷 Camera";
-
-                return;
-
-            }
-
-
-            const stream=
-                await navigator.mediaDevices
-                    .getUserMedia({
-
-                        video:{
-                            facingMode:{
-                                ideal:"environment"
-                            }
-                        },
-
-                        audio:false
-
-                    });
-
-
-            state.cameraStream=
-                stream;
-
-            video.srcObject=
-                stream;
-
-            video.style.display=
-                "block";
-
-            cameraBtn.textContent=
-                "⏹ Stop Camera";
-
-            status.textContent=
-                "Camera active.";
-
-        }catch(err){
-
-            status.textContent=
-                "Camera unavailable: "+
-                err.message;
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   CAMERA FRAME CAPTURE
-   ========================================================= */
-
-video.addEventListener(
-    "click",
-    ()=>{
-
-        if(
-            !video.videoWidth ||
-            !video.videoHeight
+      if(
+        magnitude>
+        Math.max(
+          25,
+          background.borderDeviation*2
         )
-            return;
+      ){
+
+        edges[p]=1;
+
+        edgeCount++;
+
+      }
+
+    }
+
+  }
 
 
-        const canvas=
-            document.createElement(
-                "canvas"
-            );
+  return{
 
-        canvas.width=
-            video.videoWidth;
+    gray,
 
-        canvas.height=
-            video.videoHeight;
+    edges,
 
-        const ctx=
-            canvas.getContext("2d");
+    density:
+      round(
+        edgeCount/
+        Math.max(
+          1,
+          w*h
+        )
+      )
 
-        ctx.drawImage(
-            video,
-            0,
-            0
+  };
+
+}
+
+
+/* =====================================================
+   MASK
+===================================================== */
+
+function buildMask(
+  rep,
+  background,
+  edges,
+  stats
+){
+
+  const w=rep.width;
+  const h=rep.height;
+
+  const contrast=
+    localContrast(
+      rep,
+      background
+    );
+
+
+  const mask=
+    new Uint8Array(
+      w*h
+    );
+
+
+  /*
+   * Adaptive object threshold.
+   *
+   * Important:
+   * global contrast is NOT enough.
+   */
+
+  const threshold=
+    clamp(
+      Math.max(
+        20,
+        stats.sd*.55,
+        background.borderDeviation*2.2
+      ),
+      20,
+      110
+    );
+
+
+  for(
+    let y=0;
+    y<h;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<w;
+      x++
+    ){
+
+      const p=y*w+x;
+
+      /*
+       * Pixels sufficiently different
+       * from the estimated background.
+       */
+
+      const foreground=
+        contrast[p]>
+        threshold;
+
+
+      /*
+       * Edge pixels alone are NOT
+       * enough to create foreground.
+       */
+
+      const supportedEdge=
+        edges.edges[p] &&
+        contrast[p]>
+        threshold*.55;
+
+
+      if(
+        foreground ||
+        supportedEdge
+      )
+        mask[p]=1;
+
+    }
+
+  }
+
+
+  /*
+   * Remove border-connected foreground
+   * when it is overwhelmingly large.
+   */
+
+  return{
+
+    mask,
+
+    threshold,
+
+    contrast
+
+  };
+
+}
+
+
+/* =====================================================
+   MORPHOLOGY
+===================================================== */
+
+function morphology(
+  mask,
+  w,
+  h
+){
+
+  const out=
+    new Uint8Array(mask);
+
+
+  /*
+   * Remove tiny isolated pixels.
+   */
+
+  for(
+    let y=1;
+    y<h-1;
+    y++
+  ){
+
+    for(
+      let x=1;
+      x<w-1;
+      x++
+    ){
+
+      const p=y*w+x;
+
+      if(!mask[p])
+        continue;
+
+
+      let neighbors=0;
+
+
+      for(
+        let dy=-1;
+        dy<=1;
+        dy++
+      ){
+
+        for(
+          let dx=-1;
+          dx<=1;
+          dx++
+        ){
+
+          if(
+            dx===0 &&
+            dy===0
+          )
+            continue;
+
+
+          if(
+            mask[
+              (y+dy)*w+
+              (x+dx)
+            ]
+          )
+            neighbors++;
+
+        }
+
+      }
+
+
+      if(neighbors<=1)
+        out[p]=0;
+
+    }
+
+  }
+
+
+  return out;
+
+}
+
+
+/* =====================================================
+   BORDER FLOOD
+===================================================== */
+
+function borderConnected(
+  mask,
+  w,
+  h
+){
+
+  const visited=
+    new Uint8Array(
+      w*h
+    );
+
+  const stack=[];
+
+
+  function add(x,y){
+
+    if(
+      x<0 ||
+      y<0 ||
+      x>=w ||
+      y>=h
+    )
+      return;
+
+
+    const p=y*w+x;
+
+    if(
+      mask[p] &&
+      !visited[p]
+    ){
+
+      visited[p]=1;
+
+      stack.push([
+        x,
+        y
+      ]);
+
+    }
+
+  }
+
+
+  for(
+    let x=0;
+    x<w;
+    x++
+  ){
+
+    add(x,0);
+    add(x,h-1);
+
+  }
+
+
+  for(
+    let y=0;
+    y<h;
+    y++
+  ){
+
+    add(0,y);
+    add(w-1,y);
+
+  }
+
+
+  while(stack.length){
+
+    const [
+      x,
+      y
+    ]=
+      stack.pop();
+
+
+    add(x+1,y);
+    add(x-1,y);
+    add(x,y+1);
+    add(x,y-1);
+
+  }
+
+
+  return visited;
+
+}
+
+
+/* =====================================================
+   CONNECTED COMPONENTS
+===================================================== */
+
+function connectedComponents(
+  rep,
+  mask,
+  edgeInfo,
+  scaleSupport
+){
+
+  const w=rep.width;
+  const h=rep.height;
+
+  const visited=
+    new Uint8Array(
+      w*h
+    );
+
+
+  const components=[];
+
+
+  const minArea=
+    Math.max(
+      3,
+      Math.floor(
+        w*h/3000
+      )
+    );
+
+
+  for(
+    let y=0;
+    y<h;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<w;
+      x++
+    ){
+
+      const start=
+        y*w+x;
+
+
+      if(
+        !mask[start] ||
+        visited[start]
+      )
+        continue;
+
+
+      const stack=[
+        [x,y]
+      ];
+
+      visited[start]=1;
+
+      const points=[];
+
+
+      while(stack.length){
+
+        const [
+          px,
+          py
+        ]=
+          stack.pop();
+
+
+        points.push([
+          px,
+          py
+        ]);
+
+
+        const neighbors=[
+
+          [px+1,py],
+          [px-1,py],
+          [px,py+1],
+          [px,py-1],
+
+          [px+1,py+1],
+          [px-1,py-1],
+          [px+1,py-1],
+          [px-1,py+1]
+
+        ];
+
+
+        for(
+          const n of neighbors
+        ){
+
+          const nx=n[0];
+          const ny=n[1];
+
+
+          if(
+            nx<0 ||
+            ny<0 ||
+            nx>=w ||
+            ny>=h
+          )
+            continue;
+
+
+          const index=
+            ny*w+nx;
+
+
+          if(
+            mask[index] &&
+            !visited[index]
+          ){
+
+            visited[index]=1;
+
+            stack.push([
+              nx,
+              ny
+            ]);
+
+          }
+
+        }
+
+      }
+
+
+      if(
+        points.length<
+        minArea
+      )
+        continue;
+
+
+      const object=
+        analyzeComponent(
+          rep,
+          edgeInfo,
+          points,
+          scaleSupport
         );
 
 
-        const img=
-            new Image();
+      /*
+       * Huge border-touching regions are
+       * treated as background candidates.
+       */
 
-        img.onload=()=>{
-
-            state.image=img;
-
-            drawSource();
-
-            analyzeImage();
-
-        };
+      const touchesBorder=
+        object.boundingBox.x<=.001 ||
+        object.boundingBox.y<=.001 ||
+        object.boundingBox.x+
+        object.boundingBox.width>=.999 ||
+        object.boundingBox.y+
+        object.boundingBox.height>=.999;
 
 
-        img.src=
-            canvas.toDataURL(
-                "image/jpeg",
-                0.92
-            );
+      const huge=
+        object.areaFraction>.55;
+
+
+      if(
+        touchesBorder &&
+        huge
+      ){
+
+        object.backgroundCandidate=
+          true;
+
+      }
+
+
+      components.push(object);
 
     }
-);
+
+  }
 
 
-/* =========================================================
-   BUTTON
-   ========================================================= */
-
-analyzeBtn.addEventListener(
-    "click",
-    analyzeImage
-);
+  components.sort(
+    (a,b)=>
+      b.areaPixels-
+      a.areaPixels
+  );
 
 
-/* =========================================================
-   START
-   ========================================================= */
+  return components;
+
+}
+
+
+/* =====================================================
+   COMPONENT ANALYSIS
+===================================================== */
+
+function analyzeComponent(
+  rep,
+  edgeInfo,
+  points,
+  scaleSupport
+){
+
+  const w=rep.width;
+  const h=rep.height;
+
+
+  let minX=w;
+  let minY=h;
+  let maxX=0;
+  let maxY=0;
+
+  let sumX=0;
+  let sumY=0;
+
+
+  for(
+    const p of points
+  ){
+
+    const x=p[0];
+    const y=p[1];
+
+    minX=Math.min(minX,x);
+    minY=Math.min(minY,y);
+
+    maxX=Math.max(maxX,x);
+    maxY=Math.max(maxY,y);
+
+    sumX+=x;
+    sumY+=y;
+
+  }
+
+
+  const width=
+    maxX-minX+1;
+
+  const height=
+    maxY-minY+1;
+
+  const area=
+    points.length;
+
+
+  const bboxArea=
+    width*height;
+
+
+  const rectangularity=
+    area/
+    Math.max(
+      1,
+      bboxArea
+    );
+
+
+  const aspect=
+    width/
+    Math.max(
+      1,
+      height
+    );
+
+
+  const cx=
+    sumX/area;
+
+  const cy=
+    sumY/area;
+
+
+  /*
+   * Perimeter.
+   */
+
+  const pointSet=
+    new Set(
+      points.map(
+        p=>p[0]+","+p[1]
+      )
+    );
+
+
+  let perimeter=0;
+
+
+  for(
+    const p of points
+  ){
+
+    const x=p[0];
+    const y=p[1];
+
+
+    if(
+      !pointSet.has(
+        (x+1)+","+y
+      )
+    )
+      perimeter++;
+
+
+    if(
+      !pointSet.has(
+        (x-1)+","+y
+      )
+    )
+      perimeter++;
+
+
+    if(
+      !pointSet.has(
+        x+","+(y+1)
+      )
+    )
+      perimeter++;
+
+
+    if(
+      !pointSet.has(
+        x+","+(y-1)
+      )
+    )
+      perimeter++;
+
+  }
+
+
+  const circularity=
+    perimeter>0
+    ?4*Math.PI*area/
+     (perimeter*perimeter)
+    :0;
+
+
+  /*
+   * Local edge density.
+   */
+
+  let edgeCount=0;
+
+
+  for(
+    let y=minY;
+    y<=maxY;
+    y++
+  ){
+
+    for(
+      let x=minX;
+      x<=maxX;
+      x++
+    ){
+
+      if(
+        edgeInfo.edges[
+          y*w+x
+        ]
+      )
+        edgeCount++;
+
+    }
+
+  }
+
+
+  const localEdgeDensity=
+    edgeCount/
+    Math.max(
+      1,
+      bboxArea
+    );
+
+
+  /*
+   * Average color.
+   */
+
+  let r=0;
+  let g=0;
+  let b=0;
+
+
+  for(
+    const p of points
+  ){
+
+    const i=
+      (p[1]*w+p[0])*4;
+
+    r+=rep.data[i];
+    g+=rep.data[i+1];
+    b+=rep.data[i+2];
+
+  }
+
+
+  r=Math.round(r/area);
+  g=Math.round(g/area);
+  b=Math.round(b/area);
+
+
+  /*
+   * Shape evidence.
+   */
+
+  const squareScore=
+    clamp(
+      1-
+      Math.abs(
+        Math.log(
+          Math.max(.01,aspect)
+        )
+      )/.8,
+      0,
+      1
+    );
+
+
+  const rectangleScore=
+    clamp(
+      rectangularity*
+      (
+        .55+
+        .45*
+        Math.min(
+          aspect,
+          1/aspect
+        )
+      ),
+      0,
+      1
+    );
+
+
+  const circleScore=
+    clamp(
+      circularity,
+      0,
+      1
+    );
+
+
+  const irregularScore=
+    clamp(
+      1-
+      Math.max(
+        circularity,
+        rectangularity
+      ),
+      0,
+      1
+    );
+
+
+  const raw={
+
+    circle:circleScore,
+
+    square:
+      squareScore*
+      rectangularity,
+
+    rectangle:
+      rectangleScore,
+
+    irregular:
+      irregularScore
+
+  };
+
+
+  const total=
+    Object.values(raw)
+    .reduce(
+      (a,b)=>a+b,
+      0
+    );
+
+
+  const shapeEvidence={};
+
+
+  for(
+    const key of Object.keys(raw)
+  ){
+
+    shapeEvidence[key]=
+      round(
+        raw[key]/
+        Math.max(
+          total,
+          .0001
+        )
+      );
+
+  }
+
+
+  let bestShape="unknown";
+  let bestShapeScore=0;
+
+
+  for(
+    const key of Object.keys(
+      shapeEvidence
+    )
+  ){
+
+    if(
+      shapeEvidence[key]>
+      bestShapeScore
+    ){
+
+      bestShape=
+        key;
+
+      bestShapeScore=
+        shapeEvidence[key];
+
+    }
+
+  }
+
+
+  /*
+   * Geometry confidence.
+   *
+   * Scale support now matters.
+   */
+
+  const scaleFactor=
+    scaleSupport==null
+    ?1
+    :scaleSupport;
+
+
+  const geometryConfidence=
+    round(
+      clamp(
+        bestShapeScore*
+        (
+          .5+
+          .5*scaleFactor
+        ),
+        0,
+        .96
+      )
+    );
+
+
+  /*
+   * Semantic identity is intentionally
+   * UNKNOWN at this stage.
+   */
+
+  return{
+
+    areaPixels:area,
+
+    areaFraction:
+      round(
+        area/
+        (w*h),
+        6
+      ),
+
+    center:{
+
+      x:
+        round(
+          cx/
+          Math.max(
+            1,
+            w-1
+          )
+        ),
+
+      y:
+        round(
+          cy/
+          Math.max(
+            1,
+            h-1
+          )
+        )
+
+    },
+
+    boundingBox:{
+
+      x:
+        round(minX/w),
+
+      y:
+        round(minY/h),
+
+      width:
+        round(width/w),
+
+      height:
+        round(height/h)
+
+    },
+
+    geometry:{
+
+      widthPixels:width,
+
+      heightPixels:height,
+
+      aspectRatio:
+        round(aspect),
+
+      rectangularity:
+        round(rectangularity),
+
+      perimeterPixels:
+        perimeter,
+
+      circularity:
+        round(circularity),
+
+      edgeDensity:
+        round(localEdgeDensity),
+
+      shapeEvidence,
+
+      bestShape,
+
+      confidence:
+        geometryConfidence
+
+    },
+
+    appearance:
+      colorEvidence(
+        r,g,b
+      ),
+
+    scaleSupport:
+      round(scaleFactor),
+
+    semanticIdentity:{
+
+      value:null,
+
+      status:"UNKNOWN",
+
+      reason:
+        "Geometry and appearance evidence " +
+        "do not independently establish " +
+        "object identity."
+
+    }
+
+  };
+
+}
+
+
+/* =====================================================
+   MULTI-SCALE AGREEMENT
+===================================================== */
+
+function compareScales(
+  objects24,
+  objects48,
+  objects96
+){
+
+  /*
+   * Lightweight normalized-center matching.
+   *
+   * We don't require perfect boxes.
+   * Nearby centers and overlapping regions
+   * count as evidence of persistence.
+   */
+
+  function center(o){
+
+    return o.center;
+
+  }
+
+
+  function distance(a,b){
+
+    const dx=
+      a.x-b.x;
+
+    const dy=
+      a.y-b.y;
+
+    return Math.sqrt(
+      dx*dx+
+      dy*dy
+    );
+
+  }
+
+
+  function support(
+    object,
+    other
+  ){
+
+    if(!other.length)
+      return 0;
+
+
+    let best=1;
+
+
+    for(
+      const o of other
+    ){
+
+      const d=
+        distance(
+          center(object),
+          center(o)
+        );
+
+
+      best=
+        Math.min(
+          best,
+          d
+        );
+
+    }
+
+
+    /*
+     * <= .12 = strong agreement
+     * <= .25 = weak agreement
+     */
+
+    if(best<=.12)
+      return 1;
+
+    if(best<=.25)
+      return .5;
+
+    return 0;
+
+  }
+
+
+  return objects96.map(
+    object=>{
+
+      const a=
+        support(
+          object,
+          objects48
+        );
+
+      const b=
+        support(
+          object,
+          objects24
+        );
+
+
+      return round(
+        (a+b)/2
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   RELATIONSHIPS
+===================================================== */
+
+function relationships(
+  objects
+){
+
+  const result=[];
+
+
+  for(
+    let i=0;
+    i<objects.length;
+    i++
+  ){
+
+    for(
+      let j=i+1;
+      j<objects.length;
+      j++
+    ){
+
+      const a=objects[i];
+      const b=objects[j];
+
+      const relations=[];
+
+
+      if(
+        a.center.x<
+        b.center.x-.04
+      )
+        relations.push(
+          "LEFT_OF"
+        );
+
+      else if(
+        a.center.x>
+        b.center.x+.04
+      )
+        relations.push(
+          "RIGHT_OF"
+        );
+
+
+      if(
+        a.center.y<
+        b.center.y-.04
+      )
+        relations.push(
+          "ABOVE"
+        );
+
+      else if(
+        a.center.y>
+        b.center.y+.04
+      )
+        relations.push(
+          "BELOW"
+        );
+
+
+      const dx=
+        a.center.x-
+        b.center.x;
+
+      const dy=
+        a.center.y-
+        b.center.y;
+
+
+      const distance=
+        Math.sqrt(
+          dx*dx+
+          dy*dy
+        );
+
+
+      if(distance<.12)
+        relations.push("NEAR");
+
+      else if(distance>.50)
+        relations.push("FAR");
+
+
+      if(relations.length){
+
+        result.push({
+
+          subject:a.id,
+
+          object:b.id,
+
+          relations,
+
+          centerDistance:
+            round(distance)
+
+        });
+
+      }
+
+    }
+
+  }
+
+
+  return result;
+
+}
+
+
+/* =====================================================
+   CONTRAST
+===================================================== */
+
+function contrast(rep){
+
+  const n=
+    rep.width*
+    rep.height;
+
+  let sum=0;
+  let sum2=0;
+
+
+  for(
+    let i=0;
+    i<rep.data.length;
+    i+=4
+  ){
+
+    const l=
+      lum(
+        rep.data[i],
+        rep.data[i+1],
+        rep.data[i+2]
+      );
+
+    sum+=l;
+    sum2+=l*l;
+
+  }
+
+
+  const mean=sum/n;
+
+
+  return Math.sqrt(
+    Math.max(
+      0,
+      sum2/n-
+      mean*mean
+    )
+  );
+
+}
+
+
+/* =====================================================
+   DRAW
+===================================================== */
+
+function drawRep(
+  rep,
+  id
+){
+
+  const canvas=
+    document.getElementById(id);
+
+  canvas.width=
+    rep.width;
+
+  canvas.height=
+    rep.height;
+
+  const ctx=
+    canvas.getContext("2d");
+
+  ctx.imageSmoothingEnabled=false;
+
+  ctx.drawImage(
+    rep.canvas,
+    0,
+    0
+  );
+
+}
+
+
+/* =====================================================
+   ANALYZE
+===================================================== */
+
+function analyze(){
+
+  if(!state.image){
+
+    status.textContent=
+      "Load an image first.";
+
+    return;
+
+  }
+
+
+  status.textContent=
+    "Building background model…";
+
+
+  const rep24=
+    makeRep(24);
+
+  const rep48=
+    makeRep(48);
+
+  const rep96=
+    makeRep(96);
+
+
+  drawRep(
+    rep24,
+    "canvas24"
+  );
+
+  drawRep(
+    rep48,
+    "canvas48"
+  );
+
+  drawRep(
+    rep96,
+    "canvas96"
+  );
+
+
+  const bg24=
+    estimateBackground(
+      rep24
+    );
+
+  const bg48=
+    estimateBackground(
+      rep48
+    );
+
+  const bg96=
+    estimateBackground(
+      rep96
+    );
+
+
+  const stats96=
+    statistics(
+      rep96
+    );
+
+
+  const edge24=
+    edgeMap(
+      rep24,
+      bg24
+    );
+
+  const edge48=
+    edgeMap(
+      rep48,
+      bg48
+    );
+
+  const edge96=
+    edgeMap(
+      rep96,
+      bg96
+    );
+
+
+  const mask24=
+    buildMask(
+      rep24,
+      bg24,
+      edge24,
+      statistics(rep24)
+    );
+
+
+  const mask48=
+    buildMask(
+      rep48,
+      bg48,
+      edge48,
+      statistics(rep48)
+    );
+
+
+  const mask96=
+    buildMask(
+      rep96,
+      bg96,
+      edge96,
+      stats96
+    );
+
+
+  const clean24=
+    morphology(
+      mask24.mask,
+      rep24.width,
+      rep24.height
+    );
+
+
+  const clean48=
+    morphology(
+      mask48.mask,
+      rep48.width,
+      rep48.height
+    );
+
+
+  const clean96=
+    morphology(
+      mask96.mask,
+      rep96.width,
+      rep96.height
+    );
+
+
+  /*
+   * Remove enormous border-connected
+   * components.
+   */
+
+  const border=
+    borderConnected(
+      clean96,
+      rep96.width,
+      rep96.height
+    );
+
+
+  let borderCount=0;
+
+
+  for(
+    let i=0;
+    i<border.length;
+    i++
+  ){
+
+    if(border[i])
+      borderCount++;
+
+  }
+
+
+  /*
+   * Only erase border-connected pixels
+   * when they represent a very large
+   * fraction of the image.
+   */
+
+  if(
+    borderCount/
+    (rep96.width*rep96.height)
+    >.35
+  ){
+
+    for(
+      let i=0;
+      i<clean96.length;
+      i++
+    ){
+
+      if(border[i])
+        clean96[i]=0;
+
+    }
+
+  }
+
+
+  status.textContent=
+    "Extracting candidate objects…";
+
+
+  const objects24=
+    connectedComponents(
+      rep24,
+      clean24,
+      edge24,
+      1
+    );
+
+
+  const objects48=
+    connectedComponents(
+      rep48,
+      clean48,
+      edge48,
+      1
+    );
+
+
+  const objects96=
+    connectedComponents(
+      rep96,
+      clean96,
+      edge96,
+      null
+    );
+
+
+  const supports=
+    compareScales(
+      objects24,
+      objects48,
+      objects96
+    );
+
+
+  /*
+   * Attach multi-scale support.
+   */
+
+  objects96.forEach(
+    (object,index)=>{
+
+      object.scaleSupport=
+        supports[index];
+
+    }
+  );
+
+
+  /*
+   * Background candidate detection.
+   */
+
+  const backgroundArea=
+    Math.max(
+      0,
+      1-
+      objects96.reduce(
+        (sum,o)=>
+          sum+
+          (
+            o.backgroundCandidate
+            ?o.areaFraction
+            :0
+          ),
+        0
+      )
+    );
+
+
+  /*
+   * Filter obvious background candidates.
+   */
+
+  const objects=
+    objects96
+    .filter(
+      o=>
+        !o.backgroundCandidate
+    )
+    .filter(
+      o=>
+        o.areaFraction<
+        .55
+    )
+    .slice(
+      0,
+      32
+    );
+
+
+  objects.forEach(
+    (o,i)=>
+      o.id=i+1
+  );
+
+
+  const relationData=
+    relationships(
+      objects
+    );
+
+
+  const img=
+    state.image;
+
+
+  const aspect=
+    img.naturalWidth/
+    img.naturalHeight;
+
+
+  const orientation=
+    aspect>1
+    ?"landscape"
+    :aspect<1
+      ?"portrait"
+      :"square";
+
+
+  /*
+   * Conservative confidence.
+   */
+
+  let confidence=0;
+
+
+  if(objects.length){
+
+    confidence=
+      objects
+      .slice(0,12)
+      .reduce(
+        (
+          sum,
+          o
+        )=>
+          sum+
+          o.geometry.confidence*
+          (
+            .5+
+            .5*
+            o.scaleSupport
+          ),
+        0
+      )/
+      Math.min(
+        objects.length,
+        12
+      );
+
+  }else{
+
+    /*
+     * No object is preferable to
+     * hallucinating one.
+     */
+
+    confidence=
+      bg96.confidence*.5;
+
+  }
+
+
+  const scene={
+
+    visionCortex:
+      "0.6",
+
+
+    type:
+      "algorithmic_scene_graph",
+
+
+    source:{
+
+      width:
+        img.naturalWidth,
+
+      height:
+        img.naturalHeight,
+
+      aspectRatio:
+        round(aspect,5),
+
+      orientation
+
+    },
+
+
+    coordinateSystem:{
+
+      origin:
+        "top-left",
+
+      xAxis:
+        "right",
+
+      yAxis:
+        "down",
+
+      normalized:true,
+
+      range:
+        "0.0-1.0"
+
+    },
+
+
+    background:{
+
+      model:
+        bg96,
+
+      strategy:
+        "robust-border-estimation",
+
+      borderSuppression:
+        true
+
+    },
+
+
+    perception:{
+
+      objectCount:
+        objects.length,
+
+      candidateCount:
+        objects96.length,
+
+      rejectedBackgroundCandidates:
+        objects96.filter(
+          o=>
+            o.backgroundCandidate
+        ).length,
+
+      edgeDensity:
+        edge96.density,
+
+      contrast:
+        round(
+          contrast(rep96)
+        ),
+
+      sceneConfidence:
+        round(
+          clamp(
+            confidence,
+            0,
+            .96
+          )
+        )
+
+    },
+
+
+    objects,
+
+
+    relationships:
+      relationData,
+
+
+    reasoningPolicy:{
+
+      identitiesAreHypotheses:
+        true,
+
+      semanticIdentityRequiresReasoning:
+        true,
+
+      geometryIsMeasuredEvidence:
+        true,
+
+      appearanceIsMeasuredEvidence:
+        true,
+
+      backgroundIsModeledSeparately:
+        true,
+
+      multiScaleAgreementRequired:
+        true,
+
+      confidenceIsNotCertainty:
+        true,
+
+      noObjectIsPreferredToFalseObject:
+        true
+
+    },
+
+
+    activeVision:{
+
+      requestType:
+        "ZOOM_REQUEST",
+
+      responseType:
+        "ZOOM_RESULT",
+
+      minLongSide:
+        32,
+
+      maxLongSide:
+        512
+
+    }
+
+  };
+
+
+  const raw={
+
+    visionCortex:
+      "0.6",
+
+
+    representations:{
+
+      coarse:{
+        resolution:[
+          rep24.width,
+          rep24.height
+        ],
+        edgeDensity:
+          edge24.density
+      },
+
+      medium:{
+        resolution:[
+          rep48.width,
+          rep48.height
+        ],
+        edgeDensity:
+          edge48.density
+      },
+
+      fine:{
+        resolution:[
+          rep96.width,
+          rep96.height
+        ],
+        edgeDensity:
+          edge96.density
+      }
+
+    },
+
+
+    backgroundModels:{
+
+      coarse:bg24,
+      medium:bg48,
+      fine:bg96
+
+    },
+
+
+    segmentation:{
+
+      thresholds:{
+
+        coarse:
+          round(
+            mask24.threshold
+          ),
+
+        medium:
+          round(
+            mask48.threshold
+          ),
+
+        fine:
+          round(
+            mask96.threshold
+          )
+
+      },
+
+      candidateCount:
+        objects96.length,
+
+      rejectedBackground:
+        objects96.filter(
+          o=>
+            o.backgroundCandidate
+        ).length
+
+    },
+
+
+    scene,
+
+    algorithmNotes:[
+
+      "Background estimated from image border.",
+
+      "Local RGB distance used for foreground evidence.",
+
+      "Edges alone do not define objects.",
+
+      "Morphological cleanup removes isolated noise.",
+
+      "Large border-connected regions are treated as background candidates.",
+
+      "Multi-scale agreement contributes to object confidence.",
+
+      "Semantic identity remains unknown until an LLM reasons over evidence."
+
+    ]
+
+  };
+
+
+  state.scene=scene;
+  state.raw=raw;
+
+
+  updateUI();
+
+
+  status.textContent=
+    "Vision Cortex v0.6 analysis complete.";
+
+}
+
+
+/* =====================================================
+   UI
+===================================================== */
+
+function updateUI(){
+
+  const scene=
+    state.scene;
+
+
+  if(!scene)return;
+
+
+  document.getElementById(
+    "metricObjects"
+  ).textContent=
+    scene.perception.objectCount;
+
+
+  document.getElementById(
+    "metricBackground"
+  ).textContent=
+    scene.perception
+    .rejectedBackgroundCandidates;
+
+
+  document.getElementById(
+    "metricEdges"
+  ).textContent=
+    scene.perception.edgeDensity;
+
+
+  document.getElementById(
+    "metricContrast"
+  ).textContent=
+    scene.perception.contrast;
+
+
+  document.getElementById(
+    "metricPixels"
+  ).textContent=
+    scene.source.width*
+    scene.source.height;
+
+
+  document.getElementById(
+    "metricConfidence"
+  ).textContent=
+    scene.perception.sceneConfidence;
+
+
+  renderBackground(
+    scene.background
+  );
+
+
+  renderObjects(
+    scene.objects
+  );
+
+
+  renderRelationships(
+    scene.relationships
+  );
+
+
+  renderShapes(
+    scene.objects
+  );
+
+
+  renderColors(
+    scene.objects
+  );
+
+
+  document.getElementById(
+    "scenePacket"
+  ).textContent=
+    JSON.stringify(
+      scene,
+      null,
+      2
+    );
+
+
+  document.getElementById(
+    "rawPacket"
+  ).textContent=
+    JSON.stringify(
+      state.raw,
+      null,
+      2
+    );
+
+}
+
+
+/* =====================================================
+   BACKGROUND UI
+===================================================== */
+
+function renderBackground(
+  bg
+){
+
+  const c=bg.model;
+
+
+  document.getElementById(
+    "backgroundOutput"
+  ).innerHTML=`
+
+    <div class="object">
+
+      <b>Estimated Background</b>
+
+      <div>
+      RGB:
+      ${c.rgb.join(", ")}
+      </div>
+
+      <div>
+      Color family:
+      ${c.color.family}
+      </div>
+
+      <div>
+      Border deviation:
+      ${c.borderDeviation}
+      </div>
+
+      <div>
+      Confidence:
+      ${c.confidence}
+      </div>
+
+      <div class="bar">
+        <div
+          class="fill"
+          style="width:${c.confidence*100}%">
+        </div>
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   OBJECT UI
+===================================================== */
+
+function renderObjects(
+  objects
+){
+
+  const output=
+    document.getElementById(
+      "sceneGraph"
+    );
+
+
+  if(!objects.length){
+
+    output.innerHTML=`
+
+      <div class="object">
+
+        <b>No reliable foreground
+        objects detected.</b>
+
+        <div class="small">
+        This is intentional. v0.6 prefers
+        "unknown" over inventing an object.
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  output.innerHTML=
+    objects
+    .map(
+      obj=>{
+
+        const confidence=
+          obj.geometry.confidence*
+          (
+            .5+
+            .5*
+            obj.scaleSupport
+          )*
+          100;
+
+
+        return`
+
+        <div class="object">
+
+          <div class="objectTitle">
+          Object ${obj.id}
+          </div>
+
+          <div>
+          Position:
+          ${obj.center.x},
+          ${obj.center.y}
+          </div>
+
+          <div>
+          Bounding box:
+          ${obj.boundingBox.x},
+          ${obj.boundingBox.y},
+          ${obj.boundingBox.width},
+          ${obj.boundingBox.height}
+          </div>
+
+          <div>
+          Geometry:
+          <b>
+          ${obj.geometry.bestShape}
+          </b>
+          </div>
+
+          <div>
+          Appearance:
+          <b>
+          ${obj.appearance.family}
+          </b>
+          </div>
+
+          <div>
+          Semantic identity:
+          <b>
+          UNKNOWN
+          </b>
+          </div>
+
+          <div class="small">
+          Multi-scale support:
+          ${obj.scaleSupport}
+          </div>
+
+          <div class="small">
+          Evidence confidence
+          </div>
+
+          <div class="bar">
+            <div
+              class="fill"
+              style="width:${confidence}%">
+            </div>
+          </div>
+
+        </div>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+/* =====================================================
+   RELATIONSHIPS UI
+===================================================== */
+
+function renderRelationships(
+  relations
+){
+
+  document.getElementById(
+    "relationships"
+  ).textContent=
+    JSON.stringify(
+      relations,
+      null,
+      2
+    );
+
+}
+
+
+/* =====================================================
+   SHAPE UI
+===================================================== */
+
+function renderShapes(
+  objects
+){
+
+  const output=
+    document.getElementById(
+      "shapeOutput"
+    );
+
+
+  if(!objects.length){
+
+    output.textContent=
+      "No foreground geometry.";
+
+    return;
+
+  }
+
+
+  output.innerHTML=
+    objects
+    .map(
+      obj=>{
+
+        const evidence=
+          obj.geometry
+          .shapeEvidence;
+
+
+        return`
+
+        <div class="layer">
+
+          <b>
+          Object ${obj.id}
+          </b>
+
+          <div>
+          Best geometric hypothesis:
+          ${obj.geometry.bestShape}
+          </div>
+
+          ${
+            Object.entries(
+              evidence
+            )
+            .sort(
+              (a,b)=>
+                b[1]-a[1]
+            )
+            .map(
+              ([key,value])=>
+                `<span class="badge">
+                ${key} ${round(value,3)}
+                </span>`
+            )
+            .join("")
+          }
+
+          <div class="small">
+
+          Circularity:
+          ${obj.geometry.circularity}
+
+          · Rectangularity:
+          ${obj.geometry.rectangularity}
+
+          · Edge density:
+          ${obj.geometry.edgeDensity}
+
+          </div>
+
+        </div>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+/* =====================================================
+   COLOR UI
+===================================================== */
+
+function renderColors(
+  objects
+){
+
+  const output=
+    document.getElementById(
+      "colorOutput"
+    );
+
+
+  if(!objects.length){
+
+    output.textContent=
+      "No foreground color regions.";
+
+    return;
+
+  }
+
+
+  output.innerHTML=
+    objects
+    .map(
+      obj=>{
+
+        const c=
+          obj.appearance;
+
+
+        return`
+
+        <div class="layer">
+
+          <b>
+          Object ${obj.id}
+          </b>
+
+          <div>
+          Family:
+          ${c.family}
+          </div>
+
+          <div>
+          RGB:
+          ${c.rgb.join(", ")}
+          </div>
+
+          <div>
+          HEX:
+          ${c.hex}
+          </div>
+
+          <div>
+          Confidence:
+          ${c.confidence}
+          </div>
+
+        </div>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+/* =====================================================
+   DOWNLOAD
+===================================================== */
+
+function downloadJSON(
+  data,
+  filename
+){
+
+  if(!data){
+
+    status.textContent=
+      "Analyze an image first.";
+
+    return;
+
+  }
+
+
+  const blob=
+    new Blob(
+      [
+        JSON.stringify(
+          data,
+          null,
+          2
+        )
+      ],
+      {
+        type:
+          "application/json"
+      }
+    );
+
+
+  const url=
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const a=
+    document.createElement("a");
+
+  a.href=url;
+  a.download=filename;
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  a.remove();
+
+
+  setTimeout(
+    ()=>
+      URL.revokeObjectURL(url),
+    1000
+  );
+
+}
+
+
+document.getElementById(
+  "downloadScene"
+).onclick=
+  ()=>
+    downloadJSON(
+      state.scene,
+      "vision_scene_v06.json"
+    );
+
+
+document.getElementById(
+  "downloadRaw"
+).onclick=
+  ()=>
+    downloadJSON(
+      state.raw,
+      "vision_evidence_v06.json"
+    );
+
+
+/* =====================================================
+   ACTIVE VISION
+===================================================== */
+
+function zoomRequest(
+  request
+){
+
+  if(!state.image)
+    throw new Error(
+      "No image loaded."
+    );
+
+
+  if(
+    request.type!==
+    "ZOOM_REQUEST"
+  )
+    throw new Error(
+      "Invalid request type."
+    );
+
+
+  let x=
+    clamp(
+      Number(request.x),
+      0,
+      1
+    );
+
+  let y=
+    clamp(
+      Number(request.y),
+      0,
+      1
+    );
+
+  let width=
+    clamp(
+      Number(request.width),
+      .01,
+      1
+    );
+
+  let height=
+    clamp(
+      Number(request.height),
+      .01,
+      1
+    );
+
+
+  const longSide=
+    clamp(
+      Math.round(
+        Number(
+          request.requestedLongSide
+        )||192
+      ),
+      32,
+      512
+    );
+
+
+  if(x+width>1)
+    x=1-width;
+
+  if(y+height>1)
+    y=1-height;
+
+
+  const img=
+    state.image;
+
+
+  const sx=
+    Math.round(
+      x*img.naturalWidth
+    );
+
+  const sy=
+    Math.round(
+      y*img.naturalHeight
+    );
+
+
+  const sw=
+    Math.max(
+      1,
+      Math.round(
+        width*
+        img.naturalWidth
+      )
+    );
+
+
+  const sh=
+    Math.max(
+      1,
+      Math.round(
+        height*
+        img.naturalHeight
+      )
+    );
+
+
+  const aspect=
+    sw/sh;
+
+
+  let ow,oh;
+
+
+  if(aspect>=1){
+
+    ow=longSide;
+
+    oh=Math.max(
+      1,
+      Math.round(
+        longSide/aspect
+      )
+    );
+
+  }else{
+
+    oh=longSide;
+
+    ow=Math.max(
+      1,
+      Math.round(
+        longSide*aspect
+      )
+    );
+
+  }
+
+
+  const canvas=
+    document.getElementById(
+      "zoomCanvas"
+    );
+
+
+  const ctx=
+    canvas.getContext(
+      "2d",
+      {willReadFrequently:true}
+    );
+
+
+  canvas.width=ow;
+  canvas.height=oh;
+
+
+  ctx.drawImage(
+    img,
+    sx,
+    sy,
+    sw,
+    sh,
+    0,
+    0,
+    ow,
+    oh
+  );
+
+
+  const data=
+    ctx.getImageData(
+      0,
+      0,
+      ow,
+      oh
+    );
+
+
+  const tempCanvas=
+    document.createElement(
+      "canvas"
+    );
+
+  tempCanvas.width=ow;
+  tempCanvas.height=oh;
+
+
+  const tempCtx=
+    tempCanvas.getContext(
+      "2d",
+      {willReadFrequently:true}
+    );
+
+
+  tempCtx.putImageData(
+    data,
+    0,
+    0
+  );
+
+
+  const rep={
+
+    canvas:tempCanvas,
+
+    width:ow,
+
+    height:oh,
+
+    data:data.data
+
+  };
+
+
+  const bg=
+    estimateBackground(
+      rep
+    );
+
+
+  const edges=
+    edgeMap(
+      rep,
+      bg
+    );
+
+
+  const mask=
+    buildMask(
+      rep,
+      bg,
+      edges,
+      statistics(rep)
+    );
+
+
+  const clean=
+    morphology(
+      mask.mask,
+      ow,
+      oh
+    );
+
+
+  const objects=
+    connectedComponents(
+      rep,
+      clean,
+      edges,
+      null
+    )
+    .filter(
+      o=>
+        !o.backgroundCandidate
+    );
+
+
+  let r=0;
+  let g=0;
+  let b=0;
+
+
+  for(
+    let i=0;
+    i<data.data.length;
+    i+=4
+  ){
+
+    r+=data.data[i];
+    g+=data.data[i+1];
+    b+=data.data[i+2];
+
+  }
+
+
+  const count=
+    ow*oh;
+
+
+  r=Math.round(r/count);
+  g=Math.round(g/count);
+  b=Math.round(b/count);
+
+
+  const result={
+
+    visionCortex:
+      "0.6",
+
+    type:
+      "ZOOM_RESULT",
+
+    request,
+
+    originalPixels:{
+
+      x:sx,
+      y:sy,
+      width:sw,
+      height:sh
+
+    },
+
+    outputResolution:[
+      ow,
+      oh
+    ],
+
+    background:bg,
+
+    averageColor:
+      colorEvidence(
+        r,g,b
+      ),
+
+    localPerception:{
+
+      edgeDensity:
+        edges.density,
+
+      objectCount:
+        objects.length,
+
+      objects
+
+    },
+
+    rawPixels:
+      Array.from(
+        data.data
+      )
+
+  };
+
+
+  state.zoomHistory.push(
+    result
+  );
+
+
+  document.getElementById(
+    "zoomOutput"
+  ).textContent=
+    JSON.stringify(
+      result,
+      null,
+      2
+    );
+
+
+  status.textContent=
+    "Active Vision inspection complete.";
+
+
+  return result;
+
+}
+
+
+/* =====================================================
+   MANUAL ZOOM
+===================================================== */
+
+document.getElementById(
+  "zoomButton"
+).onclick=()=>{
+
+  try{
+
+    zoomRequest({
+
+      type:
+        "ZOOM_REQUEST",
+
+      x:Number(
+        document.getElementById(
+          "zoomX"
+        ).value
+      ),
+
+      y:Number(
+        document.getElementById(
+          "zoomY"
+        ).value
+      ),
+
+      width:Number(
+        document.getElementById(
+          "zoomW"
+        ).value
+      ),
+
+      height:Number(
+        document.getElementById(
+          "zoomH"
+        ).value
+      ),
+
+      requestedLongSide:
+        256
+
+    });
+
+  }
+  catch(error){
+
+    status.textContent=
+      "Zoom error: "+
+      error.message;
+
+  }
+
+};
+
+
+/* =====================================================
+   LLM CONTROLLER
+===================================================== */
+
+document.getElementById(
+  "executeRequest"
+).onclick=()=>{
+
+  const output=
+    document.getElementById(
+      "requestStatus"
+    );
+
+
+  try{
+
+    const text=
+      document.getElementById(
+        "llmRequest"
+      )
+      .value
+      .trim();
+
+
+    if(!text)
+      throw new Error(
+        "No JSON request."
+      );
+
+
+    const request=
+      JSON.parse(text);
+
+
+    if(
+      request.objectId &&
+      state.scene
+    ){
+
+      const object=
+        state.scene.objects.find(
+          o=>
+            o.id===
+            Number(
+              request.objectId
+            )
+        );
+
+
+      if(!object)
+        throw new Error(
+          "Object not found."
+        );
+
+
+      request.type=
+        "ZOOM_REQUEST";
+
+
+      request.x=
+        object.boundingBox.x;
+
+      request.y=
+        object.boundingBox.y;
+
+      request.width=
+        object.boundingBox.width;
+
+      request.height=
+        object.boundingBox.height;
+
+    }
+
+
+    const result=
+      zoomRequest(
+        request
+      );
+
+
+    output.innerHTML=
+      `<span class="success">
+      ✓ Evidence returned:
+      ${result.outputResolution.join(" × ")}
+      </span>`;
+
+  }
+  catch(error){
+
+    output.innerHTML=
+      `<span class="error">
+      ✗ ${error.message}
+      </span>`;
+
+  }
+
+};
+
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+document.getElementById(
+  "cameraButton"
+).onclick=
+async()=>{
+
+  try{
+
+    if(state.cameraStream){
+
+      state.cameraStream
+        .getTracks()
+        .forEach(
+          track=>
+            track.stop()
+        );
+
+
+      state.cameraStream=null;
+
+      video.style.display=
+        "none";
+
+
+      document.getElementById(
+        "cameraButton"
+      ).textContent=
+        "📷 Camera";
+
+
+      return;
+
+    }
+
+
+    if(
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    )
+      throw new Error(
+        "Camera API unavailable."
+      );
+
+
+    const stream=
+      await navigator
+      .mediaDevices
+      .getUserMedia({
+
+        video:{
+          facingMode:{
+            ideal:"environment"
+          }
+        },
+
+        audio:false
+
+      });
+
+
+    state.cameraStream=
+      stream;
+
+    video.srcObject=
+      stream;
+
+    video.style.display=
+      "block";
+
+
+    document.getElementById(
+      "cameraButton"
+    ).textContent=
+      "⏹ Stop Camera";
+
+
+    status.textContent=
+      "Camera active. Tap the video to inspect.";
+
+  }
+  catch(error){
+
+    status.textContent=
+      "Camera error: "+
+      error.message;
+
+  }
+
+};
+
+
+/* =====================================================
+   CAMERA FRAME
+===================================================== */
+
+video.onclick=()=>{
+
+  if(
+    !video.videoWidth ||
+    !video.videoHeight
+  )
+    return;
+
+
+  const canvas=
+    document.createElement(
+      "canvas"
+    );
+
+
+  canvas.width=
+    video.videoWidth;
+
+  canvas.height=
+    video.videoHeight;
+
+
+  const ctx=
+    canvas.getContext("2d");
+
+
+  ctx.drawImage(
+    video,
+    0,
+    0
+  );
+
+
+  const img=
+    new Image();
+
+
+  img.onload=()=>{
+
+    state.image=img;
+
+    drawSource();
+
+    analyze();
+
+  };
+
+
+  img.src=
+    canvas.toDataURL(
+      "image/jpeg",
+      .92
+    );
+
+};
+
+
+/* =====================================================
+   MOTION
+===================================================== */
+
+function analyzeMotion(
+  canvas
+){
+
+  if(!state.previousFrame){
+
+    state.previousFrame=
+      canvas;
+
+    return null;
+
+  }
+
+
+  const a=
+    canvas.getContext(
+      "2d",
+      {willReadFrequently:true}
+    )
+    .getImageData(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    ).data;
+
+
+  const b=
+    state.previousFrame
+    .getContext(
+      "2d",
+      {willReadFrequently:true}
+    )
+    .getImageData(
+      0,
+      0,
+      state.previousFrame.width,
+      state.previousFrame.height
+    ).data;
+
+
+  const length=
+    Math.min(
+      a.length,
+      b.length
+    );
+
+
+  let difference=0;
+
+
+  for(
+    let i=0;
+    i<length;
+    i+=4
+  ){
+
+    difference+=
+      Math.abs(a[i]-b[i])+
+      Math.abs(a[i+1]-b[i+1])+
+      Math.abs(a[i+2]-b[i+2]);
+
+  }
+
+
+  const score=
+    difference/
+    Math.max(
+      1,
+      (length/4)*765
+    );
+
+
+  state.previousFrame=
+    canvas;
+
+
+  state.motion={
+
+    score:
+      round(score),
+
+    classification:
+      score<.01
+      ?"stable"
+      :score<.05
+        ?"minor-motion"
+        :score<.15
+          ?"motion"
+          :"major-motion"
+
+  };
+
+
+  document.getElementById(
+    "motionOutput"
+  ).textContent=
+    JSON.stringify(
+      state.motion,
+      null,
+      2
+    );
+
+
+  return state.motion;
+
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+document.getElementById(
+  "analyzeButton"
+).onclick=
+  analyze;
+
 
 status.textContent=
-    "Vision Bridge ready.";
+  "Vision Cortex v0.6 ready.";
 
 </script>
 
