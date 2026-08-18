@@ -1,0 +1,429 @@
+{
+  "visionCortex": "0.6",
+  "type": "algorithmic_scene_graph",
+  "source": {
+    "width": 662,
+    "height": 240,
+    "aspectRatio": 2.75833,
+    "orientation": "landscape"
+  },
+  "coordinateSystem": {
+    "origin": "top-left",
+    "xAxis": "right",
+    "yAxis": "down",
+    "normalized": true,
+    "range": "0.0-1.0"
+  },
+  "background": {
+    "model": {
+      "rgb": [
+        255,
+        255,
+        255
+      ],
+      "color": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "hex": "#ffffff",
+        "family": "white",
+        "confidence": 1,
+        "hsv": {
+          "h": 0,
+          "s": 0,
+          "v": 1
+        }
+      },
+      "confidence": 0.9496,
+      "sampleCount": 984,
+      "borderDeviation": 3.5261
+    },
+    "strategy": "robust-border-estimation",
+    "borderSuppression": true
+  },
+  "perception": {
+    "objectCount": 5,
+    "candidateCount": 5,
+    "rejectedBackgroundCandidates": 0,
+    "edgeDensity": 0.1563,
+    "contrast": 64.3983,
+    "sceneConfidence": 0.2644
+  },
+  "objects": [
+    {
+      "areaPixels": 286,
+      "areaFraction": 0.085119,
+      "center": {
+        "x": 0.7372,
+        "y": 0.2948
+      },
+      "boundingBox": {
+        "x": 0.6354,
+        "y": 0.0857,
+        "width": 0.2083,
+        "height": 0.4286
+      },
+      "geometry": {
+        "widthPixels": 20,
+        "heightPixels": 15,
+        "aspectRatio": 1.3333,
+        "rectangularity": 0.9533,
+        "perimeterPixels": 70,
+        "circularity": 0.7335,
+        "edgeDensity": 0.36,
+        "shapeEvidence": {
+          "circle": 0.3279,
+          "square": 0.2729,
+          "rectangle": 0.3783,
+          "irregular": 0.0209
+        },
+        "bestShape": "rectangle",
+        "confidence": 0.3783
+      },
+      "appearance": {
+        "rgb": [
+          229,
+          13,
+          17
+        ],
+        "hex": "#e50d11",
+        "family": "red",
+        "confidence": 1,
+        "hsv": {
+          "h": 358.8889,
+          "s": 0.9432,
+          "v": 0.898
+        }
+      },
+      "scaleSupport": 1,
+      "semanticIdentity": {
+        "value": null,
+        "status": "UNKNOWN",
+        "reason": "Geometry and appearance evidence do not independently establish object identity."
+      },
+      "id": 1
+    },
+    {
+      "areaPixels": 156,
+      "areaFraction": 0.046429,
+      "center": {
+        "x": 0.2023,
+        "y": 0.3066
+      },
+      "boundingBox": {
+        "x": 0.1354,
+        "y": 0.1143,
+        "width": 0.1458,
+        "height": 0.4
+      },
+      "geometry": {
+        "widthPixels": 14,
+        "heightPixels": 14,
+        "aspectRatio": 1,
+        "rectangularity": 0.7959,
+        "perimeterPixels": 56,
+        "circularity": 0.6251,
+        "edgeDensity": 0.5102,
+        "shapeEvidence": {
+          "circle": 0.2582,
+          "square": 0.3288,
+          "rectangle": 0.3288,
+          "irregular": 0.0843
+        },
+        "bestShape": "square",
+        "confidence": 0.3288
+      },
+      "appearance": {
+        "rgb": [
+          80,
+          127,
+          183
+        ],
+        "hex": "#507fb7",
+        "family": "blue",
+        "confidence": 0.6473,
+        "hsv": {
+          "h": 212.6214,
+          "s": 0.5628,
+          "v": 0.7176
+        }
+      },
+      "scaleSupport": 1,
+      "semanticIdentity": {
+        "value": null,
+        "status": "UNKNOWN",
+        "reason": "Geometry and appearance evidence do not independently establish object identity."
+      },
+      "id": 2
+    },
+    {
+      "areaPixels": 154,
+      "areaFraction": 0.045833,
+      "center": {
+        "x": 0.4627,
+        "y": 0.3634
+      },
+      "boundingBox": {
+        "x": 0.3646,
+        "y": 0.0857,
+        "width": 0.1979,
+        "height": 0.4286
+      },
+      "geometry": {
+        "widthPixels": 19,
+        "heightPixels": 15,
+        "aspectRatio": 1.2667,
+        "rectangularity": 0.5404,
+        "perimeterPixels": 74,
+        "circularity": 0.3534,
+        "edgeDensity": 0.4842,
+        "shapeEvidence": {
+          "circle": 0.21,
+          "square": 0.2262,
+          "rectangle": 0.2907,
+          "irregular": 0.2731
+        },
+        "bestShape": "rectangle",
+        "confidence": 0.2907
+      },
+      "appearance": {
+        "rgb": [
+          25,
+          162,
+          99
+        ],
+        "hex": "#19a263",
+        "family": "green",
+        "confidence": 0.9725,
+        "hsv": {
+          "h": 152.4088,
+          "s": 0.8457,
+          "v": 0.6353
+        }
+      },
+      "scaleSupport": 1,
+      "semanticIdentity": {
+        "value": null,
+        "status": "UNKNOWN",
+        "reason": "Geometry and appearance evidence do not independently establish object identity."
+      },
+      "id": 3
+    },
+    {
+      "areaPixels": 4,
+      "areaFraction": 0.00119,
+      "center": {
+        "x": 0.7395,
+        "y": 0.7279
+      },
+      "boundingBox": {
+        "x": 0.7188,
+        "y": 0.6857,
+        "width": 0.0313,
+        "height": 0.0571
+      },
+      "geometry": {
+        "widthPixels": 3,
+        "heightPixels": 2,
+        "aspectRatio": 1.5,
+        "rectangularity": 0.6667,
+        "perimeterPixels": 10,
+        "circularity": 0.5027,
+        "edgeDensity": 1,
+        "shapeEvidence": {
+          "circle": 0.2903,
+          "square": 0.1899,
+          "rectangle": 0.3273,
+          "irregular": 0.1925
+        },
+        "bestShape": "rectangle",
+        "confidence": 0.3273
+      },
+      "appearance": {
+        "rgb": [
+          142,
+          142,
+          142
+        ],
+        "hex": "#8e8e8e",
+        "family": "light-gray",
+        "confidence": 1,
+        "hsv": {
+          "h": 0,
+          "s": 0,
+          "v": 0.5569
+        }
+      },
+      "scaleSupport": 0,
+      "semanticIdentity": {
+        "value": null,
+        "status": "UNKNOWN",
+        "reason": "Geometry and appearance evidence do not independently establish object identity."
+      },
+      "id": 4
+    },
+    {
+      "areaPixels": 3,
+      "areaFraction": 0.000893,
+      "center": {
+        "x": 0.2175,
+        "y": 0.7255
+      },
+      "boundingBox": {
+        "x": 0.2083,
+        "y": 0.6857,
+        "width": 0.0208,
+        "height": 0.0571
+      },
+      "geometry": {
+        "widthPixels": 2,
+        "heightPixels": 2,
+        "aspectRatio": 1,
+        "rectangularity": 0.75,
+        "perimeterPixels": 8,
+        "circularity": 0.589,
+        "edgeDensity": 1,
+        "shapeEvidence": {
+          "circle": 0.2518,
+          "square": 0.3206,
+          "rectangle": 0.3206,
+          "irregular": 0.1069
+        },
+        "bestShape": "square",
+        "confidence": 0.3206
+      },
+      "appearance": {
+        "rgb": [
+          56,
+          56,
+          56
+        ],
+        "hex": "#383838",
+        "family": "gray",
+        "confidence": 1,
+        "hsv": {
+          "h": 0,
+          "s": 0,
+          "v": 0.2196
+        }
+      },
+      "scaleSupport": 0,
+      "semanticIdentity": {
+        "value": null,
+        "status": "UNKNOWN",
+        "reason": "Geometry and appearance evidence do not independently establish object identity."
+      },
+      "id": 5
+    }
+  ],
+  "relationships": [
+    {
+      "subject": 1,
+      "object": 2,
+      "relations": [
+        "RIGHT_OF",
+        "FAR"
+      ],
+      "centerDistance": 0.535
+    },
+    {
+      "subject": 1,
+      "object": 3,
+      "relations": [
+        "RIGHT_OF",
+        "ABOVE"
+      ],
+      "centerDistance": 0.2829
+    },
+    {
+      "subject": 1,
+      "object": 4,
+      "relations": [
+        "ABOVE"
+      ],
+      "centerDistance": 0.4331
+    },
+    {
+      "subject": 1,
+      "object": 5,
+      "relations": [
+        "RIGHT_OF",
+        "ABOVE",
+        "FAR"
+      ],
+      "centerDistance": 0.675
+    },
+    {
+      "subject": 2,
+      "object": 3,
+      "relations": [
+        "LEFT_OF",
+        "ABOVE"
+      ],
+      "centerDistance": 0.2665
+    },
+    {
+      "subject": 2,
+      "object": 4,
+      "relations": [
+        "LEFT_OF",
+        "ABOVE",
+        "FAR"
+      ],
+      "centerDistance": 0.6827
+    },
+    {
+      "subject": 2,
+      "object": 5,
+      "relations": [
+        "ABOVE"
+      ],
+      "centerDistance": 0.4192
+    },
+    {
+      "subject": 3,
+      "object": 4,
+      "relations": [
+        "LEFT_OF",
+        "ABOVE"
+      ],
+      "centerDistance": 0.4577
+    },
+    {
+      "subject": 3,
+      "object": 5,
+      "relations": [
+        "RIGHT_OF",
+        "ABOVE"
+      ],
+      "centerDistance": 0.4373
+    },
+    {
+      "subject": 4,
+      "object": 5,
+      "relations": [
+        "RIGHT_OF",
+        "FAR"
+      ],
+      "centerDistance": 0.522
+    }
+  ],
+  "reasoningPolicy": {
+    "identitiesAreHypotheses": true,
+    "semanticIdentityRequiresReasoning": true,
+    "geometryIsMeasuredEvidence": true,
+    "appearanceIsMeasuredEvidence": true,
+    "backgroundIsModeledSeparately": true,
+    "multiScaleAgreementRequired": true,
+    "confidenceIsNotCertainty": true,
+    "noObjectIsPreferredToFalseObject": true
+  },
+  "activeVision": {
+    "requestType": "ZOOM_REQUEST",
+    "responseType": "ZOOM_RESULT",
+    "minLongSide": 32,
+    "maxLongSide": 512
+  }
+}
