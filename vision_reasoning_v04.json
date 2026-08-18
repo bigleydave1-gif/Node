@@ -1,0 +1,489 @@
+{
+  "visionBridge": "0.4",
+  "type": "visual_reasoning_packet",
+  "source": {
+    "width": 662,
+    "height": 240,
+    "aspectRatio": 2.75833,
+    "orientation": "landscape"
+  },
+  "scene": {
+    "regionCount": 7,
+    "edgeDensity": 0.1122,
+    "contrast": 64.3983
+  },
+  "regions": [
+    {
+      "id": 1,
+      "center": {
+        "x": 0.7368,
+        "y": 0.2941
+      },
+      "boundingBox": {
+        "x": 0.625,
+        "y": 0.0571,
+        "width": 0.2188,
+        "height": 0.4857
+      },
+      "color": {
+        "family": "red",
+        "rgb": [
+          234,
+          61,
+          64
+        ],
+        "confidence": 0.85
+      },
+      "shape": {
+        "evidence": {
+          "square": 0.3548,
+          "rectangle": 0.415,
+          "circle": 0.2259,
+          "irregular": 0.0043
+        },
+        "bestGuess": "rectangle",
+        "confidence": 0.3547,
+        "aspectRatio": 1.2353,
+        "rectangularity": 0.9888
+      },
+      "edgeDensity": 0.3725
+    },
+    {
+      "id": 2,
+      "center": {
+        "x": 0.4635,
+        "y": 0.3695
+      },
+      "boundingBox": {
+        "x": 0.3542,
+        "y": 0.0571,
+        "width": 0.2188,
+        "height": 0.4857
+      },
+      "color": {
+        "family": "green",
+        "rgb": [
+          155,
+          214,
+          187
+        ],
+        "confidence": 0.317
+      },
+      "shape": {
+        "evidence": {
+          "square": 0.2311,
+          "rectangle": 0.2703,
+          "circle": 0.3059,
+          "irregular": 0.1926
+        },
+        "bestGuess": "circle",
+        "confidence": 0.2538,
+        "aspectRatio": 1.2353,
+        "rectangularity": 0.5518
+      },
+      "edgeDensity": 0.3417
+    },
+    {
+      "id": 3,
+      "center": {
+        "x": 0.2024,
+        "y": 0.3062
+      },
+      "boundingBox": {
+        "x": 0.125,
+        "y": 0.0857,
+        "width": 0.1667,
+        "height": 0.4571
+      },
+      "color": {
+        "family": "blue",
+        "rgb": [
+          148,
+          177,
+          211
+        ],
+        "confidence": 0.343
+      },
+      "shape": {
+        "evidence": {
+          "square": 0.3039,
+          "rectangle": 0.3039,
+          "circle": 0.3197,
+          "irregular": 0.0725
+        },
+        "bestGuess": "circle",
+        "confidence": 0.2688,
+        "aspectRatio": 1,
+        "rectangularity": 0.7695
+      },
+      "edgeDensity": 0.3555
+    },
+    {
+      "id": 4,
+      "center": {
+        "x": 0.7307,
+        "y": 0.7353
+      },
+      "boundingBox": {
+        "x": 0.6979,
+        "y": 0.6857,
+        "width": 0.0625,
+        "height": 0.0857
+      },
+      "color": {
+        "family": "light-gray",
+        "rgb": [
+          220,
+          220,
+          220
+        ],
+        "confidence": 1
+      },
+      "shape": {
+        "evidence": {
+          "square": 0,
+          "rectangle": 0.5665,
+          "circle": 0,
+          "irregular": 0.4335
+        },
+        "bestGuess": "rectangle",
+        "confidence": 0.5665,
+        "aspectRatio": 2,
+        "rectangularity": 0.6667
+      },
+      "edgeDensity": 0.6111
+    },
+    {
+      "id": 5,
+      "center": {
+        "x": 0.2179,
+        "y": 0.7265
+      },
+      "boundingBox": {
+        "x": 0.1979,
+        "y": 0.6571,
+        "width": 0.0417,
+        "height": 0.1143
+      },
+      "color": {
+        "family": "light-gray",
+        "rgb": [
+          217,
+          217,
+          217
+        ],
+        "confidence": 1
+      },
+      "shape": {
+        "evidence": {
+          "square": 0.2451,
+          "rectangle": 0.2451,
+          "circle": 0.3627,
+          "irregular": 0.1471
+        },
+        "bestGuess": "circle",
+        "confidence": 0.3627,
+        "aspectRatio": 1,
+        "rectangularity": 0.625
+      },
+      "edgeDensity": 0.625
+    },
+    {
+      "id": 6,
+      "center": {
+        "x": 0.4556,
+        "y": 0.7353
+      },
+      "boundingBox": {
+        "x": 0.4375,
+        "y": 0.6857,
+        "width": 0.0313,
+        "height": 0.0857
+      },
+      "color": {
+        "family": "light-gray",
+        "rgb": [
+          217,
+          217,
+          217
+        ],
+        "confidence": 1
+      },
+      "shape": {
+        "evidence": {
+          "square": 0.2881,
+          "rectangle": 0.2881,
+          "circle": 0.3416,
+          "irregular": 0.0823
+        },
+        "bestGuess": "circle",
+        "confidence": 0.3416,
+        "aspectRatio": 1,
+        "rectangularity": 0.7778
+      },
+      "edgeDensity": 0.7778
+    },
+    {
+      "id": 7,
+      "center": {
+        "x": 0.4868,
+        "y": 0.7353
+      },
+      "boundingBox": {
+        "x": 0.4792,
+        "y": 0.6857,
+        "width": 0.0208,
+        "height": 0.0857
+      },
+      "color": {
+        "family": "white",
+        "rgb": [
+          230,
+          230,
+          230
+        ],
+        "confidence": 1
+      },
+      "shape": {
+        "evidence": {
+          "square": 0.2308,
+          "rectangle": 0.276,
+          "circle": 0.3346,
+          "irregular": 0.1587
+        },
+        "bestGuess": "circle",
+        "confidence": 0.3209,
+        "aspectRatio": 0.6667,
+        "rectangularity": 0.6667
+      },
+      "edgeDensity": 0.5
+    }
+  ],
+  "relationships": [
+    {
+      "a": 1,
+      "b": 2,
+      "relations": [
+        "A_RIGHT_OF_B",
+        "A_ABOVE_B"
+      ],
+      "centerDistance": 0.2835
+    },
+    {
+      "a": 1,
+      "b": 3,
+      "relations": [
+        "A_RIGHT_OF_B",
+        "FAR"
+      ],
+      "centerDistance": 0.5345
+    },
+    {
+      "a": 1,
+      "b": 4,
+      "relations": [
+        "A_ABOVE_B"
+      ],
+      "centerDistance": 0.4412
+    },
+    {
+      "a": 1,
+      "b": 5,
+      "relations": [
+        "A_RIGHT_OF_B",
+        "A_ABOVE_B",
+        "FAR"
+      ],
+      "centerDistance": 0.6754
+    },
+    {
+      "a": 1,
+      "b": 6,
+      "relations": [
+        "A_RIGHT_OF_B",
+        "A_ABOVE_B",
+        "FAR"
+      ],
+      "centerDistance": 0.5232
+    },
+    {
+      "a": 1,
+      "b": 7,
+      "relations": [
+        "A_RIGHT_OF_B",
+        "A_ABOVE_B",
+        "FAR"
+      ],
+      "centerDistance": 0.5071
+    },
+    {
+      "a": 2,
+      "b": 3,
+      "relations": [
+        "A_RIGHT_OF_B",
+        "A_BELOW_B"
+      ],
+      "centerDistance": 0.2687
+    },
+    {
+      "a": 2,
+      "b": 4,
+      "relations": [
+        "A_LEFT_OF_B",
+        "A_ABOVE_B",
+        "FAR"
+      ],
+      "centerDistance": 0.453
+    },
+    {
+      "a": 2,
+      "b": 5,
+      "relations": [
+        "A_RIGHT_OF_B",
+        "A_ABOVE_B"
+      ],
+      "centerDistance": 0.4333
+    },
+    {
+      "a": 2,
+      "b": 6,
+      "relations": [
+        "A_ABOVE_B"
+      ],
+      "centerDistance": 0.3659
+    },
+    {
+      "a": 2,
+      "b": 7,
+      "relations": [
+        "A_ABOVE_B"
+      ],
+      "centerDistance": 0.3665
+    },
+    {
+      "a": 3,
+      "b": 4,
+      "relations": [
+        "A_LEFT_OF_B",
+        "A_ABOVE_B",
+        "FAR"
+      ],
+      "centerDistance": 0.6806
+    },
+    {
+      "a": 3,
+      "b": 5,
+      "relations": [
+        "A_ABOVE_B"
+      ],
+      "centerDistance": 0.4206
+    },
+    {
+      "a": 3,
+      "b": 6,
+      "relations": [
+        "A_LEFT_OF_B",
+        "A_ABOVE_B",
+        "FAR"
+      ],
+      "centerDistance": 0.4982
+    },
+    {
+      "a": 3,
+      "b": 7,
+      "relations": [
+        "A_LEFT_OF_B",
+        "A_ABOVE_B",
+        "FAR"
+      ],
+      "centerDistance": 0.5148
+    },
+    {
+      "a": 4,
+      "b": 5,
+      "relations": [
+        "A_RIGHT_OF_B",
+        "FAR"
+      ],
+      "centerDistance": 0.5129
+    },
+    {
+      "a": 4,
+      "b": 6,
+      "relations": [
+        "A_RIGHT_OF_B"
+      ],
+      "centerDistance": 0.2751
+    },
+    {
+      "a": 4,
+      "b": 7,
+      "relations": [
+        "A_RIGHT_OF_B"
+      ],
+      "centerDistance": 0.2439
+    },
+    {
+      "a": 5,
+      "b": 6,
+      "relations": [
+        "A_LEFT_OF_B"
+      ],
+      "centerDistance": 0.2379
+    },
+    {
+      "a": 5,
+      "b": 7,
+      "relations": [
+        "A_LEFT_OF_B"
+      ],
+      "centerDistance": 0.269
+    },
+    {
+      "a": 6,
+      "b": 7,
+      "relations": [
+        "NEAR"
+      ],
+      "centerDistance": 0.0312
+    }
+  ],
+  "observationText": "Image dimensions: 662 × 240.\nAspect ratio: 2.75833.\nOrientation: landscape.\nVisual regions detected: 7.\nRegion 1: red (RGB 234,61,64), best shape rectangle, shape confidence 0.3547, center 0.7368,0.2941.\nRegion 2: green (RGB 155,214,187), best shape circle, shape confidence 0.2538, center 0.4635,0.3695.\nRegion 3: blue (RGB 148,177,211), best shape circle, shape confidence 0.2688, center 0.2024,0.3062.\nRegion 4: light-gray (RGB 220,220,220), best shape rectangle, shape confidence 0.5665, center 0.7307,0.7353.\nRegion 5: light-gray (RGB 217,217,217), best shape circle, shape confidence 0.3627, center 0.2179,0.7265.\nRegion 6: light-gray (RGB 217,217,217), best shape circle, shape confidence 0.3416, center 0.4556,0.7353.\nRegion 7: white (RGB 230,230,230), best shape circle, shape confidence 0.3209, center 0.4868,0.7353.",
+  "activeVision": {
+    "enabled": true,
+    "protocol": {
+      "request": {
+        "type": "ZOOM_REQUEST",
+        "x": "0.0-1.0",
+        "y": "0.0-1.0",
+        "width": "0.0-1.0",
+        "height": "0.0-1.0",
+        "requestedLongSide": "integer 32-512"
+      },
+      "response": {
+        "type": "ZOOM_RESULT",
+        "includes": [
+          "requestedRegion",
+          "sourcePixels",
+          "outputResolution",
+          "averageColor",
+          "pixelsRGB",
+          "localGeometry"
+        ]
+      }
+    }
+  },
+  "capabilities": [
+    "multi-resolution visual analysis",
+    "RGB pixel inspection",
+    "color-family classification",
+    "color confidence",
+    "region detection",
+    "geometry estimation",
+    "competing shape hypotheses",
+    "spatial relationships",
+    "normalized coordinates",
+    "active zoom inspection",
+    "LLM-controlled evidence requests"
+  ]
+}
