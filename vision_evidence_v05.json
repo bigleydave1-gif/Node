@@ -1,0 +1,114 @@
+{
+  "visionCortex": "0.5",
+  "representations": {
+    "coarse": {
+      "resolution": [
+        24,
+        9
+      ],
+      "edgeDensity": 0.3472
+    },
+    "medium": {
+      "resolution": [
+        48,
+        17
+      ],
+      "edgeDensity": 0.2022
+    },
+    "fine": {
+      "resolution": [
+        96,
+        35
+      ],
+      "edgeDensity": 0.1187
+    }
+  },
+  "scene": {
+    "visionCortex": "0.5",
+    "type": "algorithmic_scene_graph",
+    "source": {
+      "width": 662,
+      "height": 240,
+      "aspectRatio": 2.75833,
+      "orientation": "landscape"
+    },
+    "coordinateSystem": {
+      "origin": "top-left",
+      "xAxis": "right",
+      "yAxis": "down",
+      "normalized": true,
+      "range": "0.0-1.0"
+    },
+    "perception": {
+      "objectCount": 1,
+      "edgeDensity": 0.1187,
+      "contrast": 64.3983,
+      "sceneConfidence": 0.5752
+    },
+    "objects": [
+      {
+        "areaPixels": 3309,
+        "areaFraction": 0.984821,
+        "center": {
+          "x": 0.5017,
+          "y": 0.5017
+        },
+        "boundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        },
+        "geometry": {
+          "widthPixels": 96,
+          "heightPixels": 35,
+          "aspectRatio": 2.7429,
+          "rectangularity": 0.9848,
+          "perimeterPixels": 426,
+          "circularity": 0.2291,
+          "edgeDensity": 0.1187,
+          "shapeEvidence": {
+            "circle": 0.2418,
+            "square": 0,
+            "rectangle": 0.7422,
+            "irregular": 0.016
+          },
+          "bestShape": "rectangle",
+          "confidence": 0.5752
+        },
+        "appearance": {
+          "rgb": [
+            233,
+            223,
+            223
+          ],
+          "hex": "#e9dfdf",
+          "family": "white",
+          "confidence": 0.7318,
+          "hsv": {
+            "h": 0,
+            "s": 0.0429,
+            "v": 0.9137
+          }
+        },
+        "id": 1
+      }
+    ],
+    "relationships": [],
+    "reasoningPolicy": {
+      "identitiesAreHypotheses": true,
+      "geometryIsMeasuredEvidence": true,
+      "colorIsMeasuredEvidence": true,
+      "relationshipsAreComputed": true,
+      "confidenceIsNotCertainty": true,
+      "activeVisionEnabled": true
+    },
+    "activeVision": {
+      "requestType": "ZOOM_REQUEST",
+      "responseType": "ZOOM_RESULT",
+      "minLongSide": 32,
+      "maxLongSide": 512
+    }
+  },
+  "note": "Raw pixel evidence may be requested through Active Vision. The primary LLM packet intentionally prioritizes information-dense geometric evidence."
+}
