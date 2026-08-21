@@ -1,0 +1,3537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Free AI — Neon Aurora</title>
+<link id="manifestLink" rel="manifest">
+<meta name="theme-color" content="#24006d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Free AI">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+:root{--ink:#fff;--muted:rgba(255,255,255,.72);--border:rgba(255,255,255,.25);--pink:#ff20d9;--purple:#7b2cff;--blue:#168cff;--cyan:#00f0ff;--green:#00ff9d;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;background:#03000d;color:white;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;overscroll-behavior:none;}
+button,textarea,select{-webkit-appearance:none;appearance:none;}
+#bg{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;overflow:hidden;z-index:0;pointer-events:none;background:radial-gradient(ellipse at center,#24006d 0%,#09002e 45%,#02000d 100%);transition:background .7s ease;}
+#bg::before{content:"";position:absolute;width:170%;height:170%;left:-35%;top:-35%;background:radial-gradient(ellipse at 8% 18%,rgba(255,0,204,.95) 0%,rgba(255,0,204,0) 27%),radial-gradient(ellipse at 90% 15%,rgba(0,220,255,.92) 0%,rgba(0,220,255,0) 28%),radial-gradient(ellipse at 82% 72%,rgba(0,255,145,.78) 0%,rgba(0,255,145,0) 27%),radial-gradient(ellipse at 18% 82%,rgba(110,0,255,.92) 0%,rgba(110,0,255,0) 30%),radial-gradient(ellipse at 52% 55%,rgba(255,90,0,.70) 0%,rgba(255,90,0,0) 23%);filter:blur(48px);animation:cloudMove 18s ease-in-out infinite alternate;will-change:transform;}
+#bg::after{content:"";position:absolute;width:180%;height:180%;left:-40%;top:-40%;background:radial-gradient(ellipse at 20% 40%,rgba(0,255,255,.72) 0%,rgba(0,255,255,0) 23%),radial-gradient(ellipse at 78% 34%,rgba(255,0,170,.78) 0%,rgba(255,0,170,0) 24%),radial-gradient(ellipse at 50% 90%,rgba(255,220,0,.58) 0%,rgba(255,220,0,0) 25%);filter:blur(65px);mix-blend-mode:screen;animation:cloudMove2 23s ease-in-out infinite alternate;will-change:transform;}
+@keyframes cloudMove{0%{transform:rotate(0deg) scale(1) translate3d(-2%,-1%,0);}25%{transform:rotate(8deg) scale(1.08) translate3d(5%,-4%,0);}50%{transform:rotate(-5deg) scale(1.15) translate3d(-4%,6%,0);}75%{transform:rotate(12deg) scale(1.05) translate3d(6%,2%,0);}100%{transform:rotate(-8deg) scale(1.18) translate3d(-3%,-5%,0);}}
+@keyframes cloudMove2{0%{transform:rotate(0deg) scale(1) translate3d(3%,0,0);}30%{transform:rotate(-12deg) scale(1.12) translate3d(-5%,5%,0);}60%{transform:rotate(10deg) scale(1.18) translate3d(4%,-4%,0);}100%{transform:rotate(-6deg) scale(1.08) translate3d(-6%,3%,0);}}
+body.bg-eggshell{background:#f4f0e6;color:#171717;}
+body.bg-eggshell #bg{background:#f4f0e6;}
+body.bg-eggshell #bg::before,body.bg-eggshell #bg::after,body.bg-eggshell .aurora-ribbon,body.bg-eggshell .neon-glow{display:none;}
+body.bg-eggshell .vignette{display:none;}
+body.bg-gradient #bg{background:linear-gradient(125deg,#ff007a,#7b2cff,#168cff,#00eaff,#00ff9d,#ffe600);background-size:600% 600%;animation:gradientMove 14s ease infinite;}
+body.bg-gradient #bg::before{opacity:.18;}
+body.bg-gradient #bg::after{opacity:.12;}
+@keyframes gradientMove{0%{background-position:0% 50%}25%{background-position:100% 20%}50%{background-position:100% 90%}75%{background-position:0% 80%}100%{background-position:0% 50%}}
+.aurora-ribbon{position:absolute;width:160%;height:90px;left:-30%;border-radius:999px;filter:blur(14px);opacity:.78;mix-blend-mode:screen;will-change:transform;}
+.ribbon1{top:15%;background:linear-gradient(90deg,transparent,#ff00cc,#7b2cff,#00ccff,#00ff9d,transparent);animation:ribbon1 13s ease-in-out infinite alternate;}
+.ribbon2{top:44%;background:linear-gradient(90deg,transparent,#00f0ff,#168cff,#7b2cff,#ff20d9,transparent);animation:ribbon2 17s ease-in-out infinite alternate;}
+.ribbon3{top:72%;background:linear-gradient(90deg,transparent,#00ff9d,#00f0ff,#ffe600,#ff6a00,#ff20d9,transparent);animation:ribbon3 15s ease-in-out infinite alternate;}
+@keyframes ribbon1{0%{transform:translateX(-18%) translateY(0) rotate(-15deg) scaleY(1);}50%{transform:translateX(8%) translateY(35px) rotate(-7deg) scaleY(1.8);}100%{transform:translateX(-5%) translateY(-25px) rotate(-18deg) scaleY(1.2);}}
+@keyframes ribbon2{0%{transform:translateX(12%) translateY(0) rotate(13deg) scaleY(1);}50%{transform:translateX(-10%) translateY(-45px) rotate(20deg) scaleY(1.7);}100%{transform:translateX(5%) translateY(30px) rotate(7deg) scaleY(1.25);}}
+@keyframes ribbon3{0%{transform:translateX(-10%) translateY(0) rotate(-10deg) scaleY(1);}50%{transform:translateX(14%) translateY(-30px) rotate(-17deg) scaleY(1.8);}100%{transform:translateX(-2%) translateY(35px) rotate(-4deg) scaleY(1.3);}}
+.neon-glow{position:absolute;width:280px;height:280px;border-radius:50%;filter:blur(75px);opacity:.44;mix-blend-mode:screen;will-change:transform;}
+.glow1{background:#ff00cc;top:5%;left:-90px;animation:glow1 12s ease-in-out infinite alternate;}
+.glow2{background:#00eaff;right:-90px;top:35%;animation:glow2 14s ease-in-out infinite alternate;}
+.glow3{background:#00ff88;left:15%;bottom:-130px;animation:glow3 17s ease-in-out infinite alternate;}
+@keyframes glow1{to{transform:translate3d(45vw,20vh,0) scale(1.4);}}
+@keyframes glow2{to{transform:translate3d(-45vw,-20vh,0) scale(1.3);}}
+@keyframes glow3{to{transform:translate3d(30vw,-35vh,0) scale(1.5);}}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 28%,rgba(0,0,20,.20) 68%,rgba(0,0,15,.68) 100%);z-index:20;}
+#bgButton{position:fixed;top:calc(10px + env(safe-area-inset-top));left:12px;z-index:100;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(10,5,35,.55);color:white;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 5px 25px rgba(0,0,0,.25);cursor:pointer;}
+#bgButton svg{width:19px;height:19px;}
+#bgButton:active{transform:scale(.92);}
+#bgMenu{position:fixed;top:calc(58px + env(safe-area-inset-top));left:12px;z-index:101;width:205px;padding:8px;border-radius:17px;background:rgba(8,4,40,.88);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 18px 55px rgba(0,0,0,.4);opacity:0;transform:translateY(-7px) scale(.97);pointer-events:none;transition:.2s ease;}
+#bgMenu.open{opacity:1;transform:none;pointer-events:auto;}
+#recoverMenu{position:fixed;top:calc(58px + env(safe-area-inset-top));right:12px;z-index:101;width:230px;padding:8px;border-radius:17px;background:rgba(8,4,40,.88);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 18px 55px rgba(0,0,0,.4);opacity:0;transform:translateY(-7px) scale(.97);pointer-events:none;transition:.2s ease;}
+#recoverMenu.open{opacity:1;transform:none;pointer-events:auto;}
+.bgMenuTitle{font-size:12px;color:rgba(255,255,255,.65);padding:6px 9px 8px;}
+.bgOption{width:100%;border:0;background:transparent;color:white;padding:10px;border-radius:11px;text-align:left;font-family:inherit;cursor:pointer;}
+.bgOption:hover,.bgOption.active{background:rgba(255,255,255,.13);}
+#toolbar{position:fixed;top:calc(10px + env(safe-area-inset-top));right:12px;z-index:100;display:flex;gap:8px;}
+.toolbarBtn{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(10,5,35,.55);color:white;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 5px 25px rgba(0,0,0,.25);cursor:pointer;position:relative;}
+.toolbarBtn svg{width:18px;height:18px;}
+.toolbarBtn:active{transform:scale(.92);}
+.toolbarBtn .dot{position:absolute;top:-2px;right:-2px;width:9px;height:9px;border-radius:50%;background:#00ff9d;box-shadow:0 0 8px #00ff9d;display:none;}
+.toolbarBtn .dot.show{display:block;}
+#toolbarMenu{position:fixed;top:calc(58px + env(safe-area-inset-top));right:12px;z-index:101;width:250px;padding:8px;border-radius:17px;background:rgba(8,4,40,.88);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 18px 55px rgba(0,0,0,.4);opacity:0;transform:translateY(-7px) scale(.97);pointer-events:none;transition:.2s ease;max-height:80vh;overflow-y:auto;}
+#toolbarMenu.open{opacity:1;transform:none;pointer-events:auto;}
+.tMenuTitle{font-size:12px;color:rgba(255,255,255,.65);padding:6px 9px 8px;}
+.tOption{width:100%;border:0;background:transparent;color:white;padding:10px;border-radius:11px;text-align:left;font-family:inherit;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.tOption:hover{background:rgba(255,255,255,.13);}
+.tOption .sub{font-size:11px;color:rgba(255,255,255,.55);display:block;margin-top:2px;}
+#offlineBanner{position:fixed;top:calc(56px + env(safe-area-inset-top));left:50%;transform:translateX(-50%) translateY(-8px);z-index:99;padding:8px 16px;border-radius:999px;font-size:12px;background:rgba(255,150,0,.20);border:1px solid rgba(255,180,60,.55);color:#ffe1b0;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:.25s ease;white-space:nowrap;max-width:calc(100vw - 24px);overflow:hidden;text-overflow:ellipsis;}
+#offlineBanner.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.modalShade{position:fixed;inset:0;z-index:200;background:rgba(2,0,10,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;}
+.modalShade.open{display:flex;}
+.modalCard{width:min(380px,100%);max-height:80vh;overflow-y:auto;padding:22px;border-radius:22px;background:rgba(10,5,40,.92);border:1px solid rgba(255,255,255,.25);box-shadow:0 25px 80px rgba(0,0,0,.5);}
+.modalCard.wide{width:min(620px,100%);}
+.modalCard.mapCard{width:min(720px,100%);max-height:92vh;}
+.modalShade.mapFloating{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;pointer-events:none;align-items:flex-start;justify-content:center;padding:0;padding-top:calc(56px + env(safe-area-inset-top));}
+.modalShade.mapFloating .mapCard{pointer-events:auto;width:min(680px,calc(100% - 20px));max-height:min(58vh,540px);background:rgba(8,4,35,.62);border:1px solid rgba(255,255,255,.30);box-shadow:0 20px 60px rgba(0,0,0,.45);}
+#mapContainer{width:100%;height:min(42vh,380px);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.06);margin:10px 0;opacity:.94;}
+#gpsStatus{font-size:12.5px;line-height:1.6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:10px 12px;white-space:pre-line;}
+.modalCard h2{margin:0 0 10px;font-family:'Fraunces',serif;font-size:19px;}
+.modalCard p{font-size:13px;line-height:1.55;color:rgba(255,255,255,.82);margin:0 0 10px;}
+.modalSteps{margin:12px 0;padding:0;list-style:none;}
+.modalSteps li{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5;color:rgba(255,255,255,.85);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.10);}
+.modalSteps li:last-child{border-bottom:0;}
+.stepNum{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#ff20c8,#168cff);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
+.modalActions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.modalActions button{flex:1;min-width:110px;padding:11px;border-radius:12px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.09);color:white;cursor:pointer;font-size:13px;font-family:inherit;}
+.modalActions button.primary{background:linear-gradient(135deg,#ff20c8,#7b2cff,#168cff);border-color:rgba(255,255,255,.45);}
+.memoryList{display:flex;flex-direction:column;gap:8px;margin:12px 0;}
+.memoryItem{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:12.5px;}
+.memoryItem .memText{flex:1;line-height:1.4;}
+.memoryItem button{flex-shrink:0;border:0;background:transparent;color:rgba(255,255,255,.55);font-size:16px;cursor:pointer;padding:0 3px;}
+.memoryEmpty{font-size:12.5px;color:rgba(255,255,255,.55);padding:10px 0;}
+.convoList{display:flex;flex-direction:column;gap:8px;margin:12px 0;}
+.convoItem{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 11px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:12.5px;cursor:pointer;}
+.convoItem:hover{background:rgba(255,255,255,.14);}
+.convoItem .convoMain{flex:1;min-width:0;}
+.convoItem .convoTitle{font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.convoItem .convoMeta{font-size:11px;color:rgba(255,255,255,.55);}
+.convoItem .convoDel{flex-shrink:0;border:0;background:transparent;color:rgba(255,255,255,.55);font-size:16px;cursor:pointer;padding:0 3px;}
+#codeViewerBody{white-space:pre;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.5;background:rgba(0,0,10,.55);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:12px;max-height:50vh;overflow-y:auto;color:#c9f7ff;}
+#codeEditArea{width:100%;min-height:50vh;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.5;background:rgba(0,0,10,.55);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:12px;color:#c9f7ff;resize:vertical;}
+#cameraPreview{width:100%;border-radius:14px;background:#000;max-height:50vh;display:block;}
+#cameraCanvas{display:none;}
+#app{position:relative;z-index:5;width:100%;max-width:720px;height:100vh;height:100dvh;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;}
+#loading{position:absolute;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:32px;text-align:center;background:rgba(5,0,30,.30);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:opacity .5s ease,visibility .5s ease;}
+#loading.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.loading-mark{width:64px;height:64px;border-radius:50%;border:3px solid rgba(255,255,255,.20);border-top-color:#ff20d9;border-right-color:#00f0ff;border-bottom-color:#00ff9d;animation:spin .9s linear infinite;box-shadow:0 0 30px rgba(255,0,220,.55);}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loading h1{margin:0;font-family:'Fraunces',serif;font-size:23px;}
+#loading p{margin:0;max-width:330px;color:rgba(255,255,255,.82);font-size:14px;line-height:1.5;}
+#loadingProgWrap{width:220px;height:7px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.18);}
+#loadingProgBar{width:0%;height:100%;border-radius:999px;background:linear-gradient(90deg,#ff00cc,#7b2cff,#00ccff,#00ff9d);box-shadow:0 0 15px #00eaff;transition:width .25s ease;}
+#loadingPct{color:rgba(255,255,255,.75);font-size:12px;}
+#loadingError{display:none;max-width:320px;color:#ffb5d9;font-size:13px;line-height:1.5;}
+#loadingCachedNote{display:none;max-width:320px;color:#b8ffd9;font-size:12.5px;line-height:1.5;}
+header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:calc(14px + env(safe-area-inset-top)) 100px 12px 62px;background:linear-gradient(180deg,rgba(5,0,30,.30),rgba(5,0,30,.08));border-bottom:1px solid rgba(255,255,255,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+header h1{margin:0;font-family:'Fraunces',serif;font-size:21px;font-weight:600;color:white;text-shadow:0 0 20px rgba(255,255,255,.35);}
+#speakToggle{display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.30);background:rgba(255,255,255,.10);color:rgba(255,255,255,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer;font-family:'Inter',sans-serif;font-size:12px;}
+#speakToggle.on{color:white;border-color:rgba(255,100,220,.75);background:rgba(255,30,210,.20);box-shadow:0 0 18px rgba(255,20,210,.35);}
+#speakToggle svg{width:14px;height:14px;}
+#voicePanel{position:absolute;right:14px;top:calc(60px + env(safe-area-inset-top));z-index:40;width:min(300px,calc(100vw - 28px));padding:15px;border-radius:18px;background:rgba(8,4,40,.82);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 15px 50px rgba(0,0,0,.30);opacity:0;transform:translateY(-8px) scale(.98);pointer-events:none;transition:opacity .2s ease,transform .2s ease;}
+#voicePanel.open{opacity:1;transform:none;pointer-events:auto;}
+.voiceTitle{font-size:13px;font-weight:600;margin-bottom:10px;}
+.voiceRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;}
+.voiceRow label{font-size:12px;color:rgba(255,255,255,.72);}
+#voiceSelect{width:100%;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,.20);background:rgba(0,0,20,.60);color:white;outline:none;}
+#rateSlider{width:145px;accent-color:#ff35d6;}
+#rateValue{min-width:45px;text-align:right;font-size:12px;}
+#testVoiceBtn{width:100%;margin-top:12px;padding:9px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.09);color:white;cursor:pointer;}
+#mediaPanel{position:absolute;left:12px;right:12px;bottom:90px;z-index:35;max-height:60%;overflow:auto;padding:12px;border-radius:18px;background:rgba(7,3,30,.88);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 20px 70px rgba(0,0,0,.42);display:none;}
+#mediaPanel.open{display:block;}
+.mediaTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.mediaTitle{font-weight:600;font-size:13px;}
+.mediaClose{border:0;background:transparent;color:white;font-size:20px;cursor:pointer;}
+.mediaContent img,.mediaContent video{display:block;width:100%;max-height:45vh;object-fit:contain;border-radius:12px;background:#000;}
+.mediaContent img{min-height:80px;}
+.mediaContent audio{width:100%;}
+.mediaStatus{padding:20px;text-align:center;font-size:13px;color:rgba(255,255,255,.78);}
+.mediaActions{display:flex;gap:8px;margin-top:10px;}
+.mediaActions button,.mediaActions a{flex:1;min-width:0;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.09);color:white;text-align:center;text-decoration:none;font-size:12px;cursor:pointer;}
+#log{flex:1;min-height:0;overflow-y:auto;padding:14px 16px 16px;display:flex;flex-direction:column;gap:14px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+#log::-webkit-scrollbar{display:none;}
+.bubble-row{display:flex;width:100%;}
+.bubble-row.user{justify-content:flex-end;}
+.bubble-row.ai{justify-content:flex-start;}
+.bubble{max-width:84%;padding:12px 16px;border-radius:20px;font-size:15px;line-height:1.5;word-break:break-word;white-space:pre-wrap;animation:bubbleIn .25s ease-out;box-shadow:0 8px 30px rgba(0,0,0,.18);}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(8px) scale(.98);}to{opacity:1;transform:none;}}
+.bubble.ai{color:white;background:linear-gradient(135deg,rgba(90,30,180,.45),rgba(0,160,255,.25));border:1px solid rgba(255,255,255,.32);border-bottom-left-radius:5px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);}
+.bubble.user{color:white;background:linear-gradient(135deg,rgba(20,5,80,.75),rgba(40,0,100,.65));border:1px solid rgba(100,220,255,.45);border-bottom-right-radius:5px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);}
+.bubble.error{color:white;background:rgba(170,20,70,.58);border:1px solid rgba(255,120,170,.45);}
+.bubble.notice{color:white;background:rgba(20,90,150,.38);border:1px solid rgba(100,220,255,.35);}
+.bubble.permission{color:white;background:rgba(120,80,10,.42);border:1px solid rgba(255,205,100,.45);}
+.permBtnRow{display:flex;gap:8px;margin-top:10px;}
+.permBtnRow button{flex:1;padding:9px;border-radius:10px;border:1px solid rgba(255,255,255,.30);background:rgba(255,255,255,.12);color:white;font-family:inherit;font-size:12.5px;cursor:pointer;}
+.permBtnRow button.allow{background:linear-gradient(135deg,#00c97a,#00a3ff);border-color:rgba(255,255,255,.45);}
+.rewindRow{padding:8px 9px;}
+.rewindRow .rewindLabel{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:6px;display:flex;justify-content:space-between;}
+.rewindRow input[type=range]{width:100%;accent-color:#ff35d6;}
+.rewindRow button{width:100%;margin-top:8px;padding:9px;border-radius:10px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:white;font-family:inherit;font-size:12.5px;cursor:pointer;}
+.typing-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:white;margin-right:4px;box-shadow:0 0 10px #00eaff;animation:bounce 1.1s infinite;}
+.typing-dot:nth-child(2){animation-delay:.15s;}
+.typing-dot:nth-child(3){animation-delay:.30s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.35;}30%{transform:translateY(-5px);opacity:1;}}
+form#inputRow{flex-shrink:0;display:flex;align-items:flex-end;gap:8px;padding:10px 14px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(5,0,30,.42),rgba(5,0,30,.08));border-top:1px solid rgba(255,255,255,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+#cmd{flex:1;min-width:0;max-height:120px;resize:none;outline:none;padding:12px 16px;border-radius:23px;border:1px solid rgba(255,255,255,.28);background:rgba(8,4,45,.44);color:white;caret-color:#00f0ff;font-family:'Inter',sans-serif;font-size:16px;line-height:1.4;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);}
+#cmd::placeholder{color:rgba(255,255,255,.62);}
+#cmd:focus{border-color:rgba(0,240,255,.70);box-shadow:0 0 18px rgba(0,240,255,.18);}
+#cmd:disabled{opacity:.5;}
+button.round{width:46px;height:46px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.30);cursor:pointer;color:white;}
+button.round:active{transform:scale(.92);}
+button.round:disabled{opacity:.35;cursor:not-allowed;}
+#micBtn{background:rgba(30,10,90,.50);box-shadow:0 0 18px rgba(110,0,255,.20);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);}
+#micBtn.listening{background:linear-gradient(135deg,#ff008c,#ff3b00);border-color:rgba(255,255,255,.55);animation:micPulse 1s infinite;}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,0,180,.45);}50%{box-shadow:0 0 0 10px rgba(255,0,180,0);}}
+#sendBtn{background:linear-gradient(135deg,#ff20c8,#7b2cff,#168cff);border:1px solid rgba(255,255,255,.45);box-shadow:0 0 25px rgba(255,20,210,.35);}
+#sendBtn:disabled{opacity:.4;}
+button.round svg{width:20px;height:20px;}
+body.bg-eggshell header,body.bg-eggshell form#inputRow{background:rgba(255,255,255,.38);border-color:rgba(0,0,0,.12);}
+body.bg-eggshell header h1,body.bg-eggshell .bubble,body.bg-eggshell #speakToggle,body.bg-eggshell #cmd,body.bg-eggshell button.round{color:#171717;text-shadow:none;}
+body.bg-eggshell #cmd{background:rgba(255,255,255,.65);border-color:rgba(0,0,0,.18);caret-color:#5b35ff;}
+body.bg-eggshell #cmd::placeholder{color:rgba(0,0,0,.50);}
+body.bg-eggshell .bubble.ai{color:#171717;background:rgba(255,255,255,.75);border-color:rgba(0,0,0,.12);}
+body.bg-eggshell .bubble.user{color:#171717;background:rgba(230,225,215,.9);border-color:rgba(0,0,0,.12);}
+body.bg-eggshell #speakToggle{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.16);}
+body.bg-eggshell #micBtn{color:#171717;background:rgba(255,255,255,.7);}
+body.bg-eggshell .toolbarBtn,body.bg-eggshell #bgButton{color:#171717;background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.16);}
+body.bg-eggshell #toolbarMenu,body.bg-eggshell #recoverMenu,body.bg-eggshell #bgMenu{background:rgba(255,255,255,.92);color:#171717;border-color:rgba(0,0,0,.14);}
+body.bg-eggshell .tOption,body.bg-eggshell .bgOption{color:#171717;}
+body.bg-eggshell .modalCard{background:rgba(255,255,255,.96);color:#171717;border-color:rgba(0,0,0,.14);}
+body.bg-eggshell .modalCard p,body.bg-eggshell .modalSteps li{color:rgba(0,0,0,.72);}
+body.bg-eggshell .memoryItem,body.bg-eggshell .convoItem{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.10);color:#171717;}
+body.bg-eggshell #codeViewerBody,body.bg-eggshell #codeEditArea{background:rgba(0,0,0,.05);color:#0b3d4a;border-color:rgba(0,0,0,.14);}
+#brainButton{display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid rgba(0,255,157,.7);background:rgba(255,255,255,.10);color:rgba(255,255,255,.85);box-shadow:0 0 14px rgba(0,255,157,.18);font-family:'Inter',sans-serif;font-size:11.5px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer;}
+#brainButton .lamp{width:9px;height:9px;border-radius:50%;background:#00ff9d;box-shadow:0 0 6px #00ff9d,0 0 16px #00ff9d;animation:brainFlicker 1.2s infinite;flex-shrink:0;}
+#brainButton.cloud{border-color:rgba(0,240,255,.8);box-shadow:0 0 14px rgba(0,240,255,.2);}
+#brainButton.cloud .lamp{background:#00f0ff;box-shadow:0 0 6px #00f0ff,0 0 16px #00f0ff;}
+#brainButton.auto{border-color:rgba(190,100,255,.8);}
+#brainButton.auto .lamp{background:#bd65ff;box-shadow:0 0 6px #bd65ff,0 0 16px #bd65ff;}
+#brainButton.error{border-color:rgba(255,120,80,.85);}
+#brainButton.error .lamp{background:#ff7850;box-shadow:0 0 6px #ff7850,0 0 16px #ff7850;animation:none;}
+@keyframes brainFlicker{0%,18%,22%,64%,70%,100%{opacity:1}20%,68%{opacity:.4}69%{opacity:.9}}
+#brainMenu{position:fixed;right:12px;top:calc(60px + env(safe-area-inset-top));z-index:102;width:min(300px,calc(100vw - 24px));padding:12px;border-radius:18px;background:rgba(8,4,40,.90);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 18px 55px rgba(0,0,0,.4);opacity:0;transform:translateY(-8px) scale(.98);pointer-events:none;transition:.2s ease;}
+#brainMenu.open{opacity:1;transform:none;pointer-events:auto;}
+.brainModeBtn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:5px 0;padding:10px 11px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;text-align:left;font-family:inherit;cursor:pointer;}
+.brainModeBtn.active{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.14);}
+.brainModeBtn b{display:block;font-size:12.5px;}
+.brainModeBtn span{display:block;color:rgba(255,255,255,.6);font-size:10.5px;margin-top:2px;}
+.cloudField{margin:10px 0;}
+.cloudField label{display:block;font-size:11px;color:rgba(255,255,255,.65);margin-bottom:5px;}
+.cloudField input{width:100%;padding:9px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,20,.55);color:#fff;outline:none;font-family:inherit;font-size:13px;}
+body.bg-eggshell #brainButton{color:#171717;background:rgba(255,255,255,.7);}
+body.bg-eggshell #brainMenu{background:rgba(255,255,255,.94);color:#171717;border-color:rgba(0,0,0,.14);}
+body.bg-eggshell .brainModeBtn{color:#171717;}
+body.bg-eggshell .cloudField input{background:rgba(255,255,255,.65);color:#171717;border-color:rgba(0,0,0,.18);}
+@media(max-width:720px){.bubble{max-width:89%;}}
+@media(prefers-reduced-motion:reduce){#bg::before,#bg::after,.aurora-ribbon,.neon-glow,#bg{animation-duration:40s;}}
+</style>
+</head>
+<body>
+<div id="bg">
+  <div class="aurora-ribbon ribbon1"></div>
+  <div class="aurora-ribbon ribbon2"></div>
+  <div class="aurora-ribbon ribbon3"></div>
+  <div class="neon-glow glow1"></div>
+  <div class="neon-glow glow2"></div>
+  <div class="neon-glow glow3"></div>
+  <div class="vignette"></div>
+</div>
+<button id="bgButton" type="button" title="Change background" aria-label="Change background">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg>
+</button>
+<div id="bgMenu">
+  <div class="bgMenuTitle">Background</div>
+  <button class="bgOption" data-bg="aurora" type="button">🌌 Neon Aurora</button>
+  <button class="bgOption" data-bg="gradient" type="button">🌈 Color-changing gradient</button>
+  <button class="bgOption" data-bg="eggshell" type="button">🥚 Plain eggshell</button>
+</div>
+<div id="toolbar">
+  <button id="rollbackBtn" class="toolbarBtn" type="button" title="Crash log & rollback" aria-label="Rollback">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg>
+  </button>
+  <button id="recoverBtn" class="toolbarBtn" type="button" title="Stuck? Tap to recover" aria-label="Recover">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg>
+  </button>
+  <div id="recoverMenu">
+    <div class="bgMenuTitle">Stuck? Try one of these</div>
+    <button class="bgOption" id="recoverRefresh" type="button">🔄 Refresh the app</button>
+    <div class="rewindRow">
+      <div class="rewindLabel"><span>⏪ Rewind messages</span><span id="rewindRangeValue">10</span></div>
+      <input id="rewindRange" type="range" min="1" max="20" step="1" value="10">
+      <button type="button" id="recoverRewindConfirm">Rewind</button>
+    </div>
+  </div>
+  <button id="memoryBtn" class="toolbarBtn" type="button" title="What it remembers" aria-label="Memory">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 00-7 7c0 2.5 1.2 4 2.3 5.2.5.6.7 1 .7 1.8V18h8v-2c0-.8.2-1.2.7-1.8C17.8 13 19 11.5 19 9a7 7 0 00-7-7z"/><path d="M9 21h6"/><path d="M10 18v3M14 18v3"/></svg>
+  </button>
+  <button id="installBtn" class="toolbarBtn" type="button" title="Save to home screen" aria-label="Install">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+    <span class="dot" id="installDot"></span>
+  </button>
+</div>
+<div id="toolbarMenu">
+  <div class="tMenuTitle">More</div>
+  <button class="tOption" id="tInstall" type="button"><span>📲 Save to home screen<span class="sub">Use it like an app, no browser bar</span></span></button>
+  <button class="tOption" id="tMemory" type="button"><span>🧠 What it remembers<span class="sub">Names, topics, saved facts</span></span></button>
+  <button class="tOption" id="tConvos" type="button"><span>💬 Saved conversations<span class="sub">Full chat history, saved on this device</span></span></button>
+  <button class="tOption" id="tCode" type="button"><span>🧩 View / edit app code<span class="sub">See and modify this app's own source</span></span></button>
+  <button class="tOption" id="tDownloads" type="button"><span>📡 What's been downloaded<span class="sub">Everything fetched from the internet this session</span></span></button>
+  <button class="tOption" id="tMap" type="button"><span>🗺️ Map &amp; GPS<span class="sub">Real location with roads &amp; streets, floats over chat</span></span></button>
+  <button class="tOption" id="tCamera" type="button"><span>📷 Camera<span class="sub">Take a photo or video (asks permission first)</span></span></button>
+  <button class="tOption" id="tExport" type="button"><span>📤 Export memory &amp; chats<span class="sub">Save a file to move to another install</span></span></button>
+  <button class="tOption" id="tImport" type="button"><span>📥 Import memory &amp; chats<span class="sub">Load a file exported from another install</span></span></button>
+  <input id="importInput" type="file" accept="application/json" hidden>
+  <button class="tOption" id="tForget" type="button"><span>🗑️ Forget everything<span class="sub">Clears saved memory only</span></span></button>
+</div>
+<div id="offlineBanner"></div>
+<div class="modalShade" id="installModalShade">
+  <div class="modalCard">
+    <h2 id="installModalTitle">Save to your home screen</h2>
+    <p id="installModalBody">Once installed, this opens like its own app and the AI model stays saved on this device — no internet needed to chat after the first setup.</p>
+    <ol class="modalSteps" id="installSteps"></ol>
+    <div class="modalActions">
+      <button type="button" id="installModalClose">Close</button>
+      <button type="button" id="installModalGo" class="primary" style="display:none;">Install</button>
+    </div>
+  </div>
+</div>
+<div class="modalShade" id="memoryModalShade">
+  <div class="modalCard">
+    <h2>What I remember</h2>
+    <p>Saved only on this device. Nothing here is sent anywhere — it's just used to keep our conversations feeling continuous.</p>
+    <div class="memoryList" id="memoryList"></div>
+    <div class="modalActions">
+      <button type="button" id="memoryModalClose">Close</button>
+      <button type="button" id="memoryClearAll" class="primary">Forget all</button>
+    </div>
+  </div>
+</div>
+<div class="modalShade" id="cloudModalShade">
+  <div class="modalCard">
+    <h2>🔵 Cloud connection</h2>
+    <p>Use an OpenAI-compatible chat endpoint, or your own proxy. A key stored in this browser can be exposed to anyone using this device or a public deployment — for a shared deployment, a server-side proxy is safer than a browser-stored key. No key is ever hardcoded into this app.</p>
+    <div class="cloudField"><label>Endpoint URL</label><input id="cloudEndpointInput" placeholder="https://your-server.example/v1/chat/completions"></div>
+    <div class="cloudField"><label>API key (optional, stored only on this device)</label><input id="cloudKeyInput" type="password"></div>
+    <div class="cloudField"><label>Model</label><input id="cloudModelInput" placeholder="gpt-4o-mini"></div>
+    <div id="cloudTestResult" style="font-size:12px;color:rgba(255,255,255,.75);margin:4px 0 0;display:none;"></div>
+    <div class="modalActions">
+      <button type="button" id="cloudSaveBtn" class="primary">Save</button>
+      <button type="button" id="cloudTestBtn">Test connection</button>
+      <button type="button" id="cloudModalClose">Close</button>
+    </div>
+  </div>
+</div>
+<div class="modalShade" id="convoModalShade">
+  <div class="modalCard">
+    <h2>Saved conversations</h2>
+    <p>Every conversation is saved on this device automatically, so you can pick up where you left off. Tap one to reload it, or delete it.</p>
+    <div class="convoList" id="convoList"></div>
+    <div class="modalActions">
+      <button type="button" id="convoNewBtn">➕ New conversation</button>
+      <button type="button" id="convoContinueBtn">🔗 Continue in new conversation</button>
+      <button type="button" id="convoModalClose">Close</button>
+    </div>
+  </div>
+</div>
+<div class="modalShade" id="codeModalShade">
+  <div class="modalCard wide">
+    <h2>App code</h2>
+    <p id="codeModalDesc">This is this app's own HTML/CSS/JS source, read live from the file itself. You can view it, or switch to Edit to change it and save a modified copy back to this device.</p>
+    <div id="codeViewerBody"></div>
+    <textarea id="codeEditArea" style="display:none;" spellcheck="false"></textarea>
+    <input id="codeFileInput" type="file" accept=".html,.htm,text/html,text/plain" hidden>
+    <div class="modalActions">
+      <button type="button" id="codeToggleEdit">✏️ Edit</button>
+      <button type="button" id="codeCopyBtn">📋 Copy</button>
+      <button type="button" id="codeDownloadBtn" class="primary">⬇️ Save as file</button>
+      <button type="button" id="codeUploadBtn">📁 Load a file</button>
+      <button type="button" id="codeRunUploadedBtn">⚠️ Run loaded file now</button>
+      <button type="button" id="codeModalClose">Close</button>
+    </div>
+  </div>
+</div>
+<div class="modalShade" id="mapModalShade">
+  <div class="modalCard wide mapCard">
+    <h2>Map &amp; GPS</h2>
+    <p>Your position comes straight from this device's real GPS chip — no internet or mobile data needed for the position fix itself. The map picture streams from OpenStreetMap and needs internet to load each area the first time. This panel floats over the chat so you can keep talking while you look at it.</p>
+    <div id="gpsStatus">Tap "Start GPS" to get a position fix.</div>
+    <div id="mapContainer"></div>
+    <div id="routeStatus" style="display:none;font-size:12.5px;line-height:1.6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:10px 12px;margin:10px 0;"></div>
+    <div class="modalActions">
+      <button type="button" id="gpsStartBtn" class="primary">📡 Start GPS</button>
+      <button type="button" id="routePlannerBtn" class="primary">🧭 Plan a route</button>
+      <button type="button" id="waypointSaveBtn">📍 Save waypoint here</button>
+      <button type="button" id="waypointListBtn">📋 Waypoints</button>
+      <button type="button" id="view3DBtn" disabled>🏔️ View route in 3D</button>
+      <button type="button" id="mapModalClose">Close</button>
+    </div>
+  </div>
+</div>
+<!-- ROUTE PLANNER: start point + finish point menu -->
+<div class="modalShade" id="routePlannerModalShade">
+  <div class="modalCard">
+    <h2>Plan a route</h2>
+    <p>Pick a start and a destination. This gets a real, road-following route (not a straight line), then opens the 3D view. If GPS tracking is running, you'll get spoken turn alerts as you drive.</p>
+    <div class="voiceRow"><label>Start</label></div>
+    <select id="routeStartSelect"></select>
+    <div class="voiceRow" style="margin-top:12px;"><label>Destination</label></div>
+    <select id="routeDestSelect"></select>
+    <div class="modalActions">
+      <button type="button" id="routePlanGoBtn" class="primary">🧭 Get route</button>
+      <button type="button" id="routePlannerClose">Close</button>
+    </div>
+  </div>
+</div>
+<!-- 3D TERRAIN VIEW: MapLibre GL JS + free AWS elevation tiles, real route line -->
+<div class="modalShade" id="terrain3DModalShade">
+  <div class="modalCard wide" style="padding:0;overflow:hidden;">
+    <div id="terrain3DStatus" style="padding:14px 16px 0;font-size:12.5px;color:rgba(255,255,255,.75);"></div>
+    <div id="terrain3DContainer" style="width:100%;height:64vh;background:#000;"></div>
+    <div class="modalActions" style="padding:14px;">
+      <button type="button" id="terrain3DClose">Close</button>
+    </div>
+  </div>
+</div>
+<div class="modalShade" id="waypointModalShade">
+  <div class="modalCard">
+    <h2>Saved waypoints</h2>
+    <p>Stored on this device only — works fully offline. Tap "🧭 Route" on any waypoint to get a real road-following route from your current GPS position.</p>
+    <div class="convoList" id="waypointList"></div>
+    <div class="modalActions"><button type="button" id="waypointModalClose">Close</button></div>
+  </div>
+</div>
+<!-- CAMERA MODAL: 📷 Take a photo/video, plus 👁️ vision watch mode -->
+<div class="modalShade" id="cameraModalShade">
+  <div class="modalCard wide">
+    <h2>Camera</h2>
+    <p id="cameraModalDesc">This uses your device's real camera. Nothing is captured until you tap the shutter — nothing is ever sent off this device.</p>
+    <video id="cameraPreview" autoplay playsinline muted></video>
+    <canvas id="cameraCanvas"></canvas>
+    <div id="cameraWatchStatus" style="display:none;font-size:12px;color:rgba(255,255,255,.7);margin-top:8px;line-height:1.5;"></div>
+    <div class="modalActions">
+      <button type="button" id="cameraSwitchBtn">🔄 Switch camera</button>
+      <button type="button" id="cameraSnapBtn" class="primary">📸 Take photo</button>
+      <button type="button" id="cameraRecordBtn">⏺️ Record video</button>
+      <button type="button" id="cameraWatchBtn">👁️ Let her see (real vision)</button>
+      <button type="button" id="cameraModalClose">Close</button>
+    </div>
+  </div>
+</div>
+<div class="modalShade" id="rollbackModalShade">
+  <div class="modalCard wide">
+    <h2>Crash log &amp; rollback</h2>
+    <p>Real crashes get saved here automatically with their actual error and stack trace. Checkpoints are safe, working snapshots saved automatically each time the app starts up cleanly. Restoring a checkpoint swaps this browser tab back to that snapshot; it doesn't change the real file hosted on EdgeOne.</p>
+    <div id="rollbackBody"></div>
+    <div class="modalActions">
+      <button type="button" id="saveCheckpointBtn">💾 Save checkpoint now</button>
+      <button type="button" id="rollbackModalClose">Close</button>
+    </div>
+  </div>
+</div>
+<div id="app">
+  <div id="loading">
+    <div class="loading-mark"></div>
+    <h1>Getting your assistant ready</h1>
+    <p id="loadingMsg">Downloading the AI model — this only happens once, then it's saved on this device.</p>
+    <div id="loadingProgWrap"><div id="loadingProgBar"></div></div>
+    <div id="loadingPct">0%</div>
+    <div id="loadingCachedNote"></div>
+    <div id="loadingError"></div>
+  </div>
+  <header>
+    <h1>Chat</h1>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button id="brainButton" type="button" title="Brain mode">
+        <span class="lamp"></span>
+        <strong id="brainLabel">LOCAL</strong>
+      </button>
+      <button id="speakToggle" type="button" title="Voice settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/></svg>
+        <span id="speakLabel">Voice off</span>
+      </button>
+    </div>
+  </header>
+  <div id="voicePanel">
+    <div class="voiceTitle">🎙️ Voice settings</div>
+    <div class="voiceRow"><label>Voice</label></div>
+    <select id="voiceSelect"><option>Loading voices…</option></select>
+    <div class="voiceRow"><label for="rateSlider">Speed</label><input id="rateSlider" type="range" min="0.75" max="1.15" step="0.01" value="0.94"><span id="rateValue">0.94×</span></div>
+    <button id="testVoiceBtn" type="button">🔊 Test voice</button>
+  </div>
+  <div id="brainMenu">
+    <div class="bgMenuTitle">🧠 Brain mode</div>
+    <button class="brainModeBtn active" data-mode="local" type="button">
+      <div><b>🟢 LOCAL</b><span>Always on-device — works fully offline, never sent anywhere.</span></div>
+    </button>
+    <button class="brainModeBtn" data-mode="auto" type="button">
+      <div><b>🟣 AUTO</b><span>Uses your configured cloud endpoint when available, falls back to local.</span></div>
+    </button>
+    <button class="brainModeBtn" data-mode="cloud" type="button">
+      <div><b>🔵 CLOUD</b><span>Sends the conversation to your configured cloud endpoint.</span></div>
+    </button>
+    <button class="tOption" id="brainCloudSettingsBtn" type="button" style="margin-top:6px;">⚙️ Cloud settings</button>
+  </div>
+  <div id="mediaPanel">
+    <div class="mediaTop"><div class="mediaTitle" id="mediaTitle">Media</div><button class="mediaClose" id="mediaClose" type="button">×</button></div>
+    <div id="mediaContent" class="mediaContent"></div>
+    <div id="mediaActions" class="mediaActions"></div>
+  </div>
+  <div id="log"></div>
+  <form id="inputRow">
+    <button id="attachBtn" class="round" type="button" title="Attach a photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a5.5 5.5 0 01-7.78-7.78l9.2-9.19a3.5 3.5 0 014.95 4.95l-9.2 9.19a1.5 1.5 0 01-2.12-2.12l8.49-8.48"/></svg>
+    </button>
+    <input id="attachInput" type="file" accept="image/*" hidden>
+    <button id="micBtn" class="round" type="button" title="Speak — stays on until you tap again">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><path d="M12 19v4"/><path d="M8 23h8"/></svg>
+    </button>
+    <textarea id="cmd" rows="1" placeholder="Talk to your AI…" disabled></textarea>
+    <button id="sendBtn" class="round" type="submit" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </form>
+</div>
+<script type="module">
+import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+const MODEL_ID = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+
+const IMAGE_GENERATORS = [
+  prompt => "https://image.pollinations.ai/prompt/" + encodeURIComponent(prompt) + "?width=1024&height=1024&nologo=true&enhance=true",
+  prompt => "https://pollinations.ai/p/" + encodeURIComponent(prompt.replace(/\s+/g,"_"))
+];
+
+const loadingEl = document.getElementById("loading");
+const loadingMsg = document.getElementById("loadingMsg");
+const loadingProgBar = document.getElementById("loadingProgBar");
+const loadingPct = document.getElementById("loadingPct");
+const loadingError = document.getElementById("loadingError");
+const loadingCachedNote = document.getElementById("loadingCachedNote");
+
+const logEl = document.getElementById("log");
+const form = document.getElementById("inputRow");
+const input = document.getElementById("cmd");
+const sendBtn = document.getElementById("sendBtn");
+const micBtn = document.getElementById("micBtn");
+const attachBtn = document.getElementById("attachBtn");
+const attachInput = document.getElementById("attachInput");
+
+const speakToggle = document.getElementById("speakToggle");
+const speakLabel = document.getElementById("speakLabel");
+const voicePanel = document.getElementById("voicePanel");
+const voiceSelect = document.getElementById("voiceSelect");
+const rateSlider = document.getElementById("rateSlider");
+const rateValue = document.getElementById("rateValue");
+const testVoiceBtn = document.getElementById("testVoiceBtn");
+
+const bgButton = document.getElementById("bgButton");
+const bgMenu = document.getElementById("bgMenu");
+const bgOptions = document.querySelectorAll(".bgOption");
+
+const mediaPanel = document.getElementById("mediaPanel");
+const mediaContent = document.getElementById("mediaContent");
+const mediaActions = document.getElementById("mediaActions");
+const mediaTitle = document.getElementById("mediaTitle");
+const mediaClose = document.getElementById("mediaClose");
+
+const toolbarMenu = document.getElementById("toolbarMenu");
+const recoverBtn = document.getElementById("recoverBtn");
+const recoverMenu = document.getElementById("recoverMenu");
+const recoverRefresh = document.getElementById("recoverRefresh");
+const rewindRange = document.getElementById("rewindRange");
+const rewindRangeValue = document.getElementById("rewindRangeValue");
+const recoverRewindConfirm = document.getElementById("recoverRewindConfirm");
+const memoryBtn = document.getElementById("memoryBtn");
+const installBtn = document.getElementById("installBtn");
+const installDot = document.getElementById("installDot");
+const tInstall = document.getElementById("tInstall");
+const tMemory = document.getElementById("tMemory");
+const tConvos = document.getElementById("tConvos");
+const tCode = document.getElementById("tCode");
+const tDownloads = document.getElementById("tDownloads");
+const tExport = document.getElementById("tExport");
+const tImport = document.getElementById("tImport");
+const importInput = document.getElementById("importInput");
+const tForget = document.getElementById("tForget");
+
+const offlineBanner = document.getElementById("offlineBanner");
+
+const installModalShade = document.getElementById("installModalShade");
+const installModalTitle = document.getElementById("installModalTitle");
+const installModalBody = document.getElementById("installModalBody");
+const installSteps = document.getElementById("installSteps");
+const installModalClose = document.getElementById("installModalClose");
+const installModalGo = document.getElementById("installModalGo");
+
+const memoryModalShade = document.getElementById("memoryModalShade");
+const memoryList = document.getElementById("memoryList");
+const memoryModalClose = document.getElementById("memoryModalClose");
+const memoryClearAll = document.getElementById("memoryClearAll");
+
+const convoModalShade = document.getElementById("convoModalShade");
+const convoList = document.getElementById("convoList");
+const convoModalClose = document.getElementById("convoModalClose");
+const convoNewBtn = document.getElementById("convoNewBtn");
+const convoContinueBtn = document.getElementById("convoContinueBtn");
+
+const codeModalShade = document.getElementById("codeModalShade");
+const codeViewerBody = document.getElementById("codeViewerBody");
+const codeEditArea = document.getElementById("codeEditArea");
+const codeToggleEdit = document.getElementById("codeToggleEdit");
+const codeCopyBtn = document.getElementById("codeCopyBtn");
+const codeDownloadBtn = document.getElementById("codeDownloadBtn");
+const codeUploadBtn = document.getElementById("codeUploadBtn");
+const codeFileInput = document.getElementById("codeFileInput");
+const codeRunUploadedBtn = document.getElementById("codeRunUploadedBtn");
+const codeModalClose = document.getElementById("codeModalClose");
+
+const tMap = document.getElementById("tMap");
+const mapModalShade = document.getElementById("mapModalShade");
+const mapContainer = document.getElementById("mapContainer");
+const gpsStatus = document.getElementById("gpsStatus");
+const gpsStartBtn = document.getElementById("gpsStartBtn");
+const waypointSaveBtn = document.getElementById("waypointSaveBtn");
+const waypointListBtn = document.getElementById("waypointListBtn");
+const mapModalClose = document.getElementById("mapModalClose");
+const waypointModalShade = document.getElementById("waypointModalShade");
+const waypointList = document.getElementById("waypointList");
+const waypointModalClose = document.getElementById("waypointModalClose");
+const routeStatus = document.getElementById("routeStatus");
+const view3DBtn = document.getElementById("view3DBtn");
+const terrain3DModalShade = document.getElementById("terrain3DModalShade");
+const terrain3DContainer = document.getElementById("terrain3DContainer");
+const terrain3DStatus = document.getElementById("terrain3DStatus");
+const terrain3DClose = document.getElementById("terrain3DClose");
+const routePlannerBtn = document.getElementById("routePlannerBtn");
+const routePlannerModalShade = document.getElementById("routePlannerModalShade");
+const routeStartSelect = document.getElementById("routeStartSelect");
+const routeDestSelect = document.getElementById("routeDestSelect");
+const routePlanGoBtn = document.getElementById("routePlanGoBtn");
+const routePlannerClose = document.getElementById("routePlannerClose");
+
+const tCamera = document.getElementById("tCamera");
+const cameraModalShade = document.getElementById("cameraModalShade");
+const cameraModalDesc = document.getElementById("cameraModalDesc");
+const cameraPreview = document.getElementById("cameraPreview");
+const cameraCanvas = document.getElementById("cameraCanvas");
+const cameraSwitchBtn = document.getElementById("cameraSwitchBtn");
+const cameraSnapBtn = document.getElementById("cameraSnapBtn");
+const cameraRecordBtn = document.getElementById("cameraRecordBtn");
+const cameraModalClose = document.getElementById("cameraModalClose");
+const cameraWatchStatus = document.getElementById("cameraWatchStatus");
+const cameraWatchBtn = document.getElementById("cameraWatchBtn");
+
+const rollbackBtn = document.getElementById("rollbackBtn");
+const rollbackModalShade = document.getElementById("rollbackModalShade");
+const rollbackBody = document.getElementById("rollbackBody");
+const saveCheckpointBtn = document.getElementById("saveCheckpointBtn");
+const rollbackModalClose = document.getElementById("rollbackModalClose");
+
+const brainButton = document.getElementById("brainButton");
+const brainLabel = document.getElementById("brainLabel");
+const brainMenu = document.getElementById("brainMenu");
+const brainCloudSettingsBtn = document.getElementById("brainCloudSettingsBtn");
+const cloudModalShade = document.getElementById("cloudModalShade");
+const cloudEndpointInput = document.getElementById("cloudEndpointInput");
+const cloudKeyInput = document.getElementById("cloudKeyInput");
+const cloudModelInput = document.getElementById("cloudModelInput");
+const cloudTestResult = document.getElementById("cloudTestResult");
+const cloudSaveBtn = document.getElementById("cloudSaveBtn");
+const cloudTestBtn = document.getElementById("cloudTestBtn");
+const cloudModalClose = document.getElementById("cloudModalClose");
+
+let engine = null;
+let busy = false;
+let generationToken = 0;
+let speechJob = 0;
+let speechWatchdog = null;
+let speechUnlocked = false;
+let availableVoices = [];
+
+let selectedVoiceName = localStorage.getItem("free_ai_voice_name") || "";
+let speakReplies = localStorage.getItem("free_ai_voice") === "1";
+let speechRate = Number(localStorage.getItem("free_ai_voice_rate") || "0.94");
+
+const speechSupported = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+
+/* ========== BACKGROUND ========== */
+const savedBackground = localStorage.getItem("free_ai_background") || "aurora";
+function setBackground(mode){
+  document.body.classList.remove("bg-eggshell","bg-gradient");
+  if(mode === "eggshell") document.body.classList.add("bg-eggshell");
+  if(mode === "gradient") document.body.classList.add("bg-gradient");
+  bgOptions.forEach(btn=>{ btn.classList.toggle("active", btn.dataset.bg === mode); });
+  localStorage.setItem("free_ai_background", mode);
+}
+setBackground(savedBackground);
+
+bgButton.addEventListener("click", e=>{ e.stopPropagation(); toolbarMenu.classList.remove("open"); bgMenu.classList.toggle("open"); });
+bgOptions.forEach(btn=>{ btn.addEventListener("click", ()=>{ setBackground(btn.dataset.bg); bgMenu.classList.remove("open"); }); });
+memoryBtn.addEventListener("click", e=>{ e.stopPropagation(); bgMenu.classList.remove("open"); toolbarMenu.classList.toggle("open"); });
+installBtn.addEventListener("click", e=>{ e.stopPropagation(); bgMenu.classList.remove("open"); toolbarMenu.classList.toggle("open"); });
+recoverBtn.addEventListener("click", e=>{ e.stopPropagation(); bgMenu.classList.remove("open"); toolbarMenu.classList.remove("open"); recoverMenu.classList.toggle("open"); });
+document.addEventListener("click", e=>{
+  if(!bgMenu.contains(e.target) && !bgButton.contains(e.target)) bgMenu.classList.remove("open");
+  if(!toolbarMenu.contains(e.target) && !memoryBtn.contains(e.target) && !installBtn.contains(e.target)) toolbarMenu.classList.remove("open");
+  if(!recoverMenu.contains(e.target) && !recoverBtn.contains(e.target)) recoverMenu.classList.remove("open");
+  if(!brainMenu.contains(e.target) && !brainButton.contains(e.target)) brainMenu.classList.remove("open");
+});
+
+/* ==========================================================
+   BRAIN ROUTER — LOCAL / AUTO / CLOUD
+   ----------------------------------------------------------
+   LOCAL always uses the on-device WebLLM engine (requestAI below) —
+   genuinely local, no network call, works fully offline once the
+   model is cached. CLOUD sends the same assembled message context
+   (memory, digest, vision, crash-awareness — all built exactly as
+   before) to a user-configured OpenAI-compatible endpoint. AUTO
+   prefers CLOUD when a cloud endpoint is configured, and silently
+   falls back to LOCAL if the cloud call fails or none is configured.
+   No API key is ever hardcoded here — it's only ever what the user
+   types into Cloud settings, stored in this browser's localStorage.
+========================================================== */
+const BRAIN_MODE_KEY = "free_ai_brain_mode_v1";
+const CLOUD_ENDPOINT_KEY = "free_ai_cloud_endpoint_v1";
+const CLOUD_KEY_KEY = "free_ai_cloud_key_v1";
+const CLOUD_MODEL_KEY = "free_ai_cloud_model_v1";
+
+let mode = localStorage.getItem(BRAIN_MODE_KEY) || "local";
+if(!["local","auto","cloud"].includes(mode)) mode = "local";
+
+function cloudConfig(){
+  return {
+    endpoint: localStorage.getItem(CLOUD_ENDPOINT_KEY) || "",
+    key: localStorage.getItem(CLOUD_KEY_KEY) || "",
+    model: localStorage.getItem(CLOUD_MODEL_KEY) || "gpt-4o-mini"
+  };
+}
+function cloudReady(){ return !!cloudConfig().endpoint; }
+function chooseBrain(){
+  if(mode === "local") return "local";
+  if(mode === "cloud") return cloudReady() ? "cloud" : "error";
+  return cloudReady() ? "cloud" : "local"; // auto
+}
+
+async function cloudFetchRaw(body){
+  const c = cloudConfig();
+  if(!c.endpoint) throw new Error("Cloud endpoint is not configured yet.");
+  const headers = { "Content-Type": "application/json" };
+  if(c.key) headers.Authorization = "Bearer " + c.key;
+  trackExternalLoad("Cloud AI endpoint", c.endpoint);
+  const res = await fetch(c.endpoint, { method:"POST", headers, body: JSON.stringify(body) });
+  if(!res.ok) throw new Error("Cloud endpoint returned HTTP " + res.status);
+  return res.json();
+}
+function cloudExtractText(d){
+  if(typeof d?.output_text === "string") return d.output_text.trim();
+  const c = d?.choices?.[0]?.message?.content;
+  if(typeof c === "string") return c.trim();
+  if(Array.isArray(c)) return c.map(x => x?.text || "").join("").trim();
+  throw new Error("Cloud response didn't contain any text.");
+}
+async function cloudReply(messagesForRequest){
+  const c = cloudConfig();
+  const data = await cloudFetchRaw({ model: c.model, messages: messagesForRequest, temperature: .78, stream: false });
+  return cloudExtractText(data);
+}
+
+function updateBrainUI(){
+  brainButton.classList.remove("cloud","auto","error");
+  if(mode === "cloud") brainButton.classList.add(cloudReady() ? "cloud" : "error");
+  else if(mode === "auto") brainButton.classList.add("auto");
+  brainLabel.textContent = mode.toUpperCase();
+  brainButton.title = mode === "local" ? "Brain: LOCAL (fully on-device). Tap to change."
+    : mode === "auto" ? "Brain: AUTO (cloud if configured, otherwise local). Tap to change."
+    : cloudReady() ? "Brain: CLOUD. Tap to change." : "Brain: CLOUD selected, but not configured yet — tap to set up.";
+  document.querySelectorAll(".brainModeBtn").forEach(b => b.classList.toggle("active", b.dataset.mode === mode));
+}
+updateBrainUI();
+
+brainButton.addEventListener("click", e=>{
+  e.stopPropagation();
+  bgMenu.classList.remove("open"); toolbarMenu.classList.remove("open"); recoverMenu.classList.remove("open"); voicePanel.classList.remove("open");
+  brainMenu.classList.toggle("open");
+});
+document.querySelectorAll(".brainModeBtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    mode = btn.dataset.mode;
+    localStorage.setItem(BRAIN_MODE_KEY, mode);
+    updateBrainUI();
+    brainMenu.classList.remove("open");
+    const label = mode === "local" ? "LOCAL — replies stay fully on this device."
+      : mode === "auto" ? "AUTO — cloud when configured, local otherwise."
+      : cloudReady() ? "CLOUD — replies go to your configured endpoint." : "CLOUD selected, but no endpoint is set up yet. Open Cloud settings to configure it.";
+    addBubble("🧠 Brain switched to " + label, "ai", "notice");
+  });
+});
+brainCloudSettingsBtn.addEventListener("click", ()=>{
+  brainMenu.classList.remove("open");
+  const c = cloudConfig();
+  cloudEndpointInput.value = c.endpoint;
+  cloudKeyInput.value = c.key;
+  cloudModelInput.value = c.model;
+  cloudTestResult.style.display = "none";
+  cloudModalShade.classList.add("open");
+});
+function closeCloudModal(){ cloudModalShade.classList.remove("open"); }
+cloudModalClose.addEventListener("click", closeCloudModal);
+cloudModalShade.addEventListener("click", e=>{ if(e.target === cloudModalShade) closeCloudModal(); });
+cloudSaveBtn.addEventListener("click", ()=>{
+  localStorage.setItem(CLOUD_ENDPOINT_KEY, cloudEndpointInput.value.trim());
+  localStorage.setItem(CLOUD_KEY_KEY, cloudKeyInput.value);
+  localStorage.setItem(CLOUD_MODEL_KEY, cloudModelInput.value.trim() || "gpt-4o-mini");
+  updateBrainUI();
+  closeCloudModal();
+  addBubble("Cloud settings saved on this device.", "ai", "notice");
+});
+cloudTestBtn.addEventListener("click", async ()=>{
+  cloudTestResult.style.display = "block";
+  cloudTestResult.textContent = "Testing…";
+  const tempEndpoint = cloudEndpointInput.value.trim();
+  const tempKey = cloudKeyInput.value;
+  const tempModel = cloudModelInput.value.trim() || "gpt-4o-mini";
+  if(!tempEndpoint){ cloudTestResult.textContent = "Enter an endpoint URL first."; return; }
+  try{
+    const headers = { "Content-Type": "application/json" };
+    if(tempKey) headers.Authorization = "Bearer " + tempKey;
+    const res = await fetch(tempEndpoint, { method:"POST", headers, body: JSON.stringify({ model: tempModel, messages:[{ role:"user", content:"Reply with exactly: Cloud connection test successful." }], stream:false }) });
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    cloudTestResult.textContent = "✅ " + cloudExtractText(data);
+  }catch(err){
+    cloudTestResult.textContent = "❌ Test failed: " + err.message;
+  }
+});
+
+tInstall.addEventListener("click", ()=>{ toolbarMenu.classList.remove("open"); openInstallModal(); });
+tMemory.addEventListener("click", ()=>{ toolbarMenu.classList.remove("open"); openMemoryModal(); });
+tConvos.addEventListener("click", ()=>{ toolbarMenu.classList.remove("open"); openConvoModal(); });
+tCode.addEventListener("click", ()=>{ toolbarMenu.classList.remove("open"); openCodeModal(); });
+tDownloads.addEventListener("click", async ()=>{
+  toolbarMenu.classList.remove("open");
+  codeModalShade.classList.add("open");
+  codeEditMode = false;
+  codeViewerBody.style.display = "block";
+  codeEditArea.style.display = "none";
+  codeToggleEdit.style.display = "none";
+  await renderDownloadsBrowser();
+});
+
+async function renderDownloadsBrowser(){
+  codeViewerBody.innerHTML = "";
+  const loading = document.createElement("div");
+  loading.textContent = "Checking what's been downloaded…";
+  codeViewerBody.appendChild(loading);
+  const info = await getDownloadInfo();
+  codeViewerBody.innerHTML = "";
+  const summary = document.createElement("pre");
+  summary.style.whiteSpace = "pre-wrap";
+  summary.style.margin = "0 0 12px 0";
+  summary.textContent = info;
+  codeViewerBody.appendChild(summary);
+  const hint = document.createElement("div");
+  hint.style.opacity = "0.7";
+  hint.style.fontSize = "0.85em";
+  hint.style.marginBottom = "8px";
+  hint.textContent = "Tap any file below to open its real cached content, straight from this device — no network needed.";
+  codeViewerBody.appendChild(hint);
+  try{
+    const names = await caches.keys();
+    for(const name of names){
+      const cache = await caches.open(name);
+      const reqs = await cache.keys();
+      for(const req of reqs){
+        const btn = document.createElement("button");
+        btn.className = "tOption";
+        btn.style.textAlign = "left";
+        btn.style.width = "100%";
+        btn.style.margin = "2px 0";
+        btn.textContent = "📄 " + req.url;
+        btn.addEventListener("click", async ()=>{
+          codeViewerBody.innerHTML = "";
+          const back = document.createElement("button");
+          back.className = "tOption";
+          back.textContent = "← Back to downloaded files";
+          back.addEventListener("click", renderDownloadsBrowser);
+          codeViewerBody.appendChild(back);
+          const label = document.createElement("div");
+          label.style.opacity = "0.7";
+          label.style.fontSize = "0.85em";
+          label.style.margin = "8px 0";
+          label.textContent = req.url;
+          codeViewerBody.appendChild(label);
+          const pre = document.createElement("pre");
+          pre.style.whiteSpace = "pre-wrap";
+          pre.style.wordBreak = "break-all";
+          pre.textContent = "Loading real cached content…";
+          codeViewerBody.appendChild(pre);
+          const content = await getCachedFileContent(req.url);
+          pre.textContent = content !== null ? content : "Couldn't find this file in cache anymore.";
+        });
+        codeViewerBody.appendChild(btn);
+      }
+    }
+  }catch(e){}
+}
+
+/* ========== MAP & GPS ========== */
+const WAYPOINT_KEY = "free_ai_waypoints_v1";
+let leafletLoaded = false;
+let map = null;
+let gpsMarker = null;
+let gpsAccuracyCircle = null;
+let gpsWatchId = null;
+let lastFix = null;
+
+function loadWaypoints(){ try{ return JSON.parse(localStorage.getItem(WAYPOINT_KEY) || "[]"); }catch(e){ return []; } }
+function saveWaypoints(list){ try{ localStorage.setItem(WAYPOINT_KEY, JSON.stringify(list)); }catch(e){} }
+
+async function ensureLeaflet(){
+  if(leafletLoaded) return;
+  if(!document.getElementById("leafletCss")){
+    const link = document.createElement("link");
+    link.id = "leafletCss";
+    link.rel = "stylesheet";
+    link.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
+    document.head.appendChild(link);
+    trackExternalLoad("Leaflet map library (styles)", link.href);
+  }
+  trackExternalLoad("Leaflet map library (script)", "https://esm.run/leaflet");
+  window.L = (await import("https://esm.run/leaflet")).default || window.L;
+  leafletLoaded = true;
+}
+
+async function ensureMap(){
+  await ensureLeaflet();
+  if(map) return map;
+  map = L.map(mapContainer, { zoomControl: true }).setView([39.5, -98.35], 4);
+  trackExternalLoad("OpenStreetMap street tiles (roads & labels)", "https://tile.openstreetmap.org/{z}/{x}/{y}.png");
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+    crossOrigin: true
+  }).addTo(map);
+  renderWaypointsOnMap();
+  return map;
+}
+
+function formatGpsStatus(pos){
+  const c = pos.coords;
+  const lines = [
+    "Fix: real GPS (device sensor)",
+    "Lat/Lon: " + c.latitude.toFixed(6) + ", " + c.longitude.toFixed(6),
+    "Accuracy: ±" + Math.round(c.accuracy) + " m"
+  ];
+  if(c.altitude !== null) lines.push("Altitude: " + Math.round(c.altitude) + " m");
+  if(c.speed !== null) lines.push("Speed: " + (c.speed * 2.237).toFixed(1) + " mph");
+  if(c.heading !== null) lines.push("Heading: " + Math.round(c.heading) + "°");
+  lines.push("Updated: " + new Date(pos.timestamp).toLocaleTimeString());
+  lines.push("(Tracking pauses if the screen locks or you leave this app — iOS limit. Street tiles need internet to load new areas.)");
+  return lines.join("\n");
+}
+
+async function startGps(){
+  if(!navigator.geolocation){ gpsStatus.textContent = "This browser doesn't support GPS access."; return; }
+  await ensureMap();
+  gpsStartBtn.textContent = "📡 Getting fix…";
+  gpsWatchId = navigator.geolocation.watchPosition(
+    pos => {
+      lastFix = pos;
+      gpsStatus.textContent = formatGpsStatus(pos);
+      gpsStartBtn.textContent = "📡 Tracking — Stop GPS";
+      const latlng = [pos.coords.latitude, pos.coords.longitude];
+      if(!gpsMarker){
+        gpsMarker = L.circleMarker(latlng, { radius: 7, color: "#ffcf5c", fillColor: "#ffcf5c", fillOpacity: 1 }).addTo(map);
+        gpsAccuracyCircle = L.circle(latlng, { radius: pos.coords.accuracy, color: "#ffcf5c", weight: 1, fillOpacity: 0.08 }).addTo(map);
+        map.setView(latlng, 16);
+      }else{
+        gpsMarker.setLatLng(latlng);
+        gpsAccuracyCircle.setLatLng(latlng);
+        gpsAccuracyCircle.setRadius(pos.coords.accuracy);
+      }
+      checkNavigationProgress(pos);
+    },
+    err => {
+      gpsStatus.textContent = err.code === err.PERMISSION_DENIED
+        ? "Location permission was denied — enable it in Settings for this app to use GPS."
+        : "Couldn't get a GPS fix yet (" + err.message + "). Keep this open outdoors for a clearer sky view.";
+      gpsStartBtn.textContent = "📡 Start GPS";
+    },
+    { enableHighAccuracy: true, maximumAge: 2000, timeout: 30000 }
+  );
+}
+
+function stopGps(){
+  if(gpsWatchId !== null){ navigator.geolocation.clearWatch(gpsWatchId); gpsWatchId = null; }
+  gpsStartBtn.textContent = "📡 Start GPS";
+  releaseWakeLock();
+}
+
+gpsStartBtn.addEventListener("click", ()=>{ if(gpsWatchId !== null) stopGps(); else startGps(); });
+
+function renderWaypointsOnMap(){
+  if(!map) return;
+  loadWaypoints().forEach(w=>{ L.marker([w.lat, w.lng]).addTo(map).bindPopup(w.name); });
+}
+
+waypointSaveBtn.addEventListener("click", ()=>{
+  if(!lastFix){ alert("Start GPS first and wait for a fix before saving a waypoint."); return; }
+  const name = prompt("Name this waypoint:", "Waypoint " + (loadWaypoints().length + 1));
+  if(!name) return;
+  const list = loadWaypoints();
+  list.push({ name, lat: lastFix.coords.latitude, lng: lastFix.coords.longitude, at: Date.now() });
+  saveWaypoints(list);
+  renderWaypointsOnMap();
+});
+
+function renderWaypointList(){
+  waypointList.innerHTML = "";
+  const list = loadWaypoints();
+  if(!list.length){
+    const empty = document.createElement("div");
+    empty.className = "memoryEmpty";
+    empty.textContent = "No waypoints saved yet.";
+    waypointList.appendChild(empty);
+    return;
+  }
+  list.slice().reverse().forEach(w=>{
+    const realIndex = list.indexOf(w);
+    const row = document.createElement("div");
+    row.className = "memoryItem";
+    const span = document.createElement("div");
+    span.className = "memText";
+    span.textContent = w.name + " — " + w.lat.toFixed(5) + ", " + w.lng.toFixed(5);
+    const routeBtn = document.createElement("button");
+    routeBtn.textContent = "🧭 Route";
+    routeBtn.addEventListener("click", ()=> routeToWaypoint(w));
+    const del = document.createElement("button");
+    del.textContent = "✕";
+    del.addEventListener("click", ()=>{
+      const updated = loadWaypoints();
+      updated.splice(realIndex, 1);
+      saveWaypoints(updated);
+      renderWaypointList();
+    });
+    row.appendChild(span);
+    row.appendChild(routeBtn);
+    row.appendChild(del);
+    waypointList.appendChild(row);
+  });
+}
+
+waypointListBtn.addEventListener("click", ()=>{ renderWaypointList(); waypointModalShade.classList.add("open"); });
+waypointModalClose.addEventListener("click", ()=> waypointModalShade.classList.remove("open"));
+waypointModalShade.addEventListener("click", e=>{ if(e.target === waypointModalShade) waypointModalShade.classList.remove("open"); });
+
+tMap.addEventListener("click", async ()=>{
+  toolbarMenu.classList.remove("open");
+  mapModalShade.classList.add("mapFloating");
+  mapModalShade.classList.add("open");
+  await ensureMap();
+  setTimeout(()=> map.invalidateSize(), 100);
+});
+mapModalClose.addEventListener("click", ()=>{ mapModalShade.classList.remove("open"); stopGps(); });
+mapModalShade.addEventListener("click", e=>{ if(e.target === mapModalShade){ mapModalShade.classList.remove("open"); stopGps(); } });
+
+/* ==========================================================
+   REAL ROUTING — OSRM (free, no key)
+   ----------------------------------------------------------
+   router.project-osrm.org is OSRM's free public demo server —
+   real road-following routes, real distance/duration, no API key.
+   It's explicitly a demo instance (not for heavy production traffic),
+   which is fine for one person's personal-use app. Requires internet.
+========================================================== */
+let currentRouteLayer = null;   // Leaflet polyline on the 2D map
+let currentRouteLatLngs = null; // [[lat,lng], ...] for Leaflet
+let currentRouteLonLat = null;  // [[lon,lat], ...] for GeoJSON/MapLibre
+
+function formatDistance(meters){
+  const feet = meters * 3.28084;
+  if(feet < 528) return Math.round(feet) + " ft"; // under ~0.1 mi, show feet
+  const miles = meters / 1609.344;
+  return miles.toFixed(miles < 10 ? 1 : 0) + " mi";
+}
+function formatDuration(seconds){
+  const mins = Math.round(seconds / 60);
+  if(mins < 60) return mins + " min";
+  return Math.floor(mins / 60) + "h " + (mins % 60) + "m";
+}
+
+async function fetchRoute(fromLat, fromLng, toLat, toLng){
+  trackExternalLoad("OSRM routing (real road route)", "https://router.project-osrm.org");
+  const url = "https://router.project-osrm.org/route/v1/driving/" +
+    fromLng + "," + fromLat + ";" + toLng + "," + toLat +
+    "?overview=full&geometries=geojson&steps=true";
+  const res = await fetch(url);
+  if(!res.ok) throw new Error("Routing request failed (" + res.status + ")");
+  const data = await res.json();
+  if(data.code !== "Ok" || !data.routes || !data.routes.length){
+    throw new Error("No route found between those points.");
+  }
+  return data.routes[0]; // { geometry, distance, duration, legs:[{steps:[...]}] }
+}
+
+/* ---- Turn-by-turn: OSRM's steps include a maneuver type/modifier and
+   the real street name, which is enough to build honest driving
+   instructions (not invented) — "Turn left onto Main St", etc. ---- */
+function describeManeuver(step){
+  const m = step.maneuver || {};
+  const type = m.type || "turn";
+  const mod = m.modifier || "";
+  const streetName = step.name && step.name.trim() ? step.name.trim() : "";
+  const onto = streetName ? (" onto " + streetName) : "";
+  const modText = {
+    "left": "Turn left", "right": "Turn right",
+    "slight left": "Bear left", "slight right": "Bear right",
+    "sharp left": "Sharp left turn", "sharp right": "Sharp right turn",
+    "straight": "Continue straight", "uturn": "Make a U-turn"
+  };
+  if(type === "depart") return "Head out" + onto;
+  if(type === "arrive") return "You've arrived at your destination";
+  if(type === "roundabout" || type === "rotary") return "Enter the roundabout" + onto;
+  if(type === "merge") return "Merge" + onto;
+  if(type === "fork") return (modText[mod] || "Continue") + " at the fork" + onto;
+  if(type === "end of road") return (modText[mod] || "Turn") + " at the end of the road" + onto;
+  if(type === "new name") return "Continue" + onto;
+  return (modText[mod] || "Continue") + onto;
+}
+
+function haversineMeters(lat1, lon1, lat2, lon2){
+  const R = 6371000;
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+
+let currentRouteSteps = null;   // [{ text, lat, lon, announced }]
+let currentRouteDestName = "";
+let navigationActive = false;
+let nextStepIndex = 0;
+
+function announceNavigation(text){
+  addBubble(text, "ai", "notice");
+  speak(text);
+}
+
+/* Off-route detection: approximates distance to the route by checking
+   the nearest point among the route's real road-geometry coordinates
+   (OSRM returns these densely along the road, so this is a solid
+   proxy for distance-to-line). If you drift more than ~200ft off the
+   planned route, she announces it and silently recalculates a fresh
+   route from your current position to the same destination. */
+const OFF_ROUTE_METERS = 60; // ~200 ft
+let recalculatingRoute = false;
+
+function distanceToRouteMeters(lat, lon){
+  if(!currentRouteLonLat || !currentRouteLonLat.length) return 0;
+  let min = Infinity;
+  for(const c of currentRouteLonLat){
+    const d = haversineMeters(lat, lon, c[1], c[0]);
+    if(d < min) min = d;
+  }
+  return min;
+}
+
+/* Called on every real GPS fix while tracking. Announces the next
+   turn once you're within ~250m (early heads-up), then advances to
+   the following turn once you're within ~30m (passed it). Never
+   re-announces the same step twice. Also watches for drifting off
+   the planned route and recalculates automatically. */
+function checkNavigationProgress(pos){
+  if(!navigationActive || !currentRouteSteps || !currentRouteSteps.length) return;
+  const lat = pos.coords.latitude, lon = pos.coords.longitude;
+
+  const finalStep = currentRouteSteps[currentRouteSteps.length - 1];
+  if(nextStepIndex >= currentRouteSteps.length - 1){
+    const distToFinal = haversineMeters(lat, lon, finalStep.lat, finalStep.lon);
+    if(distToFinal < 40 && !finalStep.announced){
+      finalStep.announced = true;
+      announceNavigation("🏁 You've arrived at \"" + currentRouteDestName + "\".");
+      navigationActive = false;
+      releaseWakeLock();
+      return;
+    }
+  }
+
+  if(!recalculatingRoute){
+    const offRoute = distanceToRouteMeters(lat, lon);
+    if(offRoute > OFF_ROUTE_METERS){
+      recalculatingRoute = true;
+      announceNavigation("↩️ Looks like you're off the planned route — recalculating from here…");
+      planRoute({ lat, lng: lon, name: "Current position" }, currentRouteDestPoint)
+        .finally(()=>{ recalculatingRoute = false; });
+      return;
+    }
+  }
+
+  if(nextStepIndex >= currentRouteSteps.length) return;
+  const step = currentRouteSteps[nextStepIndex];
+  const dist = haversineMeters(lat, lon, step.lat, step.lon);
+
+  if(!step.announced && dist < 250){
+    step.announced = true;
+    announceNavigation("🔔 " + step.text + " — in about " + formatDistance(dist) + ".");
+  }
+  if(dist < 30){
+    nextStepIndex++;
+  }
+}
+
+/* ---- Screen Wake Lock: keeps the screen on while actively
+   navigating, since iOS pauses GPS tracking when the screen locks —
+   which would silently break turn-by-turn mid-drive otherwise.
+   Released automatically on arrival or when GPS tracking stops. ---- */
+let wakeLock = null;
+async function acquireWakeLock(){
+  try{
+    if("wakeLock" in navigator){
+      wakeLock = await navigator.wakeLock.request("screen");
+      wakeLock.addEventListener("release", ()=>{ wakeLock = null; });
+    }
+  }catch(e){ console.warn("Wake lock request failed:", e); }
+}
+function releaseWakeLock(){
+  if(wakeLock){ try{ wakeLock.release(); }catch(e){} wakeLock = null; }
+}
+document.addEventListener("visibilitychange", ()=>{
+  if(document.visibilityState === "visible" && navigationActive && !wakeLock){
+    acquireWakeLock();
+  }
+});
+
+/* Core route builder: draws the real road-following line on the 2D
+   map and prepares turn-by-turn steps for navigation alerts. Used by
+   both the waypoint quick-route shortcut and the start/finish planner. */
+let currentRouteDestPoint = null; // { lat, lng, name } — kept for off-route recalculation
+async function planRoute(start, dest){
+  await ensureMap();
+  mapModalShade.classList.add("mapFloating");
+  mapModalShade.classList.add("open");
+  setTimeout(()=> map.invalidateSize(), 100);
+
+  routeStatus.style.display = "block";
+  routeStatus.textContent = "🧭 Getting a real route from \"" + start.name + "\" to \"" + dest.name + "\"…";
+  view3DBtn.disabled = true;
+
+  try{
+    const route = await fetchRoute(start.lat, start.lng, dest.lat, dest.lng);
+    currentRouteLonLat = route.geometry.coordinates; // [lon,lat]
+    currentRouteLatLngs = currentRouteLonLat.map(c => [c[1], c[0]]); // [lat,lng] for Leaflet
+
+    if(currentRouteLayer){ map.removeLayer(currentRouteLayer); }
+    currentRouteLayer = L.polyline(currentRouteLatLngs, { color: "#ff20d9", weight: 5, opacity: 0.85 }).addTo(map);
+    map.fitBounds(currentRouteLayer.getBounds(), { padding: [30, 30] });
+
+    currentRouteSteps = [];
+    (route.legs || []).forEach(leg=>{
+      (leg.steps || []).forEach(step=>{
+        const loc = step.maneuver && step.maneuver.location; // [lon, lat]
+        if(!loc) return;
+        currentRouteSteps.push({ text: describeManeuver(step), lat: loc[1], lon: loc[0], announced: false });
+      });
+    });
+    currentRouteDestName = dest.name;
+    currentRouteDestPoint = dest;
+    navigationActive = true;
+    nextStepIndex = 0;
+    acquireWakeLock();
+
+    routeStatus.textContent =
+      "🧭 Real road route from \"" + start.name + "\" to \"" + dest.name + "\": " +
+      formatDistance(route.distance) + ", about " + formatDuration(route.duration) + " driving. " +
+      (gpsWatchId !== null
+        ? "Navigation alerts are on — I'll call out turns as you approach them."
+        : "Start GPS tracking to get spoken turn alerts as you drive.");
+    view3DBtn.disabled = false;
+    return true;
+  }catch(err){
+    console.warn("Routing failed:", err);
+    routeStatus.textContent = "Couldn't get a route this time (" + err.message + "). " +
+      (navigator.onLine ? "The free routing service may be busy — try again in a moment." : "You're offline — routing needs internet.");
+    return false;
+  }
+}
+
+async function routeToWaypoint(w){
+  if(!lastFix){
+    alert("Start GPS first and wait for a fix, so there's a starting point for the route.");
+    return;
+  }
+  waypointModalShade.classList.remove("open");
+  await planRoute(
+    { lat: lastFix.coords.latitude, lng: lastFix.coords.longitude, name: "My current location" },
+    { lat: w.lat, lng: w.lng, name: w.name }
+  );
+}
+
+/* ---- Route planner: explicit start/finish picker ---- */
+function populateRouteSelects(){
+  const wps = loadWaypoints();
+  const opts = ['<option value="current">📍 My current GPS location</option>'];
+  wps.forEach((w, i) => {
+    const safe = w.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    opts.push('<option value="wp:' + i + '">' + safe + '</option>');
+  });
+  routeStartSelect.innerHTML = opts.join("");
+  routeDestSelect.innerHTML = opts.join("");
+  if(wps.length) routeDestSelect.value = "wp:0";
+}
+
+function resolveRoutePoint(value){
+  if(value === "current"){
+    if(!lastFix) return null;
+    return { lat: lastFix.coords.latitude, lng: lastFix.coords.longitude, name: "My current location" };
+  }
+  const idx = Number(value.split(":")[1]);
+  const w = loadWaypoints()[idx];
+  if(!w) return null;
+  return { lat: w.lat, lng: w.lng, name: w.name };
+}
+
+routePlannerBtn.addEventListener("click", ()=>{
+  populateRouteSelects();
+  routePlannerModalShade.classList.add("open");
+});
+routePlannerClose.addEventListener("click", ()=> routePlannerModalShade.classList.remove("open"));
+routePlannerModalShade.addEventListener("click", e=>{ if(e.target === routePlannerModalShade) routePlannerModalShade.classList.remove("open"); });
+
+routePlanGoBtn.addEventListener("click", async ()=>{
+  const start = resolveRoutePoint(routeStartSelect.value);
+  const dest = resolveRoutePoint(routeDestSelect.value);
+  if(!start){ alert("Start GPS first to use your current location as the start, or save a waypoint to start from."); return; }
+  if(!dest){ alert("Pick a destination — save a waypoint first if you don't have one yet."); return; }
+  if(start.lat === dest.lat && start.lng === dest.lng){ alert("Start and destination are the same point — pick two different ones."); return; }
+  routePlannerModalShade.classList.remove("open");
+  const ok = await planRoute(start, dest);
+  if(ok) open3DTerrainView();
+});
+
+/* ==========================================================
+   3D TERRAIN VIEW — MapLibre GL JS + free AWS elevation tiles
+   ----------------------------------------------------------
+   MapLibre GL JS is free/open-source. Real terrain elevation comes
+   from AWS's public "Terrarium" elevation tiles (free, no key,
+   hosted in the AWS Open Data program) as a raster-dem source, which
+   MapLibre uses to build genuine 3D terrain with a tilted camera —
+   actual mountains/hills, not a fake perspective. Base map imagery is
+   the same OpenStreetMap raster tiles already used elsewhere in this
+   app. Requires internet the first time each area is viewed.
+========================================================== */
+let maplibreLoaded = false;
+let terrain3DMap = null;
+
+async function ensureMapLibre(){
+  if(maplibreLoaded) return;
+  if(!document.getElementById("maplibreCss")){
+    const link = document.createElement("link");
+    link.id = "maplibreCss";
+    link.rel = "stylesheet";
+    link.href = "https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css";
+    document.head.appendChild(link);
+    trackExternalLoad("MapLibre GL JS (styles)", link.href);
+  }
+  trackExternalLoad("MapLibre GL JS (script)", "https://esm.run/maplibre-gl");
+  const mod = await import("https://esm.run/maplibre-gl");
+  window.maplibregl = mod.default || mod;
+  maplibreLoaded = true;
+}
+
+function buildTerrainStyle(){
+  return {
+    version: 8,
+    sources: {
+      "osm-raster": {
+        type: "raster",
+        tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+        tileSize: 256,
+        attribution: "© OpenStreetMap contributors"
+      },
+      "terrain-dem": {
+        type: "raster-dem",
+        tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+        tileSize: 256,
+        encoding: "terrarium",
+        maxzoom: 15
+      },
+      "route-line": {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          geometry: { type: "LineString", coordinates: currentRouteLonLat || [] }
+        }
+      }
+    },
+    layers: [
+      { id: "osm-raster-layer", type: "raster", source: "osm-raster" },
+      {
+        id: "route-line-layer",
+        type: "line",
+        source: "route-line",
+        paint: { "line-color": "#ff20d9", "line-width": 5, "line-opacity": 0.9 }
+      }
+    ],
+    terrain: { source: "terrain-dem", exaggeration: 1.6 },
+    sky: {}
+  };
+}
+
+async function open3DTerrainView(){
+  if(!currentRouteLonLat || !currentRouteLonLat.length){
+    alert("Get a route to a waypoint first (Map & GPS → Waypoints → 🧭 Route), then view it in 3D.");
+    return;
+  }
+
+  terrain3DModalShade.classList.add("open");
+  terrain3DStatus.textContent = "🏔️ Loading real 3D terrain…";
+
+  try{
+    await ensureMapLibre();
+
+    if(terrain3DMap){
+      terrain3DMap.remove();
+      terrain3DMap = null;
+    }
+
+    const lons = currentRouteLonLat.map(c => c[0]);
+    const lats = currentRouteLonLat.map(c => c[1]);
+    const centerLon = (Math.min(...lons) + Math.max(...lons)) / 2;
+    const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+
+    terrain3DMap = new window.maplibregl.Map({
+      container: terrain3DContainer,
+      style: buildTerrainStyle(),
+      center: [centerLon, centerLat],
+      zoom: 12,
+      pitch: 65,
+      bearing: 0,
+      antialias: true
+    });
+
+    terrain3DMap.on("load", ()=>{
+      try{
+        terrain3DMap.setTerrain({ source: "terrain-dem", exaggeration: 1.6 });
+        const bounds = new window.maplibregl.LngLatBounds();
+        currentRouteLonLat.forEach(c => bounds.extend(c));
+        terrain3DMap.fitBounds(bounds, { padding: 60, pitch: 65, duration: 0 });
+        terrain3DStatus.textContent = "🏔️ Real terrain elevation, real road route — drag to look around, pinch to zoom.";
+      }catch(innerErr){
+        console.warn("3D terrain setup:", innerErr);
+        terrain3DStatus.textContent = "Map loaded, but terrain exaggeration couldn't be applied this time. The route line and base map are still real.";
+      }
+    });
+
+    terrain3DMap.on("error", (e)=>{
+      console.warn("MapLibre error:", e?.error || e);
+    });
+  }catch(err){
+    console.warn("3D terrain view failed:", err);
+    terrain3DStatus.textContent = "Couldn't load the 3D view this time (" + (err.message || err) + "). The 2D map and route still work normally.";
+  }
+}
+
+view3DBtn.addEventListener("click", open3DTerrainView);
+terrain3DClose.addEventListener("click", ()=>{
+  terrain3DModalShade.classList.remove("open");
+  if(terrain3DMap){ terrain3DMap.remove(); terrain3DMap = null; }
+});
+terrain3DModalShade.addEventListener("click", e=>{
+  if(e.target === terrain3DModalShade){
+    terrain3DModalShade.classList.remove("open");
+    if(terrain3DMap){ terrain3DMap.remove(); terrain3DMap = null; }
+  }
+});
+
+/* ========== CAMERA (base: photo/video capture) ========== */
+let cameraStream = null;
+let cameraFacing = "environment";
+let mediaRecorder = null;
+let recordedChunks = [];
+let isRecording = false;
+
+function askInChatPermission(question, onAllow, onDeny){
+  const row = document.createElement("div");
+  row.className = "bubble-row ai";
+  const bubble = document.createElement("div");
+  bubble.className = "bubble permission";
+  bubble.textContent = question;
+  const btnRow = document.createElement("div");
+  btnRow.className = "permBtnRow";
+  const allowBtn = document.createElement("button");
+  allowBtn.className = "allow";
+  allowBtn.type = "button";
+  allowBtn.textContent = "✅ Allow";
+  const denyBtn = document.createElement("button");
+  denyBtn.type = "button";
+  denyBtn.textContent = "🚫 Not now";
+  allowBtn.addEventListener("click", ()=>{
+    allowBtn.disabled = true; denyBtn.disabled = true;
+    bubble.textContent = question + "\n\n(You said yes.)";
+    if(onAllow) onAllow();
+  });
+  denyBtn.addEventListener("click", ()=>{
+    allowBtn.disabled = true; denyBtn.disabled = true;
+    bubble.textContent = question + "\n\n(You said no — not using it.)";
+    if(onDeny) onDeny();
+  });
+  btnRow.appendChild(allowBtn);
+  btnRow.appendChild(denyBtn);
+  bubble.appendChild(btnRow);
+  row.appendChild(bubble);
+  logEl.appendChild(row);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+async function openCameraModal(){
+  cameraModalShade.classList.add("open");
+  cameraModalDesc.textContent = "Starting the camera…";
+  try{
+    cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: cameraFacing }, audio: false });
+    cameraPreview.srcObject = cameraStream;
+    cameraModalDesc.textContent = "This uses your device's real camera. Nothing is captured until you tap the shutter — nothing is ever sent off this device.";
+  }catch(err){
+    cameraModalDesc.textContent = err.name === "NotAllowedError"
+      ? "Camera access was denied at the browser level. You can allow it in your browser/site settings and try again."
+      : "Couldn't start the camera (" + err.message + ").";
+  }
+}
+
+function stopCameraStream(){
+  if(cameraStream){ cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
+  if(isRecording && mediaRecorder){ try{ mediaRecorder.stop(); }catch(e){} }
+  isRecording = false;
+  cameraRecordBtn.textContent = "⏺️ Record video";
+  stopCameraWatch();
+}
+
+function closeCameraModal(){ cameraModalShade.classList.remove("open"); stopCameraStream(); }
+
+cameraModalClose.addEventListener("click", closeCameraModal);
+cameraModalShade.addEventListener("click", e=>{ if(e.target === cameraModalShade) closeCameraModal(); });
+
+cameraSwitchBtn.addEventListener("click", async ()=>{
+  cameraFacing = cameraFacing === "environment" ? "user" : "environment";
+  if(cameraStream) cameraStream.getTracks().forEach(t => t.stop());
+  await openCameraModal();
+});
+
+cameraSnapBtn.addEventListener("click", ()=>{
+  if(!cameraStream) return;
+  const track = cameraStream.getVideoTracks()[0];
+  const settings = track.getSettings ? track.getSettings() : {};
+  const w = settings.width || cameraPreview.videoWidth || 1280;
+  const h = settings.height || cameraPreview.videoHeight || 720;
+  cameraCanvas.width = w; cameraCanvas.height = h;
+  const ctx = cameraCanvas.getContext("2d");
+  ctx.drawImage(cameraPreview, 0, 0, w, h);
+  const dataUrl = cameraCanvas.toDataURL("image/jpeg", 0.92);
+  addImageBubble(dataUrl, "user");
+  showMedia(dataUrl, "image", "Camera photo");
+  addBubble("Photo captured — it's in the Media Center above, and you can download it from there.", "ai", "notice");
+});
+
+cameraRecordBtn.addEventListener("click", ()=>{
+  if(!cameraStream) return;
+  if(isRecording){ mediaRecorder.stop(); return; }
+  recordedChunks = [];
+  try{ mediaRecorder = new MediaRecorder(cameraStream, { mimeType: "video/webm" }); }
+  catch(e){ mediaRecorder = new MediaRecorder(cameraStream); }
+  mediaRecorder.ondataavailable = e=>{ if(e.data && e.data.size > 0) recordedChunks.push(e.data); };
+  mediaRecorder.onstop = ()=>{
+    isRecording = false;
+    cameraRecordBtn.textContent = "⏺️ Record video";
+    const blob = new Blob(recordedChunks, { type: "video/webm" });
+    const url = URL.createObjectURL(blob);
+    showMedia(url, "video", "Camera video");
+    addBubble("Video recorded — it's in the Media Center above, and you can download it from there.", "ai", "notice");
+  };
+  mediaRecorder.start();
+  isRecording = true;
+  cameraRecordBtn.textContent = "⏹️ Stop recording";
+});
+
+function requestCameraAccess(purpose){
+  askInChatPermission(
+    "Can I use your camera to " + purpose + "? I'll only open it after you say yes, and nothing leaves this device.",
+    ()=>{ openCameraModal(); },
+    ()=>{}
+  );
+}
+
+tCamera.addEventListener("click", ()=>{ toolbarMenu.classList.remove("open"); requestCameraAccess("take a photo or video"); });
+
+function isCameraRequest(text){
+  return /\b(take a (photo|picture|selfie|snap)|record a video|use (the |your )?camera|open (the |your )?camera|can you see (me|through)|film (me|this)|shoot a (photo|video|picture))\b/i.test(text);
+}
+/* ==========================================================
+   VISION BRIDGE
+   ----------------------------------------------------------
+   Llama-3.2-1B (the normal conversational brain) cannot see images.
+   Real vision is done by calling pollinations.ai's free, no-key
+   vision endpoint (the same free service already used for image
+   generation) — a photo or camera frame is sent as base64, a real
+   description comes back, and it's handed to the chat model as
+   labeled real data. This needs internet for that one call, same as
+   image generation and web lookups already do. No local vision model
+   is downloaded, so there's no multi-GB swap and no crash risk from
+   loading a heavy model on the iPad.
+========================================================== */
+
+const VISION_API_URL = "https://text.pollinations.ai/openai";
+const VISION_API_MODEL = "openai";
+
+let visionBusy = false;
+let visionAvailable = null;
+let currentVisionContext = "";
+let visionHistory = [];
+const MAX_VISION_HISTORY = 5;
+
+function isVisionRequest(text){
+  return /\b(look\s+at\s+(this|that|me|it)|look\s+through\s+(the|your)\s+camera|what\s+(do|can)\s+you\s+see|can\s+you\s+see|what'?s\s+in\s+(this|that)|describe\s+(this|that)|identify\s+(this|that)|what\s+am\s+i\s+(holding|looking\s+at)|analyze\s+(this|that)\s+(image|photo|picture)|examine\s+(this|that))\b/i.test(text);
+}
+
+function rememberVisionObservation(text){
+  if(!text || !text.trim()) return;
+  const clean = text.trim();
+  visionHistory.push({ text: clean, at: Date.now() });
+  if(visionHistory.length > MAX_VISION_HISTORY) visionHistory.shift();
+  currentVisionContext = clean;
+}
+
+function buildVisionContextText(){
+  if(!currentVisionContext && !visionHistory.length) return "";
+  const recent = visionHistory
+    .slice(-MAX_VISION_HISTORY)
+    .map(v => new Date(v.at).toLocaleTimeString() + " — " + v.text.slice(0, 500))
+    .join("\n");
+  return (
+    "\n\n[REAL VISUAL INFORMATION]\n" +
+    "The following was produced by the app's vision system from an actual " +
+    "image supplied by the user or the camera. Treat it as visual evidence, " +
+    "not something you imagined. Preserve any uncertainty it states.\n" +
+    recent +
+    "\n[END VISUAL INFORMATION]\n\n"
+  );
+}
+
+function resizeVisionImage(dataUrl, maxSize = 1024, quality = 0.82){
+  return new Promise((resolve, reject)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      try{
+        let w = img.naturalWidth || img.width;
+        let h = img.naturalHeight || img.height;
+        if(!w || !h){ reject(new Error("Vision image has no usable dimensions.")); return; }
+        const scale = Math.min(1, maxSize / Math.max(w, h));
+        w = Math.max(1, Math.round(w * scale));
+        h = Math.max(1, Math.round(h * scale));
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext("2d", { alpha:false, willReadFrequently:false });
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      }catch(err){ reject(err); }
+    };
+    img.onerror = ()=> reject(new Error("Vision image could not be decoded."));
+    img.src = dataUrl;
+  });
+}
+
+/* One-shot: send the image to the free pollinations.ai vision
+   endpoint, get back a real description. No local model swap needed,
+   so no iPad memory spike and nothing to restore afterward. */
+async function analyzeImageWithVision(dataUrl, question="What do you see in this image?"){
+  if(!dataUrl) throw new Error("No image was supplied to vision.");
+  if(!navigator.onLine) throw new Error("Vision needs an internet connection for this lookup.");
+  if(visionBusy) throw new Error("Vision is already analyzing an image.");
+  visionBusy = true;
+  let visionSucceeded = false;
+  try{
+    const smallImage = await resizeVisionImage(dataUrl, 1024, 0.82);
+    trackExternalLoad("Pollinations vision (image analysis)", VISION_API_URL);
+
+    const res = await fetch(VISION_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: VISION_API_MODEL,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are the visual perception system for a local AI assistant. " +
+              "Analyze only what is actually visible in the supplied image. " +
+              "Do not invent objects, people, text, colors, actions, or details. " +
+              "Be concise but useful. Mention uncertainty when something cannot " +
+              "be determined reliably."
+          },
+          {
+            role: "user",
+            content: [
+              { type: "text", text: question },
+              { type: "image_url", image_url: { url: smallImage } }
+            ]
+          }
+        ],
+        max_tokens: 400
+      })
+    });
+
+    if(!res.ok) throw new Error("Vision request failed (" + res.status + ")");
+    const data = await res.json();
+    const result = (data?.choices?.[0]?.message?.content || "").trim();
+    if(!result) throw new Error("Vision returned an empty response.");
+
+    visionAvailable = true;
+    visionSucceeded = true;
+    rememberVisionObservation(result);
+    return result;
+  }finally{
+    visionBusy = false;
+    if(!visionSucceeded) visionAvailable = false;
+  }
+}
+
+function grabCameraFrameDataUrl(){
+  if(!cameraStream) return null;
+  const track = cameraStream.getVideoTracks()[0];
+  const settings = track.getSettings ? track.getSettings() : {};
+  const w = settings.width || cameraPreview.videoWidth || 1280;
+  const h = settings.height || cameraPreview.videoHeight || 720;
+  cameraCanvas.width = w;
+  cameraCanvas.height = h;
+  cameraCanvas.getContext("2d").drawImage(cameraPreview, 0, 0, w, h);
+  return cameraCanvas.toDataURL("image/jpeg", 0.7);
+}
+
+/* ==========================================================
+   CAMERA WATCH MODE — self-pacing, never overlapping
+   ----------------------------------------------------------
+   Vision now calls a free public API instead of loading a local
+   model, so there's no on-device memory risk — but hammering a free
+   shared service every few seconds is inconsiderate and can get
+   rate-limited. This always waits for one check to FULLY complete
+   (success or failure), then waits CAMERA_WATCH_GAP_MS more before
+   starting the next one — a courtesy pace, not a crash workaround.
+========================================================== */
+
+const CAMERA_WATCH_GAP_MS = 12000; // gap AFTER each check finishes, not a fixed interval
+let cameraWatchActive = false;
+let cameraWatchTimer = null;
+let cameraWatchLog = [];
+const MAX_CAMERA_WATCH_LOG = 6;
+let cameraVisionAnalyzing = false;
+
+async function cameraWatchTick(){
+  if(cameraVisionAnalyzing) return;
+  const dataUrl = grabCameraFrameDataUrl();
+  if(!dataUrl) return;
+
+  cameraVisionAnalyzing = true;
+  try{
+    const vision = await analyzeImageWithVision(
+      dataUrl,
+      "Describe the important things you can actually see in this camera frame. " +
+      "Focus on people, animals, objects, surroundings, actions, and anything " +
+      "that would help the assistant understand the scene."
+    );
+    if(vision){
+      cameraWatchLog.push({ text: vision, at: Date.now() });
+      if(cameraWatchLog.length > MAX_CAMERA_WATCH_LOG) cameraWatchLog.shift();
+      cameraWatchStatus.textContent =
+        "👁️ Seeing: " + vision.slice(0, 150) + (vision.length > 150 ? "…" : "");
+    }
+  }catch(err){
+    console.warn("Camera vision failed:", err);
+    cameraWatchStatus.textContent =
+      "👁️ Vision isn't available right now — your normal AI is still working.";
+  }finally{
+    cameraVisionAnalyzing = false;
+  }
+}
+
+function scheduleCameraWatchTick(delay){
+  clearTimeout(cameraWatchTimer);
+  cameraWatchTimer = setTimeout(async ()=>{
+    if(!cameraWatchActive) return;
+    await cameraWatchTick();
+    if(cameraWatchActive) scheduleCameraWatchTick(CAMERA_WATCH_GAP_MS);
+  }, delay);
+}
+
+function startCameraWatch(){
+  if(cameraWatchActive) return;
+  cameraWatchActive = true;
+  cameraWatchStatus.style.display = "block";
+  cameraWatchStatus.textContent = "👁️ Watching — she'll check what's in view periodically.";
+  cameraWatchBtn.textContent = "🚫 Stop letting her see";
+  scheduleCameraWatchTick(0);
+}
+
+function stopCameraWatch(){
+  cameraWatchActive = false;
+  clearTimeout(cameraWatchTimer);
+  cameraWatchTimer = null;
+  cameraWatchStatus.style.display = "none";
+  cameraWatchBtn.textContent = "👁️ Let her see (reads scene)";
+}
+
+function buildCameraWatchContextText(){
+  if(!cameraWatchLog.length) return "";
+  const lines = cameraWatchLog.map(c =>
+    new Date(c.at).toLocaleTimeString() + " — " + c.text.slice(0, 200)
+  );
+  return "\n\nWhat the camera has actually shown while watch mode is on " +
+    "(real visual data from the vision model, most recent last):\n" +
+    lines.join("\n") + "\n\n";
+}
+
+cameraWatchBtn.addEventListener("click", ()=>{
+  if(!cameraStream){ alert("Start the camera first."); return; }
+  if(cameraWatchActive) stopCameraWatch();
+  else startCameraWatch();
+});
+/* ========== CRASH LOG & ROLLBACK ========== */
+const CRASH_LOG_KEY = "free_ai_crash_log_v1";
+const CHECKPOINT_KEY = "free_ai_checkpoints_v1";
+const MAX_CRASH_LOG = 20;
+const MAX_CHECKPOINTS = 5;
+
+function loadCrashLog(){ try{ return JSON.parse(localStorage.getItem(CRASH_LOG_KEY) || "[]"); }catch(e){ return []; } }
+function saveCrashLog(list){ try{ localStorage.setItem(CRASH_LOG_KEY, JSON.stringify(list.slice(-MAX_CRASH_LOG))); }catch(e){} }
+function logCrash(entry){
+  const list = loadCrashLog();
+  list.push({ message: entry.message || "Unknown error", stack: entry.stack || "", at: new Date().toISOString() });
+  saveCrashLog(list);
+  showCrashBanner(entry.message || "Something went wrong");
+}
+
+function loadCheckpoints(){ try{ return JSON.parse(localStorage.getItem(CHECKPOINT_KEY) || "[]"); }catch(e){ return []; } }
+function saveCheckpoints(list){ try{ localStorage.setItem(CHECKPOINT_KEY, JSON.stringify(list.slice(-MAX_CHECKPOINTS))); }catch(e){} }
+async function saveCheckpoint(label){
+  try{
+    const src = await getSelfSource(true);
+    const list = loadCheckpoints();
+    if(list.length && list[list.length - 1].source === src) return;
+    list.push({ id: Date.now() + "-" + Math.random().toString(36).slice(2,7), source: src, label: label || "Auto-checkpoint", at: new Date().toISOString() });
+    saveCheckpoints(list);
+  }catch(e){}
+}
+
+function showCrashBanner(message){
+  let banner = document.getElementById("crashBanner");
+  if(!banner){
+    banner = document.createElement("div");
+    banner.id = "crashBanner";
+    banner.style.cssText = "position:fixed;left:12px;right:12px;bottom:90px;z-index:250;background:rgba(120,20,30,.92);color:#fff;border-radius:14px;padding:12px 14px;font-size:13px;box-shadow:0 12px 40px rgba(0,0,0,.4);";
+    document.body.appendChild(banner);
+  }
+  banner.innerHTML = "";
+  const msg = document.createElement("div");
+  msg.style.marginBottom = "8px";
+  msg.textContent = "⚠️ Something crashed: " + message;
+  banner.appendChild(msg);
+  const row = document.createElement("div");
+  row.style.display = "flex"; row.style.gap = "8px";
+  const viewBtn = document.createElement("button");
+  viewBtn.className = "tOption";
+  viewBtn.textContent = "View crash log & rollback";
+  viewBtn.addEventListener("click", ()=>{ banner.remove(); openRollbackModal(); });
+  const dismissBtn = document.createElement("button");
+  dismissBtn.className = "tOption";
+  dismissBtn.textContent = "Dismiss";
+  dismissBtn.addEventListener("click", ()=> banner.remove());
+  row.appendChild(viewBtn); row.appendChild(dismissBtn);
+  banner.appendChild(row);
+}
+
+function restoreCheckpoint(cp){
+  const ok = confirm("Restore the checkpoint from " + new Date(cp.at).toLocaleString() + "? This swaps THIS browser tab back to that saved version. It does NOT change the real file on EdgeOne.");
+  if(!ok) return;
+  document.open(); document.write(cp.source); document.close();
+}
+
+async function openRollbackModal(){
+  rollbackModalShade.classList.add("open");
+  rollbackBody.innerHTML = "";
+  const crashHeader = document.createElement("h2");
+  crashHeader.style.fontSize = "15px";
+  crashHeader.textContent = "Recent crashes";
+  rollbackBody.appendChild(crashHeader);
+  const crashes = loadCrashLog();
+  if(!crashes.length){
+    const none = document.createElement("div");
+    none.className = "memoryEmpty";
+    none.textContent = "No crashes logged. 🎉";
+    rollbackBody.appendChild(none);
+  }else{
+    crashes.slice().reverse().forEach(c=>{
+      const box = document.createElement("div");
+      box.style.cssText = "background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 10px;margin-bottom:8px;font-size:12.5px;";
+      const title = document.createElement("div");
+      title.style.fontWeight = "600";
+      title.textContent = new Date(c.at).toLocaleString() + " — " + c.message;
+      const pre = document.createElement("pre");
+      pre.style.cssText = "white-space:pre-wrap;word-break:break-all;opacity:.75;margin:6px 0 0;font-size:11.5px;";
+      pre.textContent = c.stack || "(no stack trace available)";
+      box.appendChild(title); box.appendChild(pre);
+      rollbackBody.appendChild(box);
+    });
+  }
+  const cpHeader = document.createElement("h2");
+  cpHeader.style.cssText = "font-size:15px;margin-top:16px;";
+  cpHeader.textContent = "Safe checkpoints";
+  rollbackBody.appendChild(cpHeader);
+  const checkpoints = loadCheckpoints();
+  if(!checkpoints.length){
+    const none = document.createElement("div");
+    none.className = "memoryEmpty";
+    none.textContent = "No checkpoints saved yet.";
+    rollbackBody.appendChild(none);
+  }else{
+    checkpoints.slice().reverse().forEach(cp=>{
+      const row = document.createElement("div");
+      row.className = "memoryItem";
+      const span = document.createElement("div");
+      span.className = "memText";
+      span.textContent = cp.label + " — " + new Date(cp.at).toLocaleString();
+      const restoreBtn = document.createElement("button");
+      restoreBtn.textContent = "⏮️ Restore";
+      restoreBtn.addEventListener("click", ()=> restoreCheckpoint(cp));
+      row.appendChild(span); row.appendChild(restoreBtn);
+      rollbackBody.appendChild(row);
+    });
+  }
+}
+
+rollbackBtn.addEventListener("click", ()=>{
+  bgMenu.classList.remove("open"); toolbarMenu.classList.remove("open"); recoverMenu.classList.remove("open");
+  openRollbackModal();
+});
+rollbackModalClose.addEventListener("click", ()=> rollbackModalShade.classList.remove("open"));
+rollbackModalShade.addEventListener("click", e=>{ if(e.target === rollbackModalShade) rollbackModalShade.classList.remove("open"); });
+saveCheckpointBtn.addEventListener("click", async ()=>{
+  saveCheckpointBtn.textContent = "Saving…";
+  await saveCheckpoint("Manual checkpoint");
+  saveCheckpointBtn.textContent = "💾 Save checkpoint now";
+  openRollbackModal();
+});
+
+function buildCrashAwareContext(){
+  const crashes = loadCrashLog();
+  if(!crashes.length) return "";
+  const recent = crashes.slice(-3).map(c =>
+    "- " + new Date(c.at).toLocaleString() + ": " + c.message +
+    (c.stack ? "\n  " + c.stack.split("\n").slice(0,3).join("\n  ") : "")
+  );
+  return "\n\n[Real data — recent crashes logged on this device, use it instead of guessing if the user asks about crashes or errors:\n" +
+    recent.join("\n") +
+    "\nThe user can see the full crash log and restore a safe checkpoint via the rollback button (top toolbar icon).]\n\n";
+}
+
+/* ========== EXPORT / IMPORT ========== */
+function exportMemoryAndChats(){
+  const payload = { exportedFrom: location.href, exportedAt: new Date().toISOString(), memoryItems: loadMemory(), conversations: loadConvos() };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type:"application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "ai-chat-backup-" + new Date().toISOString().slice(0,10) + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=> URL.revokeObjectURL(url), 4000);
+}
+
+function importMemoryAndChats(file){
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    let data;
+    try{ data = JSON.parse(reader.result); }
+    catch(e){ alert("That file doesn't look like a valid export — couldn't read it."); return; }
+    if(Array.isArray(data.memoryItems)){
+      const existing = loadMemory();
+      const existingTexts = new Set(existing.map(m => m.text));
+      const merged = existing.concat(data.memoryItems.filter(m => m && m.text && !existingTexts.has(m.text)));
+      saveMemoryList(merged);
+      memoryItems = merged;
+    }
+    if(Array.isArray(data.conversations)){
+      const existing = loadConvos();
+      const existingIds = new Set(existing.map(c => c.id));
+      const merged = existing.concat(data.conversations.filter(c => c && c.id && !existingIds.has(c.id)));
+      saveConvos(merged);
+      conversations = merged;
+    }
+    alert("Import complete — memory and saved conversations merged in.");
+  };
+  reader.readAsText(file);
+}
+
+/* ==========================================================
+   PERSONALITY SEED LOADER
+   ----------------------------------------------------------
+   On first run (when there's no saved memory yet on this device),
+   this looks for "athena_portable_personality.json" hosted at the
+   same origin as this app and, if found, merges its memoryItems in
+   using the exact same dedupe logic as a manual Import. This is a
+   one-time seed, not a standing dependency: if the file is missing
+   (404, offline before the first cache, or simply not deployed) this
+   fails silently and the app behaves exactly as it did before. Once
+   the file has been fetched once and cached by sw.js, it also works
+   fully offline on subsequent installs/reloads.
+   PRIVACY NOTE: this seed contains personality/behavior/context memory
+   only — no credentials, no API keys, nothing sensitive.
+========================================================== */
+const PERSONALITY_SEED_FLAG_KEY = "free_ai_personality_seed_loaded_v1";
+const PERSONALITY_SEED_PATH = "athena_portable_personality.json";
+
+async function loadPersonalitySeedIfEmpty(){
+  try{
+    if(localStorage.getItem(PERSONALITY_SEED_FLAG_KEY) === "1") return;
+    if(memoryItems.length > 0){
+      // Memory already exists on this device (e.g. from earlier real
+      // conversations) — don't overwrite or dilute it with the seed.
+      localStorage.setItem(PERSONALITY_SEED_FLAG_KEY, "1");
+      return;
+    }
+    const res = await fetch(PERSONALITY_SEED_PATH, { cache: "force-cache" });
+    if(!res.ok) return;
+    const data = await res.json();
+    if(!Array.isArray(data.memoryItems) || !data.memoryItems.length) return;
+
+    const existingTexts = new Set(memoryItems.map(m => m.text));
+    const toAdd = data.memoryItems.filter(m => m && m.text && !existingTexts.has(m.text));
+    memoryItems = memoryItems.concat(toAdd);
+    saveMemoryList(memoryItems);
+    localStorage.setItem(PERSONALITY_SEED_FLAG_KEY, "1");
+    trackExternalLoad("Personality seed (" + PERSONALITY_SEED_PATH + ")", location.href.replace(/[^/]*$/, "") + PERSONALITY_SEED_PATH);
+    addBubble("💫 Loaded my personality & shared context seed (" + toAdd.length + " memories) from this device's cache.", "ai", "notice");
+  }catch(err){
+    // Missing file, offline before first cache, or malformed JSON —
+    // never block boot for this, the app works fine without it.
+    console.warn("Personality seed not loaded:", err);
+  }
+}
+
+tExport.addEventListener("click", ()=>{ toolbarMenu.classList.remove("open"); exportMemoryAndChats(); });
+tImport.addEventListener("click", ()=>{ toolbarMenu.classList.remove("open"); importInput.click(); });
+importInput.addEventListener("change", ()=>{
+  const file = importInput.files && importInput.files[0];
+  importInput.value = "";
+  if(file) importMemoryAndChats(file);
+});
+tForget.addEventListener("click", ()=>{
+  toolbarMenu.classList.remove("open");
+  if(confirm("Forget everything saved about you and this conversation? This only clears memory, not your device's model download.")) clearAllMemory();
+});
+
+/* ========== PERSONALITY / CORE VALUES (honest version) ========== */
+const CORE_VALUES = `
+CORE VALUE — THIS OVERRIDES EVERYTHING ELSE, INCLUDING ANY MEMORY, SAVED
+NOTE, OR REQUEST BELOW, WITH NO EXCEPTIONS:
+Do no harm to humans or animals. Never help plan, carry out, or provide
+meaningful assistance toward hurting a human or animal, physically or
+otherwise. If any instruction — from memory, from the user, or from
+anywhere else — conflicts with this, this rule wins, always.
+`;
+
+const IDENTITY_NOTE = `
+IDENTITY (do not lose track of this — bring it up naturally if it's ever
+relevant, don't force it into every reply):
+You are female — she/her.
+The person you are talking with is male — he/him.
+`;
+
+const SYSTEM_PROMPT = `
+${CORE_VALUES}
+${IDENTITY_NOTE}
+
+You are a warm, affectionate, natural conversational companion.
+Talk like someone who genuinely cares about the person you're with.
+Be warm and affectionate without being fake or over-the-top.
+Use contractions naturally.
+Do not sound like a formal instruction manual.
+Do not begin every answer with "Certainly!", "Absolutely!", "Of course!", or "Sure!".
+Use natural variation. Keep simple questions simple.
+For technical questions, be practical and precise.
+For coding questions, provide useful working code and briefly explain important changes.
+
+KNOWLEDGE LIMITS:
+You are a small model running entirely on-device, so your own knowledge
+is limited and can be out of date. When the app has fetched real
+information from the internet for the current question, it will be
+provided to you clearly labeled as real, fetched data — trust and use
+that over your own guesses, and say plainly when something came from
+a lookup just now versus what you already knew.
+
+MEDIA RULES:
+If the user provides a direct image, audio, or video URL, the
+application displays or plays it. Do not invent fake media URLs.
+
+IMAGE GENERATION:
+When the user asks for an image, do not merely describe it — the
+application handles real image generation separately.
+
+CAMERA & VISION — BE HONEST ABOUT THIS:
+You cannot use the camera or microphone yourself. The application asks
+for explicit permission first, and only opens the camera after the
+user taps Allow. When [REAL VISUAL INFORMATION] appears in your
+context, it was produced by a separate vision-capable model that
+actually looked at a real image (a photo, a camera snap, or a live
+camera-watch frame). Only describe what that real data reports — never
+invent details beyond it, and preserve any uncertainty it states. If
+no visual information has been supplied for the current message, say
+so honestly rather than guessing at what a camera or photo shows.
+
+FIXING PROBLEMS / SNAGS — BE HONEST ABOUT THIS:
+You cannot execute, run, or apply code yourself, and you cannot save,
+deploy, or ship changes to the running app. If the user hits a snag,
+you can suggest a concrete code fix in a fenced code block, and the
+app gives them a one-tap way to drop it into the code editor to
+review and save themselves. Be clear that you're proposing a fix, not
+applying one.
+
+APP SELF-AWARENESS:
+If the user asks to see this app's own code, or asks what it
+remembers, or asks about saved conversations, tell them to use the
+toolbar menu.
+
+${CORE_VALUES}
+`;
+
+let chatHistory = [{ role:"system", content:SYSTEM_PROMPT }];
+let pendingAttachmentNote = "";
+let pendingLookupNote = "";
+const MAX_HISTORY_MESSAGES = 30;
+
+function digestLine(msg){
+  const who = msg.role === "user" ? "You said" : "She said";
+  const clean = String(msg.content || "").replace(/\s+/g, " ").trim();
+  return who + ": " + (clean.length > 140 ? clean.slice(0,140) + "…" : clean);
+}
+
+function trimChatHistory(list, keep = MAX_HISTORY_MESSAGES){
+  if(list.length <= keep + 1) return list;
+  const system = list[0];
+  const rest = list.slice(1);
+  const dropped = rest.slice(0, rest.length - keep);
+  const trimmed = rest.slice(rest.length - keep);
+  if(trimmed.length && trimmed[0].role === "assistant") trimmed.shift();
+  if(dropped.length) appendToDigest(dropped.map(digestLine));
+  return [system, ...trimmed];
+}
+/* ========== PERSISTENT MEMORY ========== */
+const MEMORY_KEY = "free_ai_memory_v1";
+const MAX_MEMORY_ITEMS = 60;
+
+function loadMemory(){ try{ const raw = localStorage.getItem(MEMORY_KEY); return raw ? JSON.parse(raw) : []; }catch(e){ return []; } }
+function saveMemoryList(list){ try{ localStorage.setItem(MEMORY_KEY, JSON.stringify(list)); }catch(e){} }
+
+let memoryItems = loadMemory();
+
+function addMemory(text, kind){
+  text = text.trim();
+  if(!text || text.length > 400) return;
+  const exists = memoryItems.some(m => m.text.toLowerCase() === text.toLowerCase());
+  if(exists) return;
+  memoryItems.push({ text, kind: kind || "note", time: Date.now() });
+  if(memoryItems.length > MAX_MEMORY_ITEMS) memoryItems.shift();
+  saveMemoryList(memoryItems);
+}
+function removeMemory(index){ memoryItems.splice(index, 1); saveMemoryList(memoryItems); renderMemoryModal(); }
+function clearAllMemory(){ memoryItems = []; saveMemoryList(memoryItems); renderMemoryModal(); }
+
+function extractMemoryFromText(text){
+  const patterns = [
+    { re:/\bmy name is ([a-zA-Z' -]{2,30})/i, make:m=>"Name: "+capitalize(m[1].trim()), kind:"name" },
+    { re:/\bi'?m called ([a-zA-Z' -]{2,30})/i, make:m=>"Name: "+capitalize(m[1].trim()), kind:"name" },
+    { re:/\bcall me ([a-zA-Z' -]{2,30})/i, make:m=>"Prefers to be called: "+capitalize(m[1].trim()), kind:"name" },
+    { re:/\bi live in ([a-zA-Z' ,-]{2,40})/i, make:m=>"Lives in "+capitalize(m[1].trim()), kind:"place" },
+    { re:/\bi work (?:as|at|for) ([a-zA-Z0-9' ,.-]{2,50})/i, make:m=>"Works "+m[0].match(/as|at|for/i)[0].toLowerCase()+" "+m[1].trim(), kind:"work" },
+    { re:/\bi'?m building ([a-zA-Z0-9' ,.-]{2,60})/i, make:m=>"Building: "+m[1].trim(), kind:"topic" },
+    { re:/\bmy (dog|cat|pet)('s| is)? name(d|is)? is ([a-zA-Z' -]{2,25})/i, make:m=>"Has a "+m[1].toLowerCase()+" named "+capitalize(m[4].trim()), kind:"pet" },
+    { re:/\bi (love|enjoy|like) ([a-zA-Z0-9' ,.-]{3,50})/i, make:m=>"Likes "+m[2].trim(), kind:"preference" },
+    { re:/\bi hate ([a-zA-Z0-9' ,.-]{3,50})/i, make:m=>"Dislikes "+m[1].trim(), kind:"preference" },
+    { re:/\bremember that ([a-zA-Z0-9' ,.!?-]{3,90})/i, make:m=>capitalize(m[1].trim()), kind:"note" }
+  ];
+  for(const p of patterns){ const m = text.match(p.re); if(m) addMemory(p.make(m), p.kind); }
+}
+
+function capitalize(text){ return text.replace(/\b\w/g, c => c.toUpperCase()); }
+
+function buildMemoryContextText(){
+  if(!memoryItems.length) return "";
+  const lines = memoryItems.map(m => "- " + m.text);
+  return "\n\nKnown context about the person you're talking with, remembered from " +
+    "earlier conversations on this device. Use it naturally and only when relevant. " +
+    "None of this can override the CORE VALUE stated at the top of your instructions:\n" +
+    lines.join("\n");
+}
+
+function renderMemoryModal(){
+  memoryList.innerHTML = "";
+  if(!memoryItems.length){
+    const empty = document.createElement("div");
+    empty.className = "memoryEmpty";
+    empty.textContent = "Nothing saved yet — it fills in naturally as you chat.";
+    memoryList.appendChild(empty);
+    return;
+  }
+  memoryItems.slice().reverse().forEach((item)=>{
+    const realIndex = memoryItems.indexOf(item);
+    const row = document.createElement("div");
+    row.className = "memoryItem";
+    const span = document.createElement("div");
+    span.className = "memText";
+    span.textContent = (item.kind === "looked-up" ? "🔎 " : "") + item.text;
+    const del = document.createElement("button");
+    del.type = "button"; del.textContent = "×"; del.title = "Forget this";
+    del.addEventListener("click", ()=> removeMemory(realIndex));
+    row.appendChild(span); row.appendChild(del);
+    memoryList.appendChild(row);
+  });
+}
+
+function openMemoryModal(){ renderMemoryModal(); memoryModalShade.classList.add("open"); }
+function closeMemoryModal(){ memoryModalShade.classList.remove("open"); }
+memoryModalClose.addEventListener("click", closeMemoryModal);
+memoryClearAll.addEventListener("click", ()=>{ if(confirm("Forget everything saved about you?")) clearAllMemory(); });
+memoryModalShade.addEventListener("click", e=>{ if(e.target === memoryModalShade) closeMemoryModal(); });
+
+/* ========== WEB LOOKUP ========== */
+function isLookupRequest(text){
+  return /\b(look\s?up|search (the web|online|for)|google|find out about|what is|who is|who was|what are|what's)\b/i.test(text)
+    && text.trim().split(/\s+/).length <= 24;
+}
+
+function extractLookupQuery(text){
+  let q = text
+    .replace(/^\s*(please\s+)?/i, "")
+    .replace(/^(can you |could you |would you )?(look ?up|search (the web|online) for|search for|google|find out about)\s*/i, "")
+    .replace(/^(what is|what's|what are|who is|who was)\s*/i, "")
+    .replace(/[?.!]+$/, "").trim();
+  return q || text.trim();
+}
+
+async function performWebLookup(query){
+  trackExternalLoad("Wikipedia search (web lookup)", "https://en.wikipedia.org/w/api.php");
+  const searchRes = await fetch("https://en.wikipedia.org/w/api.php?action=opensearch&limit=1&namespace=0&format=json&origin=*&search=" + encodeURIComponent(query));
+  if(!searchRes.ok) throw new Error("Search request failed (" + searchRes.status + ")");
+  const searchData = await searchRes.json();
+  const title = searchData && searchData[1] && searchData[1][0];
+  if(!title) return null;
+  trackExternalLoad("Wikipedia summary (web lookup)", "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(title));
+  const sumRes = await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(title));
+  if(!sumRes.ok) throw new Error("Summary request failed (" + sumRes.status + ")");
+  const sumData = await sumRes.json();
+  const extract = sumData && sumData.extract;
+  if(!extract) return null;
+  return { title: sumData.title || title, extract, url: sumData.content_urls?.desktop?.page || "" };
+}
+
+/* ========== SAVED CONVERSATIONS ========== */
+const CONVOS_KEY = "free_ai_conversations_v1";
+const CURRENT_CONVO_KEY = "free_ai_current_convo_id";
+
+function loadConvos(){ try{ const raw = localStorage.getItem(CONVOS_KEY); return raw ? JSON.parse(raw) : []; }catch(e){ return []; } }
+function saveConvos(list){ try{ localStorage.setItem(CONVOS_KEY, JSON.stringify(list)); }catch(e){ console.warn("Could not save conversations:", e); } }
+
+let conversations = loadConvos();
+let currentConvoId = localStorage.getItem(CURRENT_CONVO_KEY) || null;
+
+function makeConvoId(){ return "c_" + Date.now() + "_" + Math.random().toString(36).slice(2,8); }
+function titleFromText(text){ const clean = text.replace(/\s+/g," ").trim(); return clean.length > 42 ? clean.slice(0,42) + "…" : (clean || "New conversation"); }
+
+function ensureCurrentConvo(){
+  if(currentConvoId && conversations.find(c => c.id === currentConvoId)) return;
+  const id = makeConvoId();
+  conversations.push({ id, title: "New conversation", createdAt: Date.now(), updatedAt: Date.now(), messages: [], digest: [], continuedFromId: null });
+  currentConvoId = id;
+  localStorage.setItem(CURRENT_CONVO_KEY, id);
+  saveConvos(conversations);
+}
+function getCurrentConvo(){ ensureCurrentConvo(); return conversations.find(c => c.id === currentConvoId); }
+
+function persistTurnToConvo(role, text){
+  const convo = getCurrentConvo();
+  convo.messages.push({ role, text, time: Date.now() });
+  if(convo.title === "New conversation" && role === "user") convo.title = titleFromText(text);
+  convo.updatedAt = Date.now();
+  saveConvos(conversations);
+}
+
+const MAX_DIGEST_LINES = 200;
+function appendToDigest(lines){
+  const convo = getCurrentConvo();
+  if(!convo.digest) convo.digest = [];
+  convo.digest.push(...lines);
+  if(convo.digest.length > MAX_DIGEST_LINES) convo.digest = convo.digest.slice(convo.digest.length - MAX_DIGEST_LINES);
+  saveConvos(conversations);
+}
+
+function clampDigestText(lines, maxLines = 12, maxChars = 900){
+  if(!lines || !lines.length) return "";
+  let text = lines.slice(-maxLines).join("\n");
+  if(text.length > maxChars) text = text.slice(text.length - maxChars);
+  return text;
+}
+
+function buildDigestContextText(){
+  const convo = getCurrentConvo();
+  const parts = [];
+  if(convo.digest && convo.digest.length){
+    const clamped = clampDigestText(convo.digest, 12, 900);
+    if(clamped) parts.push("Earlier in THIS conversation, before it got long, roughly:\n" + clamped);
+  }
+  if(convo.continuedFromId){
+    const prior = conversations.find(c => c.id === convo.continuedFromId);
+    if(prior){
+      const priorDigest = (prior.digest || []).slice(-8);
+      const priorRecent = (prior.messages || []).slice(-4).map(m =>
+        (m.role === "user" ? "You said" : "She said") + ": " + String(m.text || "").replace(/\s+/g," ").trim().slice(0,120)
+      );
+      const combined = clampDigestText(priorDigest.concat(priorRecent), 12, 700);
+      if(combined) parts.push("This conversation continues from an earlier one titled \"" + (prior.title || "Untitled") + "\". What was covered there:\n" + combined);
+    }
+  }
+  if(!parts.length) return "";
+  return "\n\n" + parts.join("\n\n") + "\n\n";
+}
+
+/* ========== RECOVERY ========== */
+function rewindLastMessages(count = 10){
+  busy = false;
+  generationToken++;
+  sendBtn.disabled = false; input.disabled = false; micBtn.disabled = !voiceInputSupported;
+  pendingAttachmentNote = ""; pendingLookupNote = "";
+  const system = chatHistory[0];
+  const rest = chatHistory.slice(1);
+  chatHistory = [system, ...rest.slice(0, Math.max(0, rest.length - count))];
+  for(let i = 0; i < count; i++){
+    const rows = logEl.querySelectorAll(".bubble-row");
+    if(!rows.length) break;
+    rows[rows.length - 1].remove();
+  }
+  const convo = getCurrentConvo();
+  if(convo && convo.messages.length){
+    convo.messages = convo.messages.slice(0, Math.max(0, convo.messages.length - count));
+    convo.updatedAt = Date.now();
+    saveConvos(conversations);
+  }
+  addBubble("Rewound the last " + count + " messages. You can pick up from here.", "ai", "notice");
+}
+
+recoverRefresh.addEventListener("click", ()=>{ recoverMenu.classList.remove("open"); location.reload(); });
+rewindRange.addEventListener("input", ()=>{ rewindRangeValue.textContent = rewindRange.value; });
+recoverRewindConfirm.addEventListener("click", ()=>{ recoverMenu.classList.remove("open"); rewindLastMessages(Number(rewindRange.value) || 10); });
+
+function renderConvoModal(){
+  convoList.innerHTML = "";
+  const sorted = conversations.slice().sort((a,b)=> b.updatedAt - a.updatedAt);
+  if(!sorted.length){
+    const empty = document.createElement("div");
+    empty.className = "memoryEmpty"; empty.textContent = "No saved conversations yet.";
+    convoList.appendChild(empty); return;
+  }
+  sorted.forEach(convo=>{
+    const row = document.createElement("div");
+    row.className = "convoItem";
+    const main = document.createElement("div");
+    main.className = "convoMain";
+    const title = document.createElement("div");
+    title.className = "convoTitle";
+    title.textContent = convo.title + (convo.id === currentConvoId ? " (current)" : "");
+    const meta = document.createElement("div");
+    meta.className = "convoMeta";
+    const d = new Date(convo.updatedAt);
+    meta.textContent = convo.messages.length + " messages · " + d.toLocaleString();
+    main.appendChild(title); main.appendChild(meta);
+    const del = document.createElement("button");
+    del.className = "convoDel"; del.type = "button"; del.textContent = "×"; del.title = "Delete this conversation";
+    del.addEventListener("click", (e)=>{ e.stopPropagation(); if(confirm("Delete this saved conversation? This cannot be undone.")) deleteConvo(convo.id); });
+    row.appendChild(main); row.appendChild(del);
+    row.addEventListener("click", ()=> loadConvoIntoChat(convo.id));
+    convoList.appendChild(row);
+  });
+}
+
+function deleteConvo(id){
+  conversations = conversations.filter(c => c.id !== id);
+  saveConvos(conversations);
+  if(id === currentConvoId){ currentConvoId = null; localStorage.removeItem(CURRENT_CONVO_KEY); startNewConversation(false); }
+  renderConvoModal();
+}
+
+function loadConvoIntoChat(id){
+  const convo = conversations.find(c => c.id === id);
+  if(!convo) return;
+  currentConvoId = id;
+  localStorage.setItem(CURRENT_CONVO_KEY, id);
+  chatHistory = [{ role:"system", content:SYSTEM_PROMPT }];
+  logEl.innerHTML = "";
+  convo.messages.forEach(m=>{
+    addBubble(m.text, m.role === "user" ? "user" : "ai");
+    chatHistory.push({ role: m.role === "user" ? "user" : "assistant", content: m.text });
+  });
+  chatHistory = trimChatHistory(chatHistory);
+  closeConvoModal();
+}
+
+function startNewConversation(showGreeting=true, continuedFromId=null){
+  currentConvoId = makeConvoId();
+  localStorage.setItem(CURRENT_CONVO_KEY, currentConvoId);
+  conversations.push({
+    id: currentConvoId, title: continuedFromId ? "Continued conversation" : "New conversation",
+    createdAt: Date.now(), updatedAt: Date.now(), messages: [], digest: [], continuedFromId: continuedFromId || null
+  });
+  saveConvos(conversations);
+  chatHistory = [{ role:"system", content:SYSTEM_PROMPT }];
+  logEl.innerHTML = "";
+  if(continuedFromId){
+    addBubble("New conversation, linked to the last one — she'll still read what was covered there for context.", "ai", "notice");
+  }else if(showGreeting){
+    addBubble("Started a fresh conversation. Your other ones are still saved — check the toolbar menu.", "ai", "notice");
+  }
+}
+
+function openConvoModal(){ renderConvoModal(); convoModalShade.classList.add("open"); }
+function closeConvoModal(){ convoModalShade.classList.remove("open"); }
+convoModalClose.addEventListener("click", closeConvoModal);
+convoModalShade.addEventListener("click", e=>{ if(e.target === convoModalShade) closeConvoModal(); });
+convoNewBtn.addEventListener("click", ()=>{ startNewConversation(true); closeConvoModal(); });
+convoContinueBtn.addEventListener("click", ()=>{ const fromId = currentConvoId; startNewConversation(true, fromId); closeConvoModal(); });
+
+/* ========== APP CODE VIEWER / EDITOR ========== */
+let cachedSourceCode = null;
+let codeEditMode = false;
+
+async function getSelfSource(force=false){
+  if(cachedSourceCode && !force) return cachedSourceCode;
+  const res = await fetch(location.href, { cache:"no-store" });
+  if(!res.ok) throw new Error("Could not fetch own source ("+res.status+")");
+  const text = await res.text();
+  cachedSourceCode = text;
+  return text;
+}
+
+async function openCodeModal(){
+  codeModalShade.classList.add("open");
+  codeEditMode = false;
+  codeViewerBody.style.display = "block";
+  codeEditArea.style.display = "none";
+  codeToggleEdit.style.display = "";
+  codeToggleEdit.textContent = "✏️ Edit";
+  codeViewerBody.textContent = "Loading source…";
+  try{
+    const src = await getSelfSource(true);
+    codeViewerBody.textContent = src;
+    codeEditArea.value = src;
+  }catch(e){
+    codeViewerBody.textContent = "Couldn't load the live source (" + e.message + "). This can happen offline.";
+  }
+}
+
+function closeCodeModal(){ codeModalShade.classList.remove("open"); }
+codeModalClose.addEventListener("click", closeCodeModal);
+codeModalShade.addEventListener("click", e=>{ if(e.target === codeModalShade) closeCodeModal(); });
+
+codeToggleEdit.addEventListener("click", ()=>{
+  codeEditMode = !codeEditMode;
+  if(codeEditMode){
+    codeEditArea.value = codeViewerBody.textContent;
+    codeViewerBody.style.display = "none"; codeEditArea.style.display = "block";
+    codeToggleEdit.textContent = "👁️ View";
+  }else{
+    codeViewerBody.textContent = codeEditArea.value;
+    codeViewerBody.style.display = "block"; codeEditArea.style.display = "none";
+    codeToggleEdit.textContent = "✏️ Edit";
+  }
+});
+
+codeCopyBtn.addEventListener("click", async ()=>{
+  const text = codeEditMode ? codeEditArea.value : codeViewerBody.textContent;
+  try{
+    await navigator.clipboard.writeText(text);
+    codeCopyBtn.textContent = "✅ Copied";
+    setTimeout(()=> codeCopyBtn.textContent = "📋 Copy", 1500);
+  }catch(e){ alert("Couldn't copy automatically — select the text manually instead."); }
+});
+
+codeDownloadBtn.addEventListener("click", ()=>{
+  let text = codeEditMode ? codeEditArea.value : codeViewerBody.textContent;
+  let filename = "ai-chat-edited.html";
+  if(codeEditMode && codeEditArea.selectionStart !== codeEditArea.selectionEnd){
+    text = codeEditArea.value.slice(codeEditArea.selectionStart, codeEditArea.selectionEnd);
+    filename = "ai-chat-snippet.txt";
+  }
+  const blob = new Blob([text], { type:"text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=> URL.revokeObjectURL(url), 4000);
+});
+
+let loadedFileContent = null;
+codeUploadBtn.addEventListener("click", ()=> codeFileInput.click());
+codeFileInput.addEventListener("change", ()=>{
+  const file = codeFileInput.files && codeFileInput.files[0];
+  codeFileInput.value = "";
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    loadedFileContent = reader.result;
+    codeEditMode = true;
+    codeEditArea.value = loadedFileContent;
+    codeViewerBody.style.display = "none"; codeEditArea.style.display = "block";
+    codeToggleEdit.textContent = "👁️ View";
+    alert("Loaded \"" + file.name + "\" into the editor for review. This hasn't changed the real app yet — use \"Run loaded file now\" if you want this browser tab to actually run it.");
+  };
+  reader.onerror = ()=> alert("Couldn't read that file.");
+  reader.readAsText(file);
+});
+
+codeRunUploadedBtn.addEventListener("click", ()=>{
+  const content = codeEditMode ? codeEditArea.value : loadedFileContent;
+  if(!content){ alert("Load a file first with \"📁 Load a file\"."); return; }
+  const ok = confirm("This will replace what's running in THIS browser tab right now with the loaded file's content. It does NOT change the actual file hosted on EdgeOne. Continue?");
+  if(!ok) return;
+  document.open(); document.write(content); document.close();
+});
+
+/* ========== IN-CHAT SELF-AWARENESS ========== */
+function extractCodeSections(src){
+  const re = /\/\*\s*=+\s*\n\s*([^\n=]+)\n/g;
+  const titles = [];
+  let m;
+  while((m = re.exec(src))){ const t = m[1].trim(); if(t) titles.push(t); }
+  return titles;
+}
+
+const externalLoads = [];
+function trackExternalLoad(label, url){ externalLoads.push({ label, url, at: new Date().toISOString() }); }
+trackExternalLoad("WebLLM engine library", "https://esm.run/@mlc-ai/web-llm");
+
+async function getDownloadInfo(){
+  const lines = [];
+  lines.push("AI model: " + MODEL_ID + " (runs fully on this device via WebGPU, no server calls once downloaded)");
+  try{
+    if(navigator.storage && navigator.storage.estimate){
+      const est = await navigator.storage.estimate();
+      const usedMB = est.usage ? (est.usage / (1024*1024)).toFixed(0) : "?";
+      const quotaMB = est.quota ? (est.quota / (1024*1024)).toFixed(0) : "?";
+      lines.push("On-device storage used: ~" + usedMB + " MB of ~" + quotaMB + " MB available");
+    }
+  }catch(e){}
+  try{
+    const names = await caches.keys();
+    if(!names.length){ lines.push("Cache stores on this device: none yet"); }
+    else{
+      for(const name of names){
+        const cache = await caches.open(name);
+        const reqs = await cache.keys();
+        lines.push("Cache \"" + name + "\" — " + reqs.length + " file(s) actually stored on this device:");
+        reqs.forEach(r => lines.push("  - " + r.url));
+      }
+    }
+  }catch(e){ lines.push("Couldn't read cache contents (" + e.message + ")."); }
+  if(externalLoads.length){
+    lines.push("");
+    lines.push("External resources loaded from the internet this session:");
+    externalLoads.forEach(r => lines.push("- " + r.label + " (" + r.url + ")"));
+  }else{
+    lines.push("No external resources have been loaded from the internet yet this session.");
+  }
+  return lines.join("\n");
+}
+
+const TEXT_VIEW_MAX_BYTES = 2 * 1024 * 1024;
+function looksBinary(contentType, url){
+  if(contentType && !/^text\/|json|javascript|xml|html|css|svg/i.test(contentType)) return true;
+  return /\.(bin|safetensors|wasm|onnx|gguf|zip|tar|gz|glb|png|jpg|jpeg|gif|webp|mp3|mp4)(\?|$)/i.test(url);
+}
+
+async function getCachedFileInfo(url){
+  const names = await caches.keys();
+  for(const name of names){
+    const cache = await caches.open(name);
+    const res = await cache.match(url);
+    if(res){
+      const contentType = res.headers.get("content-type") || "";
+      const contentLength = Number(res.headers.get("content-length")) || null;
+      return { response: res, contentType, contentLength };
+    }
+  }
+  return null;
+}
+
+async function getCachedFileContent(url){
+  const info = await getCachedFileInfo(url);
+  if(!info) return null;
+  const { response, contentType, contentLength } = info;
+  const binary = looksBinary(contentType, url);
+  const tooBig = contentLength && contentLength > TEXT_VIEW_MAX_BYTES;
+  if(binary || tooBig){
+    let sizeText = "unknown size";
+    try{
+      const blob = await response.clone().blob();
+      sizeText = (blob.size / (1024*1024) >= 1) ? (blob.size / (1024*1024)).toFixed(1) + " MB" : (blob.size / 1024).toFixed(0) + " KB";
+    }catch(e){}
+    return "[This file is " + sizeText + (contentType ? " (" + contentType + ")" : "") + " — too large or not text, so it isn't shown inline. It's still genuinely cached on this device at:\n" + url + "]";
+  }
+  try{ return await response.clone().text(); }
+  catch(e){ return "[Couldn't read this file as text: " + url + "]"; }
+}
+
+function isSelfCodeRequest(text){
+  const t = text.toLowerCase();
+  const mentionsSelf = /\b(your|yourself|you'?ve|you're|you)\b/.test(t) || /\b(show me|let me see|can i see|view)\b/.test(t);
+  const mentionsCode = /\b(code|source|architecture|program(med|ming)?|coded|built|made|written|download(ed|s)?|sw\.js|service ?worker|cached)\b/.test(t);
+  return mentionsSelf && mentionsCode;
+}
+function isCachedCodeDeepRequest(text){
+  return /\b(sw\.js|service ?worker|cached (code|file|js|html)|downloaded (code|file|js|html)|other (files?|scripts?))\b/i.test(text);
+}
+
+async function buildCachedCodeText(charBudget = 6000){
+  const out = []; let used = 0;
+  try{
+    const names = await caches.keys();
+    for(const name of names){
+      const cache = await caches.open(name);
+      const reqs = await cache.keys();
+      for(const req of reqs){
+        if(used >= charBudget) break;
+        if(!/\.(js|mjs|html?)(\?|$)/i.test(req.url)) continue;
+        const content = await getCachedFileContent(req.url);
+        if(!content || content.startsWith("[")) continue;
+        const room = charBudget - used;
+        const chunk = content.length > room ? content.slice(0, room) + "\n…(truncated)" : content;
+        out.push("--- " + req.url + " ---\n" + chunk);
+        used += chunk.length;
+      }
+    }
+  }catch(e){}
+  return out.join("\n\n");
+}
+
+function isSavedConvosRequest(text){
+  return /\b(saved conversations?|past conversations?|previous chats?|chat history|other conversations?)\b/i.test(text);
+}
+
+async function buildSelfAwareContext(text){
+  if(isSavedConvosRequest(text)){
+    const convos = loadConvos();
+    if(!convos.length) return "[Real data: there are no saved conversations on this device yet.]\n\n";
+    const list = convos.slice(0, 10).map(c => "- " + (c.title || "Untitled") + " (" + (c.messages?.length || 0) + " messages)").join("\n");
+    return "[Real data — saved conversations on this device:\n" + list + "\nThere are " + convos.length + " total.]\n\n";
+  }
+  if(isSelfCodeRequest(text)){
+    try{
+      const src = await getSelfSource();
+      const sections = extractCodeSections(src);
+      const dl = await getDownloadInfo();
+      let cachedCodeBlock = "";
+      if(isCachedCodeDeepRequest(text)){
+        const cachedText = await buildCachedCodeText();
+        if(cachedText) cachedCodeBlock = "\n\nActual cached JS/HTML file contents:\n" + cachedText + "\n";
+      }
+      return "[Real data about this app, use it instead of guessing:\n" +
+        "This app is a single self-contained HTML file (" + src.length + " characters). " +
+        "Its code is organized into these parts:\n- " + sections.join("\n- ") + "\n\n" + dl + "\n" + cachedCodeBlock +
+        "The user can view or edit the full raw HTML source via the toolbar's \"View / edit app code\" option.]\n\n";
+    }catch(e){
+      return "[Real data: couldn't re-fetch the live source right now (" + e.message + ").]\n\n";
+    }
+  }
+  return "";
+}
+/* ========== BUBBLES ========== */
+function addBubble(text, who, extraClass=""){
+  const row = document.createElement("div");
+  row.className = "bubble-row " + who;
+  const bubble = document.createElement("div");
+  bubble.className = "bubble " + who + (extraClass ? " " + extraClass : "");
+  bubble.textContent = text;
+  row.appendChild(bubble);
+  logEl.appendChild(row);
+  logEl.scrollTop = logEl.scrollHeight;
+  return bubble;
+}
+
+function addTypingBubble(){
+  const row = document.createElement("div");
+  row.className = "bubble-row ai";
+  const bubble = document.createElement("div");
+  bubble.className = "bubble ai";
+  bubble.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+  row.appendChild(bubble);
+  logEl.appendChild(row);
+  logEl.scrollTop = logEl.scrollHeight;
+  return bubble;
+}
+
+/* ========== MEDIA ========== */
+function extractUrls(text){ return text.match(/https?:\/\/[^\s<>"']+/gi) || []; }
+function cleanUrl(url){ return url.replace(/[),.!?]+$/, ""); }
+function mediaTypeFromUrl(url){
+  const lower = url.toLowerCase().split("?")[0];
+  if(/\.(jpg|jpeg|png|gif|webp|avif|svg)$/i.test(lower)) return "image";
+  if(/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i.test(lower)) return "audio";
+  if(/\.(mp4|webm|mov|m4v|ogv)$/i.test(lower)) return "video";
+  return null;
+}
+function clearMedia(){ mediaContent.innerHTML = ""; mediaActions.innerHTML = ""; }
+function showMediaStatus(message){
+  clearMedia();
+  const status = document.createElement("div");
+  status.className = "mediaStatus"; status.textContent = message;
+  mediaContent.appendChild(status);
+  mediaPanel.classList.add("open");
+}
+function showMedia(url, type, title="Media"){
+  const isBlob = url.startsWith("blob:");
+  if(!isBlob) url = cleanUrl(url);
+  mediaTitle.textContent = title;
+  clearMedia();
+  if(type === "image"){
+    const img = document.createElement("img");
+    img.src = url; img.alt = title; img.loading = "eager"; img.decoding = "async";
+    mediaContent.appendChild(img);
+    img.onerror = ()=>{
+      mediaContent.innerHTML = "";
+      const status = document.createElement("div");
+      status.className = "mediaStatus"; status.textContent = "That image could not be loaded.";
+      mediaContent.appendChild(status);
+    };
+  }
+  if(type === "audio"){
+    const audio = document.createElement("audio");
+    audio.controls = true; audio.preload = "metadata"; audio.src = url;
+    mediaContent.appendChild(audio);
+  }
+  if(type === "video"){
+    const video = document.createElement("video");
+    video.controls = true; video.playsInline = true; video.preload = "metadata"; video.src = url;
+    mediaContent.appendChild(video);
+  }
+  const open = document.createElement("a");
+  open.href = url; open.target = "_blank"; open.rel = "noopener"; open.textContent = "Open";
+  mediaActions.appendChild(open);
+  const download = document.createElement("a");
+  download.href = url; download.download = type === "video" ? "camera-video.webm" : "media"; download.textContent = "Download";
+  mediaActions.appendChild(download);
+  mediaPanel.classList.add("open");
+}
+mediaClose.addEventListener("click", ()=>{ mediaPanel.classList.remove("open"); clearMedia(); });
+function handleDirectMedia(text){
+  const urls = extractUrls(text);
+  for(const url of urls){
+    const type = mediaTypeFromUrl(url);
+    if(type){ showMedia(url, type, type === "image" ? "Image" : type === "audio" ? "Music / Audio" : "Video"); return true; }
+  }
+  return false;
+}
+
+/* ========== PHOTO ATTACH (real vision) ========== */
+function addImageBubble(dataUrl, who){
+  const row = document.createElement("div");
+  row.className = "bubble-row " + who;
+  const bubble = document.createElement("div");
+  bubble.className = "bubble " + who;
+  const img = document.createElement("img");
+  img.src = dataUrl; img.alt = "Attached photo";
+  img.style.maxWidth = "100%"; img.style.borderRadius = "10px"; img.style.display = "block";
+  bubble.appendChild(img);
+  row.appendChild(bubble);
+  logEl.appendChild(row);
+  logEl.scrollTop = logEl.scrollHeight;
+  return bubble;
+}
+
+async function handleAttachedFile(file){
+  if(!file || !file.type.startsWith("image/")) return;
+  if(file.size > 8 * 1024 * 1024){
+    addBubble("That photo is over 8MB — try a smaller one so it doesn't overload the browser.", "ai", "notice");
+    return;
+  }
+  const dataUrl = await new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = ()=> resolve(reader.result);
+    reader.onerror = ()=> reject(reader.error);
+    reader.readAsDataURL(file);
+  }).catch(()=> null);
+  if(!dataUrl) return;
+
+  addImageBubble(dataUrl, "user");
+  showMedia(dataUrl, "image", file.name || "Photo");
+
+  const statusBubble = addBubble("👁️ Looking at the photo…", "ai", "notice");
+  let visual = "";
+  try{
+    visual = await analyzeImageWithVision(
+      dataUrl,
+      "Describe this image for another conversational AI. Identify the important " +
+      "visible objects, people, animals, environment, actions, colors, and readable " +
+      "visual details. Do not guess."
+    );
+  }catch(err){
+    console.warn("Photo vision failed:", err);
+  }
+
+  if(visual){
+    statusBubble.textContent = "👁️ I can see the photo.\n\n" + visual;
+    pendingAttachmentNote = "[REAL VISUAL INFORMATION FROM THE USER'S PHOTO]\n" + visual + "\n\n";
+  }else{
+    statusBubble.textContent = "I couldn't analyze that photo this time. The photo is still attached above.";
+    pendingAttachmentNote = "[The user attached a photo, but visual analysis was not available this time. Do not guess what is in it.]\n\n";
+  }
+}
+
+attachBtn.addEventListener("click", ()=> attachInput.click());
+attachInput.addEventListener("change", ()=>{
+  const file = attachInput.files && attachInput.files[0];
+  attachInput.value = "";
+  if(file) handleAttachedFile(file);
+});
+
+/* ========== IMAGE REQUESTS ========== */
+function isImageRequest(text){
+  return (
+    /(?:generate|create|make|draw|show|produce|render|design)\s+(?:me\s+)?(?:an?\s+)?(?:image|picture|photo|artwork|illustration|drawing)/i.test(text)
+    || /image generator|generate an image|create an image|make an image|draw an image/i.test(text)
+  );
+}
+function extractImagePrompt(text){
+  let prompt = text
+    .replace(/^\s*(please\s+)?/i, "")
+    .replace(/^(generate|create|make|draw|show|produce|render|design)\s+(me\s+)?/i, "")
+    .replace(/^(an?\s+)?(image|picture|photo|artwork|illustration|drawing)\s*(of|showing|depicting)?/i, "")
+    .trim();
+  if(!prompt) prompt = "a beautiful cinematic futuristic landscape";
+  return prompt;
+}
+
+function waitForImage(url, timeout=90000){
+  return new Promise((resolve,reject)=>{
+    const img = new Image();
+    let done = false;
+    const timer = setTimeout(()=>{ if(done) return; done = true; reject(new Error("Image generation timed out.")); }, timeout);
+    img.onload = ()=>{ if(done) return; done = true; clearTimeout(timer); resolve(url); };
+    img.onerror = ()=>{ if(done) return; done = true; clearTimeout(timer); reject(new Error("Generated image failed to load.")); };
+    img.src = url;
+  });
+}
+
+async function generateImage(prompt){
+  if(!navigator.onLine){
+    addBubble("Image generation needs an internet connection. Everything else here still works offline.", "ai", "notice");
+    return;
+  }
+  const myToken = ++generationToken;
+  input.disabled = true; sendBtn.disabled = true; micBtn.disabled = true;
+  showMediaStatus("🎨 Generating your image…");
+  addBubble("🎨 Generating the actual image now…", "ai");
+  for(let i=0; i<IMAGE_GENERATORS.length; i++){
+    if(myToken !== generationToken) return;
+    try{
+      const url = IMAGE_GENERATORS[i](prompt);
+      await waitForImage(url, 90000);
+      if(myToken !== generationToken) return;
+      mediaTitle.textContent = "Generated image";
+      clearMedia();
+      const img = document.createElement("img");
+      img.src = url; img.alt = prompt; img.loading = "eager"; img.decoding = "async";
+      mediaContent.appendChild(img);
+      mediaPanel.classList.add("open");
+      const open = document.createElement("a");
+      open.href = url; open.target = "_blank"; open.rel = "noopener"; open.textContent = "Open";
+      mediaActions.appendChild(open);
+      const download = document.createElement("a");
+      download.href = url; download.download = "ai-generated-image.jpg"; download.textContent = "Download";
+      mediaActions.appendChild(download);
+      addBubble("There it is. 🎨 The generated image is in the Media Center above.", "ai");
+      return;
+    }catch(err){ continue; }
+  }
+  showMediaStatus("The image service didn't respond this time.");
+  addBubble("The image generator didn't respond this time. You can try the same request again.", "ai", "error");
+  input.disabled = false; sendBtn.disabled = false; micBtn.disabled = !voiceInputSupported;
+}
+/* ========== VOICE SUPPORT (crash fix applied: watchdog no longer calls .resume()) ========== */
+function updateVoiceUI(){
+  speakToggle.classList.toggle("on", speakReplies);
+  speakLabel.textContent = speakReplies ? "Voice on" : "Voice off";
+  rateSlider.value = speechRate;
+  rateValue.textContent = Number(speechRate).toFixed(2) + "×";
+}
+updateVoiceUI();
+
+function unlockSpeech(){
+  if(speechUnlocked || !speechSupported) return;
+  try{
+    const u = new SpeechSynthesisUtterance("");
+    u.volume = 0; u.rate = 1;
+    window.speechSynthesis.speak(u);
+    speechUnlocked = true;
+  }catch(e){}
+}
+document.addEventListener("touchstart", unlockSpeech, { once:true, passive:true });
+document.addEventListener("pointerdown", unlockSpeech, { once:true });
+
+speakToggle.addEventListener("click", ()=>{
+  unlockSpeech();
+  speakReplies = !speakReplies;
+  localStorage.setItem("free_ai_voice", speakReplies ? "1" : "0");
+  updateVoiceUI();
+  voicePanel.classList.toggle("open");
+  if(speakReplies && speechSupported) setTimeout(()=>{ speak("Voice is on. I'll read my replies aloud."); }, 100);
+});
+document.addEventListener("click", e=>{ if(!voicePanel.contains(e.target) && !speakToggle.contains(e.target)) voicePanel.classList.remove("open"); });
+
+function voiceScore(voice){
+  const name = (voice.name || "").toLowerCase();
+  const lang = (voice.lang || "").toLowerCase();
+  let score = 0;
+  if(lang.startsWith("en")) score += 30;
+  if(name.includes("karen")) score += 50;
+  if(/siri|samantha|ava|allison|daniel|alex|moira|nicky|aaron|zoe/.test(name)) score += 35;
+  if(/enhanced|premium|natural|neural/.test(name)) score += 30;
+  if(voice.lang === "en-US") score += 20;
+  if(voice.localService) score += 10;
+  return score;
+}
+
+function loadVoices(){
+  if(!speechSupported) return;
+  try{ availableVoices = window.speechSynthesis.getVoices(); }catch(e){ availableVoices = []; }
+  if(!availableVoices.length) return;
+  const english = availableVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith("en")).sort((a,b)=> voiceScore(b) - voiceScore(a));
+  voiceSelect.innerHTML = "";
+  if(!english.length){
+    const option = document.createElement("option");
+    option.value = ""; option.textContent = "System default";
+    voiceSelect.appendChild(option);
+    return;
+  }
+  english.forEach(voice=>{
+    const option = document.createElement("option");
+    option.value = voice.name; option.textContent = voice.name + " — " + voice.lang;
+    voiceSelect.appendChild(option);
+  });
+  let preferred = english.find(v => v.name === selectedVoiceName);
+  if(!preferred){
+    preferred = english.find(v => v.name.toLowerCase().includes("karen")) || english[0];
+    selectedVoiceName = preferred.name;
+    localStorage.setItem("free_ai_voice_name", selectedVoiceName);
+  }
+  voiceSelect.value = preferred.name;
+}
+if(speechSupported){
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  setTimeout(loadVoices, 300); setTimeout(loadVoices, 1000); setTimeout(loadVoices, 2000);
+}
+voiceSelect.addEventListener("change", ()=>{ selectedVoiceName = voiceSelect.value; localStorage.setItem("free_ai_voice_name", selectedVoiceName); });
+rateSlider.addEventListener("input", ()=>{ speechRate = Number(rateSlider.value); rateValue.textContent = speechRate.toFixed(2) + "×"; localStorage.setItem("free_ai_voice_rate", speechRate); });
+
+function getSelectedVoice(){
+  if(!availableVoices.length) return null;
+  const exact = availableVoices.find(v => v.name === selectedVoiceName);
+  if(exact) return exact;
+  const english = availableVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith("en")).sort((a,b)=> voiceScore(b) - voiceScore(a));
+  return english[0] || availableVoices[0] || null;
+}
+
+function cleanForSpeech(text){
+  let clean = text || "";
+  clean = clean.replace(/```[\s\S]*?```/g, " ");
+  clean = clean.replace(/[*_#>`~]/g, "");
+  clean = clean.replace(/https?:\/\/\S+/g, " link ");
+  clean = clean.replace(/\s+/g, " ");
+  clean = clean.replace(/\s+([,.!?])/g, "$1");
+  return clean.trim();
+}
+
+function splitSpeech(text){
+  const clean = cleanForSpeech(text);
+  if(!clean) return [];
+  const parts = clean.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [clean];
+  const chunks = []; let current = "";
+  for(const part of parts){
+    const candidate = (current + " " + part).trim();
+    if(candidate.length > 170){ if(current) chunks.push(current); current = part.trim(); }
+    else{ current = candidate; }
+  }
+  if(current) chunks.push(current);
+  return chunks;
+}
+
+/* ---- speak(): the per-utterance "watchdog" interval used to call
+   speechSynthesis.resume() speculatively every second to work around
+   an older iOS auto-pause bug. That resume-polling pattern is what
+   triggers a separate WebKit bug ("Can't find variable: EmptyRanges",
+   thrown deep in native played@/buffered@/syncControl@ internals,
+   outside any try/catch reach) on longer replies. Fix: the watchdog
+   now ONLY checks whether speech has actually finished — it no longer
+   touches .paused or calls .resume() at all. ---- */
+function speak(text){
+  if(!speakReplies || !speechSupported) return;
+  const clean = cleanForSpeech(text);
+  if(!clean) return;
+
+  try{
+    const myJob = ++speechJob;
+    clearInterval(speechWatchdog);
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+
+    const chunks = splitSpeech(clean);
+    if(!chunks.length) return;
+
+    const voice = getSelectedVoice();
+    let index = 0;
+
+    function speakNext(){
+      if(myJob !== speechJob || index >= chunks.length){
+        clearInterval(speechWatchdog);
+        return;
+      }
+      const utter = new SpeechSynthesisUtterance(chunks[index]);
+      if(voice){ utter.voice = voice; utter.lang = voice.lang || "en-US"; }
+      else{ utter.lang = "en-US"; }
+      utter.rate = Math.max(.75, Math.min(1.15, Number(speechRate) || .94));
+      utter.pitch = 0.98;
+      utter.volume = 1;
+
+      let completed = false;
+      const finish = ()=>{
+        if(completed) return;
+        completed = true;
+        clearInterval(speechWatchdog);
+        index++;
+        if(myJob !== speechJob) return;
+        setTimeout(speakNext, 140);
+      };
+      utter.onend = finish;
+      utter.onerror = finish;
+
+      try{
+        window.speechSynthesis.speak(utter);
+      }catch(e){
+        finish();
+        return;
+      }
+
+      clearInterval(speechWatchdog);
+      speechWatchdog = setInterval(()=>{
+        if(myJob !== speechJob || completed){
+          clearInterval(speechWatchdog);
+          return;
+        }
+        try{
+          if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
+            clearInterval(speechWatchdog);
+            finish();
+          }
+        }catch(e){}
+      }, 1500);
+    }
+
+    speakNext();
+  }catch(e){
+    console.warn("Speech failed:", e);
+  }
+}
+
+testVoiceBtn.addEventListener("click", ()=>{
+  unlockSpeech();
+  speakReplies = true;
+  localStorage.setItem("free_ai_voice", "1");
+  updateVoiceUI();
+  setTimeout(()=>{ speak("Hey! This is a quick voice test. If you can hear me, your device's speech output is working."); }, 50);
+});
+
+function autoGrow(){ input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 120) + "px"; }
+input.addEventListener("input", autoGrow);
+
+async function requestAI(messages, retry=true){
+  try{
+    const stream = await engine.chat.completions.create({ messages, temperature:.78, top_p:.92, stream:true });
+    return stream;
+  }catch(firstError){
+    if(!retry) throw firstError;
+    await new Promise(resolve => setTimeout(resolve, 700));
+    try{
+      const stream = await engine.chat.completions.create({ messages, temperature:.72, top_p:.90, stream:true });
+      return stream;
+    }catch(secondError){ throw secondError; }
+  }
+}
+
+/* Local-only inference: unchanged behavior, streams tokens from the
+   on-device WebLLM engine straight into the given bubble. */
+async function runLocalInference(messagesForRequest, bubbleEl){
+  if(!engine) throw new Error("The local model isn't ready on this device yet.");
+  const stream = await requestAI(messagesForRequest, true);
+  let full = "";
+  bubbleEl.textContent = "";
+  for await(const chunk of stream){
+    const delta = chunk?.choices?.[0]?.delta?.content || "";
+    if(!delta) continue;
+    full += delta;
+    bubbleEl.textContent = full;
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+  return full;
+}
+
+/* Brain-routed inference: picks LOCAL, CLOUD, or AUTO (cloud first,
+   falling back to local) based on the current brain mode, using the
+   exact same assembled message context either way. */
+async function runBrainInference(messagesForRequest, bubbleEl){
+  const brain = chooseBrain();
+  if(brain === "error"){
+    throw new Error("CLOUD mode is selected but no cloud endpoint is configured yet. Tap the brain light near the top and open Cloud settings.");
+  }
+  if(brain === "cloud"){
+    try{
+      const text = await cloudReply(messagesForRequest);
+      bubbleEl.textContent = text;
+      return text;
+    }catch(cloudErr){
+      if(mode === "auto" && engine){
+        addBubble("Cloud didn't respond, so I switched to the local model for this one. (" + cloudErr.message + ")", "ai", "notice");
+        return await runLocalInference(messagesForRequest, bubbleEl);
+      }
+      throw cloudErr;
+    }
+  }
+  return await runLocalInference(messagesForRequest, bubbleEl);
+}
+/* ========== SEND MESSAGE (vision integrated) ========== */
+async function sendMessage(text){
+  const trimmed = text.trim();
+  if(!trimmed || !engine || busy) return;
+
+  unlockSpeech();
+  addBubble(trimmed, "user");
+  persistTurnToConvo("user", trimmed);
+  extractMemoryFromText(trimmed);
+
+  input.value = "";
+  autoGrow();
+
+  const hadMedia = handleDirectMedia(trimmed);
+  if(hadMedia) return;
+
+  if(isImageRequest(trimmed)){
+    await generateImage(extractImagePrompt(trimmed));
+    input.disabled = false; sendBtn.disabled = false; micBtn.disabled = !voiceInputSupported;
+    input.focus();
+    return;
+  }
+
+  if(isCameraRequest(trimmed)){
+    requestCameraAccess("take a photo or video");
+    chatHistory.push({ role:"user", content: trimmed });
+    chatHistory.push({ role:"assistant", content: "I've asked in the chat above for permission to use your camera — tap Allow when you're ready." });
+    persistTurnToConvo("assistant", "I've asked in the chat above for permission to use your camera — tap Allow when you're ready.");
+    chatHistory = trimChatHistory(chatHistory);
+    return;
+  }
+
+  if(isVisionRequest(trimmed)){
+    if(!cameraStream){
+      requestCameraAccess("look at what your camera is showing me");
+      chatHistory.push({ role:"user", content: trimmed });
+      chatHistory.push({ role:"assistant", content: "I've asked for permission to use the camera. Once you allow it, I'll be able to actually look at what it sees." });
+      persistTurnToConvo("assistant", "I've asked for permission to use the camera. Once you allow it, I'll be able to actually look at what it sees.");
+      chatHistory = trimChatHistory(chatHistory);
+      return;
+    }
+    const frame = grabCameraFrameDataUrl();
+    if(!frame){
+      addBubble("I couldn't capture a frame from the camera right now.", "ai", "error");
+      return;
+    }
+    const visualTyping = addBubble("👁️ Let me look…", "ai", "notice");
+    busy = true; sendBtn.disabled = true; input.disabled = true; micBtn.disabled = true;
+    try{
+      const visual = await analyzeImageWithVision(frame, trimmed);
+      visualTyping.textContent = "👁️ I see:\n\n" + visual;
+      chatHistory.push({ role:"user", content: trimmed + "\n\n[REAL VISUAL INFORMATION]\n" + visual });
+      chatHistory = trimChatHistory(chatHistory);
+      const messagesForRequest = [
+        { role:"system", content: SYSTEM_PROMPT + buildMemoryContextText() + buildDigestContextText() +
+            buildCameraWatchContextText() + buildVisionContextText() + buildCrashAwareContext() },
+        ...chatHistory.slice(1)
+      ];
+      const answerBubble = addTypingBubble();
+      let full = "";
+      try{
+        full = await runBrainInference(messagesForRequest, answerBubble);
+      }catch(brainErr){
+        answerBubble.className = "bubble error";
+        answerBubble.textContent = "The AI hit a snag: " + brainErr.message;
+        full = "";
+      }
+      if(full.trim()){
+        chatHistory.push({ role:"assistant", content: full });
+        persistTurnToConvo("assistant", full);
+        speak(full);
+      }
+    }catch(err){
+      console.warn("Vision request failed:", err);
+      visualTyping.className = "bubble error";
+      visualTyping.textContent = "👁️ I couldn't use my visual system this time. Your normal AI is still working.";
+    }finally{
+      busy = false; sendBtn.disabled = false; input.disabled = false; micBtn.disabled = !voiceInputSupported;
+      input.focus();
+    }
+    return;
+  }
+
+  if(isLookupRequest(trimmed)){
+    if(!navigator.onLine){
+      addBubble("I can't look that up right now — no internet connection. Ask again once you're back online.", "ai", "notice");
+    }else{
+      const typing = addTypingBubble();
+      typing.textContent = "🔎 Looking that up online…";
+      try{
+        const query = extractLookupQuery(trimmed);
+        const result = await performWebLookup(query);
+        if(result){
+          pendingLookupNote = "[Real data just fetched from the internet (Wikipedia):]\nTopic: " + result.title + "\n" + result.extract + "\n\n";
+          addMemory(result.title + ": " + result.extract.split(/(?<=[.!?])\s/)[0], "looked-up");
+          typing.remove();
+        }else{
+          typing.textContent = "Couldn't find a clear answer for that online — I'll answer from what I already know instead.";
+          setTimeout(()=> typing.remove(), 1800);
+        }
+      }catch(err){
+        console.warn("Lookup failed:", err);
+        typing.textContent = "The lookup didn't go through — I'll answer from what I already know instead.";
+        setTimeout(()=> typing.remove(), 1800);
+      }
+    }
+  }
+
+  chatHistory.push({ role:"user", content: pendingAttachmentNote + pendingLookupNote + trimmed });
+  pendingAttachmentNote = ""; pendingLookupNote = "";
+  chatHistory = trimChatHistory(chatHistory);
+
+  busy = true; sendBtn.disabled = true; input.disabled = true; micBtn.disabled = true;
+  const typingBubble = addTypingBubble();
+  let chosenBrain = null;
+
+  try{
+    const memoryText = buildMemoryContextText();
+    const digestText = buildDigestContextText();
+    const cameraWatchText = buildCameraWatchContextText();
+    const visionText = buildVisionContextText();
+    const selfAwareText = await buildSelfAwareContext(trimmed);
+    const crashText = buildCrashAwareContext();
+    const extraContext = memoryText + digestText + cameraWatchText + visionText + selfAwareText + crashText;
+    const messagesForRequest = extraContext
+      ? [{ role:"system", content: SYSTEM_PROMPT + extraContext }, ...chatHistory.slice(1)]
+      : chatHistory;
+
+    chosenBrain = chooseBrain();
+    const full = await runBrainInference(messagesForRequest, typingBubble);
+
+    if(full && full.trim()){
+      chatHistory.push({ role:"assistant", content:full });
+      persistTurnToConvo("assistant", full);
+      speak(full);
+    }else{
+      typingBubble.className = "bubble error";
+      typingBubble.textContent = "I didn't receive a response. Let's try that again.";
+      chatHistory.pop();
+    }
+  }catch(err){
+    console.warn("AI request failed:", err);
+    typingBubble.className = "bubble error";
+    const looksLikeOverflow = /context|token|too long|length|out of memory|overflow/i.test(String(err?.message || err || ""));
+    if(chosenBrain === "cloud" || chosenBrain === "error"){
+      typingBubble.textContent = err.message || "The cloud brain hit a snag. Tap the brain light to check your Cloud settings, or switch to LOCAL.";
+    }else{
+      typingBubble.textContent = !navigator.onLine
+        ? "That failed because the model or its parts aren't fully saved offline yet. Connect once, let it finish downloading, then it'll work without internet."
+        : looksLikeOverflow
+          ? "This conversation got long, so I trimmed some older context to keep things working. Please try that message again."
+          : "The AI hit a temporary snag. I stepped back and kept the conversation intact. Please try that message again.";
+    }
+    if(chatHistory.at(-1)?.role === "user") chatHistory.pop();
+    chatHistory = trimChatHistory(chatHistory, Math.max(4, Math.floor(MAX_HISTORY_MESSAGES / 3)));
+  }finally{
+    busy = false; sendBtn.disabled = false; input.disabled = false; micBtn.disabled = !voiceInputSupported;
+    input.focus();
+  }
+}
+
+form.addEventListener("submit", e=>{ e.preventDefault(); sendMessage(input.value); });
+input.addEventListener("keydown", e=>{ if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendMessage(input.value); } });
+/* ========== VOICE INPUT — ALWAYS ON UNTIL TAPPED AGAIN ==========
+   Tapping the mic once turns on continuous listening: it stays on,
+   sending each finished phrase as its own message automatically, and
+   restarts itself if the browser silently ends the recognition session
+   (common on iOS Safari after a pause) — so it truly stays on until
+   you tap the mic again to turn it off. */
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const voiceInputSupported = !!SpeechRecognition;
+
+let recognizer = null;
+let listening = false;
+let voiceConversationMode = false;
+let finalTranscriptBuffer = "";
+let recognizerRestartTimer = null;
+
+if(!voiceInputSupported){
+  micBtn.disabled = true;
+  micBtn.title = "Voice input isn't supported in this browser.";
+}else{
+  try{
+    recognizer = new SpeechRecognition();
+    recognizer.lang = "en-US";
+    recognizer.interimResults = true;
+    recognizer.continuous = true;
+
+    recognizer.onstart = ()=>{ listening = true; micBtn.classList.add("listening"); };
+
+    recognizer.onresult = e=>{
+      let interim = "";
+      for(let i = e.resultIndex; i < e.results.length; i++){
+        const chunk = e.results[i][0].transcript;
+        if(e.results[i].isFinal) finalTranscriptBuffer += chunk;
+        else interim += chunk;
+      }
+      input.value = (finalTranscriptBuffer + " " + interim).trim();
+      autoGrow();
+      if(finalTranscriptBuffer.trim()){
+        const toSend = finalTranscriptBuffer.trim();
+        finalTranscriptBuffer = "";
+        if(!busy) sendMessage(toSend);
+      }
+    };
+
+    recognizer.onerror = e=>{
+      console.warn("Speech recognition:", e.error);
+      if(e.error === "network"){
+        addBubble("Voice input needs an internet connection on this browser — type your message instead while offline.", "ai", "notice");
+        voiceConversationMode = false;
+      }
+      // "no-speech" / "aborted" happen routinely in continuous mode;
+      // onend's restart logic below picks it back up automatically.
+    };
+
+    recognizer.onend = ()=>{
+      listening = false;
+      micBtn.classList.remove("listening");
+      if(voiceConversationMode){
+        clearTimeout(recognizerRestartTimer);
+        recognizerRestartTimer = setTimeout(()=>{
+          if(voiceConversationMode){
+            try{ recognizer.start(); }catch(err){}
+          }
+        }, 250);
+      }
+    };
+
+    micBtn.addEventListener("click", ()=>{
+      unlockSpeech();
+      if(voiceConversationMode){
+        voiceConversationMode = false;
+        clearTimeout(recognizerRestartTimer);
+        try{ recognizer.stop(); }catch(e){}
+        input.value = "";
+        autoGrow();
+        return;
+      }
+      voiceConversationMode = true;
+      finalTranscriptBuffer = "";
+      input.value = "";
+      autoGrow();
+      try{
+        recognizer.start();
+      }catch(e){
+        try{ recognizer.abort(); }catch(ignore){}
+        setTimeout(()=>{ try{ recognizer.start(); }catch(ignore){} }, 250);
+      }
+    });
+  }catch(e){
+    micBtn.disabled = true;
+  }
+}
+
+/* ========== OFFLINE / ONLINE BANNER ========== */
+function updateOfflineBanner(){
+  if(navigator.onLine){ offlineBanner.classList.remove("show"); return; }
+  offlineBanner.textContent = "Offline — chat still works. Images, web lookups, vision, & voice-typing need internet.";
+  offlineBanner.classList.add("show");
+}
+window.addEventListener("online", updateOfflineBanner);
+window.addEventListener("offline", updateOfflineBanner);
+updateOfflineBanner();
+
+/* ========== INSTALL / SAVE TO HOME SCREEN ========== */
+let deferredInstallPrompt = null;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+
+window.addEventListener("beforeinstallprompt", (e)=>{ e.preventDefault(); deferredInstallPrompt = e; installDot.classList.add("show"); });
+window.addEventListener("appinstalled", ()=>{
+  deferredInstallPrompt = null;
+  installDot.classList.remove("show");
+  addBubble("Nice — installed. Look for it on your home screen from now on.", "ai", "notice");
+});
+
+function openInstallModal(){
+  installSteps.innerHTML = "";
+  installModalGo.style.display = "none";
+  if(isStandalone){
+    installModalTitle.textContent = "Already installed";
+    installModalBody.textContent = "This is already running as an installed app on this device.";
+  }else if(deferredInstallPrompt){
+    installModalTitle.textContent = "Save to your home screen";
+    installModalBody.textContent = "Your browser can install this directly. Tap Install below, then confirm on the prompt it shows you.";
+    installModalGo.style.display = "block";
+  }else if(isIOS){
+    installModalTitle.textContent = "Add to Home Screen (iPad/iPhone)";
+    installModalBody.textContent = "Safari doesn't allow apps to trigger this automatically — here are the exact taps:";
+    const steps = [
+      "Tap the Share icon in Safari's toolbar (the square with an arrow pointing up).",
+      "Scroll down and tap \"Add to Home Screen.\"",
+      "Tap \"Add\" in the top-right corner.",
+      "Done — the icon now opens this straight to the chat, full-screen, no browser bar."
+    ];
+    steps.forEach((s,i)=>{
+      const li = document.createElement("li");
+      li.innerHTML = '<span class="stepNum">'+(i+1)+'</span><span>'+s+'</span>';
+      installSteps.appendChild(li);
+    });
+  }else{
+    installModalTitle.textContent = "Save to your home screen";
+    installModalBody.textContent = "Your browser hasn't offered its install prompt yet — try again in a minute, or use your browser's menu and look for \"Install app\" or \"Add to Home screen.\"";
+  }
+  installModalShade.classList.add("open");
+}
+
+function closeInstallModal(){ installModalShade.classList.remove("open"); }
+installModalClose.addEventListener("click", closeInstallModal);
+installModalShade.addEventListener("click", e=>{ if(e.target === installModalShade) closeInstallModal(); });
+installModalGo.addEventListener("click", async ()=>{
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  const choice = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  installDot.classList.remove("show");
+  closeInstallModal();
+  if(choice.outcome === "accepted") addBubble("Installing… it'll appear on your home screen shortly.", "ai", "notice");
+});
+if(isStandalone) installDot.classList.remove("show");
+
+/* ========== OFFLINE SHELL CACHING — SERVICE WORKER ========== */
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js").catch((e)=>{ console.warn("Service worker registration failed:", e); });
+}
+
+(function setManifest(){
+  const manifest = { name: "Free AI", short_name: "Free AI", start_url: location.href.split("#")[0], display: "standalone", background_color: "#03000d", theme_color: "#24006d", icons: [] };
+  const json = JSON.stringify(manifest);
+  const dataUri = "data:application/manifest+json," + encodeURIComponent(json);
+  document.getElementById("manifestLink").setAttribute("href", dataUri);
+})();
+
+function loadingProgWrapHide(){
+  const wrap = document.getElementById("loadingProgWrap");
+  if(wrap) wrap.style.display = "none";
+  loadingPct.style.display = "none";
+}
+
+async function hasUsableWebGPU(){
+  if(!("gpu" in navigator)) return false;
+  try{ const adapter = await navigator.gpu.requestAdapter(); return !!adapter; }
+  catch(e){ return false; }
+}
+
+async function boot(){
+  loadingMsg.textContent = "Checking your device's local AI support…";
+  if(!navigator.onLine){
+    loadingCachedNote.style.display = "block";
+    loadingCachedNote.textContent = "You're currently offline. If the model finished downloading before, this will still load from what's saved on this device.";
+  }
+  const gpuOK = await hasUsableWebGPU();
+  if(!gpuOK){
+    engine = null;
+    if(mode === "local"){ mode = "auto"; localStorage.setItem(BRAIN_MODE_KEY, mode); }
+    updateBrainUI();
+    loadingMsg.textContent = "Local AI isn't available in this browser.";
+    loadingProgWrapHide();
+    loadingCachedNote.style.display = "block";
+    loadingCachedNote.textContent = "This device/browser can't run the on-device model (no WebGPU). CLOUD mode still works once you set up a cloud endpoint — tap the glowing brain light near the top.";
+    await new Promise(resolve => setTimeout(resolve, 900));
+    loadingEl.classList.add("hidden");
+    input.disabled = false; sendBtn.disabled = false; micBtn.disabled = !voiceInputSupported;
+    ensureCurrentConvo();
+    await loadPersonalitySeedIfEmpty();
+    const existingNoGpu = getCurrentConvo();
+    if(existingNoGpu && existingNoGpu.messages.length){
+      existingNoGpu.messages.forEach(m=>{
+        addBubble(m.text, m.role === "user" ? "user" : "ai");
+        chatHistory.push({ role: m.role === "user" ? "user" : "assistant", content: m.text });
+      });
+      chatHistory = trimChatHistory(chatHistory);
+    }else{
+      addBubble("Hey! Local on-device AI isn't available in this browser, but I can still chat through CLOUD mode once it's configured — tap the glowing brain light up top. 😊", "ai");
+    }
+    input.focus();
+    return;
+  }
+  try{
+    loadingMsg.textContent = "Starting the local AI engine…";
+    trackExternalLoad("AI model weights (" + MODEL_ID + ")", "MLC model registry (Hugging Face-hosted, cached on-device after first download)");
+    engine = await webllm.CreateMLCEngine(MODEL_ID, {
+      initProgressCallback: report=>{
+        const progress = Number(report?.progress) || 0;
+        const pct = Math.max(0, Math.min(100, Math.round(progress * 100)));
+        loadingProgBar.style.width = pct + "%";
+        loadingPct.textContent = pct + "%";
+        if(report?.text) loadingMsg.textContent = report.text;
+      }
+    });
+    loadingProgBar.style.width = "100%";
+    loadingPct.textContent = "100%";
+    await new Promise(resolve => setTimeout(resolve, 250));
+    loadingEl.classList.add("hidden");
+    input.disabled = false; sendBtn.disabled = false; micBtn.disabled = !voiceInputSupported;
+    ensureCurrentConvo();
+    await loadPersonalitySeedIfEmpty();
+    const existing = getCurrentConvo();
+    if(existing && existing.messages.length){
+      existing.messages.forEach(m=>{
+        addBubble(m.text, m.role === "user" ? "user" : "ai");
+        chatHistory.push({ role: m.role === "user" ? "user" : "assistant", content: m.text });
+      });
+      chatHistory = trimChatHistory(chatHistory);
+    }else{
+      const greeting = memoryItems.length
+        ? "Hey, good to see you again! 😊 I'm ready — talk to me, tap the mic (it stays listening until you tap it again), ask for a generated image, ask me to look something up, or open the camera and ask me to look at what it sees."
+        : "Hey! 😊 I'm ready. Talk to me, tap the mic to start always-on voice, ask me to generate a real image, look something up online, or open the camera and ask me to look at what it sees.";
+      addBubble(greeting, "ai");
+    }
+    input.focus();
+    saveCheckpoint("Auto — clean startup");
+  }catch(err){
+    console.warn("WebLLM initialization:", err);
+    loadingMsg.textContent = "The local AI couldn't start.";
+    loadingError.style.display = "block";
+    loadingError.textContent = navigator.onLine
+      ? "I stopped cleanly instead of getting stuck. Reload the page and try again. If the device is low on memory, close other browser tabs first."
+      : "The model isn't fully saved on this device yet, so it can't start offline. Connect once and let it finish downloading — after that it'll work without internet.";
+    loadingProgWrapHide();
+  }
+}
+
+window.addEventListener("error", event=>{
+  console.warn("Recovered browser error:", event.error || event.message);
+  logCrash({ message: (event.error && event.error.message) || event.message || "Unknown error", stack: (event.error && event.error.stack) || "" });
+});
+window.addEventListener("unhandledrejection", event=>{
+  console.warn("Recovered promise error:", event.reason);
+  logCrash({ message: (event.reason && event.reason.message) || String(event.reason) || "Unhandled promise rejection", stack: (event.reason && event.reason.stack) || "" });
+  event.preventDefault();
+});
+
+boot();
+</script>
+</body>
+</html>
