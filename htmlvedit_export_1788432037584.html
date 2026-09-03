@@ -1,0 +1,3366 @@
+<!--                      â¤ï¸Welcome to OptimusPrime TDM FPS ,hit chat button to textð      -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="https://arcee.edgeone.dev/">
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+      <title>OptimusPrime TDM MAP FPS</title>
+      <style>
+html,body{margin:0;overflow:hidden;width:100%;height:100%;touch-action:none;background:#000;color:#fff;font-family:Arial,sans-serif;}
+canvas{display:block;}
+#menu{position:fixed;inset:0;z-index:100;background:linear-gradient(160deg,#0b1220,#1a2540);display:flex;align-items:center;justify-content:center;}
+#menuWrap{display:flex;align-items:center;gap:10px;max-height:92vh;}
+#boxOuter{position:relative;display:inline-block;}
+#menu .box{background:rgba(10,16,30,.92);border:1px solid #00e5ff55;border-radius:10px;padding:24px;width:min(420px,92vw);margin-right:30px;box-shadow:0 20px 60px #000a;max-height:88vh;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;}
+#menu .box::-webkit-scrollbar{display:none;width:0;height:0;background:transparent;}
+#scrollTrack{position:absolute;top:0;right:0;bottom:0;width:26px;background:#1a2540;border-radius:12px;box-shadow:0 0 8px #000a;border:2px solid #ff00cc55;}
+#scrollThumb{position:absolute;left:2px;width:18px;top:0;height:60px;background:#ff00cc;border-radius:9px;box-shadow:0 0 14px #ff00cc;}
+#scrollLabel{color:#ff00cc;font-weight:bold;font-size:13px;text-align:center;text-shadow:0 0 8px #ff00cc;line-height:1.3;white-space:nowrap;}
+#scrollLabel .arrow{font-size:26px;line-height:1;}
+#menu h1{margin:0 0 12px;color:#00e5ff;text-align:center;letter-spacing:2px;}
+#menu label{display:block;font-size:13px;margin:10px 0 4px;color:#9fd;}
+#menu input,#menu select{width:100%;box-sizing:border-box;padding:10px;background:#0b1530;color:#fff;border:1px solid #00e5ff55;border-radius:6px;}
+#playBtn{margin-top:14px;width:100%;padding:12px;background:#00e5ff;color:#000;border:0;border-radius:6px;font-weight:bold;font-size:16px;cursor:pointer;}
+#scores{margin-top:14px;max-height:160px;overflow:auto;font-size:12px;background:#0008;padding:8px;border-radius:6px;}
+#scores h3{margin:0 0 6px;color:#00e5ff;font-size:13px;}
+.scoreRow{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #fff1;}
+.scoreRow .rank{color:#00e5ff;font-weight:bold;margin-right:6px;}
+.scoreRow .pname{color:#fff;}
+.charRow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.charRow button{padding:8px 4px;border:2px solid transparent;border-radius:6px;background:#1a2540;color:#fff;cursor:pointer;font-size:11px;font-weight:bold;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.charRow button.sel{border-color:#00e5ff;}
+.charSwatch{width:28px;height:28px;border-radius:50%;border:2px solid #fff3;}
+.modeRow{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.modeRow button{padding:10px 4px;border:2px solid transparent;border-radius:6px;background:#1a2540;color:#fff;cursor:pointer;font-size:12px;font-weight:bold;}
+.modeRow button.sel{border-color:#00e5ff;background:#123049;}
+
+#hud{position:fixed;top:10px;left:10px;color:#fff;z-index:5;font-size:13px;line-height:1.4;text-shadow:0 1px 2px #000;}
+#hud .hp{width:160px;height:8px;background:#222;border:1px solid #555;border-radius:4px;overflow:hidden;margin-top:3px;}
+#hud .hp i{display:block;height:100%;background:#10b981;width:100%;transition:width .15s;}
+#minimap{position:fixed;top:10px;right:10px;z-index:6;width:170px;height:170px;border-radius:8px;border:2px solid #00e5ff88;background:#0b1220cc;box-shadow:0 8px 24px #000a;}
+
+#crosshair{position:fixed;top:50%;left:50%;width:22px;height:22px;transform:translate(-50%,-50%);pointer-events:none;z-index:10;}
+#crosshair::before,#crosshair::after{content:"";position:absolute;background:#00e5ff;box-shadow:0 0 8px #00e5ff;}
+#crosshair::before{left:50%;top:0;width:2px;height:22px;transform:translateX(-50%);}
+#crosshair::after{top:50%;left:0;width:22px;height:2px;transform:translateY(-50%);}
+#crosshair.locked::before,#crosshair.locked::after{background:#ff3b4d;box-shadow:0 0 10px #ff3b4d;}
+#hitmarker{position:fixed;top:50%;left:50%;width:24px;height:24px;transform:translate(-50%,-50%) rotate(45deg);pointer-events:none;z-index:11;opacity:0;}
+#hitmarker::before,#hitmarker::after{content:"";position:absolute;background:#fff;}
+#hitmarker::before{left:50%;top:0;width:2px;height:24px;transform:translateX(-50%);}
+#hitmarker::after{top:50%;left:0;width:24px;height:2px;transform:translateY(-50%);}
+
+#joy{position:fixed;bottom:70px;left:70px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2);z-index:4;}
+#stick{position:absolute;width:55px;height:55px;border-radius:50%;background:rgba(0,255,0,.35);left:37px;top:37px;}
+
+#fireBtn{
+  position:fixed;
+  bottom:328px;
+  right:20px;
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:rgba(255,60,80,.35);
+  border:3px solid #ff3b4d;
+  color:#fff;
+  font-weight:bold;
+  z-index:4;
+  font-size:14px;
+  touch-action:none;
+}
+
+#jumpBtn{
+  position:fixed;
+  bottom:160px;
+  right:30px;
+  width:90px;
+  height:60px;
+  border-radius:12px;
+  background:rgba(255,214,51,.35);
+  border:3px solid #ffd633;
+  color:#fff;
+  font-weight:bold;
+  z-index:4;
+  font-size:13px;
+  touch-action:none;
+}
+#viewBtn{
+  position:fixed;
+  bottom:240px;
+  right:30px;
+  width:90px;
+  height:50px;
+  border-radius:10px;
+  background:rgba(0,229,255,.35);
+  border:3px solid #00e5ff;
+  color:#fff;
+  font-weight:bold;
+  z-index:4;
+  font-size:13px;
+  touch-action:none;
+}
+#tauntButtons{position:fixed;top:400px;right:10px;z-index:6;display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+#tauntButtons button{padding:8px 14px;background:rgba(160,60,255,.35);border:2px solid #b46cff;border-radius:8px;color:#fff;font-weight:bold;font-size:12px;touch-action:none;text-shadow:0 1px 2px #000;}
+
+#chatLog{position:fixed;bottom:220px;left:10px;width:min(340px,55vw);max-height:160px;overflow:hidden;z-index:5;font-size:12px;color:#fff;text-shadow:0 1px 2px #000;pointer-events:none;}
+#chatLog div{background:#0007;padding:3px 6px;margin-top:2px;border-radius:3px;}
+#chatInput{position:fixed;bottom:10px;left:10px;width:min(340px,55vw);padding:8px;background:#0009;color:#fff;border:1px solid #00e5ff;border-radius:4px;display:none;z-index:50;}
+#chatBtn{position:fixed;top:10px;right:200px;background:#0008;color:#fff;border:1px solid #00e5ff;border-radius:4px;padding:6px 10px;z-index:5;font-size:12px;}
+#voiceBtn{position:fixed;top:46px;right:200px;background:#0008;color:#fff;border:1px solid #b46cff;border-radius:4px;padding:6px 10px;z-index:5;font-size:12px;}
+#voiceBtn.active{background:#b46cff44;}
+#killfeed{position:fixed;top:190px;right:10px;z-index:5;font-size:12px;text-align:right;color:#fff;text-shadow:0 1px 2px #000;}
+#killfeed div{background:#0007;padding:3px 6px;margin-top:2px;border-radius:3px;}
+
+.hidden{display:none!important;}
+</style>
+      <script type="importmap">
+{"imports":{
+"three":"https://unpkg.com/three@0.166.1/build/three.module.js",
+"three/addons/":"https://unpkg.com/three@0.166.1/examples/jsm/",
+"@supabase/supabase-js":"https://esm.sh/@supabase/supabase-js@2"
+}}
+</script>
+    </head>
+    <body>
+      <div id="menu">
+        <div id="menuWrap">
+          <div id="boxOuter">
+            <div class="box">
+              <h1>CITY FPS</h1>
+              <label>Player name</label>
+              <input id="nameIn" maxlength="16" placeholder="Operator"/>
+              <label>Choose your team</label>
+              <div class="modeRow" id="teamRow">
+                <button id="teamRedBtn" class="sel">RED TEAM (0)</button>
+                <button id="teamBlueBtn">BLUE TEAM (0)</button>
+              </div>
+              <label>Bots (0-5)</label>
+              <select id="botSelect">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <label>Character</label>
+              <div class="charRow" id="charRow">
+              </div>
+              <div id="clipsFound" style="font-size:11px;color:#9fd;margin-top:4px;word-break:break-word;">
+              </div>
+              <button id="playBtn">DEPLOY</button>
+              <div id="scores">
+                <h3>HIGH SCORES</h3>
+                <div id="scoreList">
+                </div>
+              </div>
+            </div>
+            <div id="scrollTrack">
+              <div id="scrollThumb">
+              </div>
+            </div>
+          </div>
+          <div id="scrollLabel">
+            <span class="arrow">&larr;</span>
+            <br>SCROLL<br>BAR</div>
+          </div>
+        </div>
+        <div id="hud" class="hidden">
+          <div>
+            <b id="hName">Operator</b>
+          </div>
+          <div>
+            HP <span id="hHP">100</span>
+          </div>
+          <div class="hp">
+            <i id="hHPbar">
+            </i>
+          </div>
+          <div>K <span id="hK">0</span> &middot; D <span id="hD">0</span>
+        </div>
+        <div>Online <span id="hPlayers">1</span>
+      </div>
+    </div>
+  </div>
+  <canvas id="minimap" class="hidden" width="170" height="170">
+  </canvas>
+  <div id="killfeed" class="hidden">
+  </div>
+  <div id="crosshair" class="hidden">
+  </div>
+  <div id="hitmarker">
+  </div>
+  <div id="joy" class="hidden">
+    <div id="stick">
+    </div>
+  </div>
+  <button id="fireBtn" class="hidden">FIRE</button>
+  <button id="jumpBtn" class="hidden">JUMP</button>
+  <button id="viewBtn" class="hidden">TPS</button>
+  <div id="tauntButtons" class="hidden">
+  </div>
+  <button id="chatBtn" class="hidden">CHAT (T)</button>
+  <button id="voiceBtn" class="hidden">VOICE: OFF</button>
+  <div id="chatLog" class="hidden">
+  </div>
+  <input id="chatInput" placeholder="Say something&hellip; (Enter)"/>
+  <script type="module">
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
+import { createClient } from "@supabase/supabase-js";
+
+/* ============ SUPABASE ============ */
+const supabase = createClient(
+  "https://nojfmikjykgcladaoktu.supabase.co",
+  "sb_publishable_KrN0SsJXG3hHUoMHDcv2ww_7jMGQ9PV",
+  {
+    realtime: { params: { eventsPerSecond: 30 } }
+  }
+);
+
+/* ============ STATE ============ */
+const localID = crypto.randomUUID();
+let persistentPID = localStorage.getItem("snow_pid");
+if(!persistentPID){ persistentPID = crypto.randomUUID(); localStorage.setItem("snow_pid", persistentPID); }
+let myName = "Operator";
+let myHP = 100;
+let myMaxHP = 100;
+let myChar = 0;
+let kills = parseInt(localStorage.getItem("snow_kills")||"0",10) || 0;
+let deaths = parseInt(localStorage.getItem("snow_deaths")||"0",10) || 0;
+let started = false;
+let lastDamageFrom = null;
+let isDead = false;
+
+const remote={};
+
+let gameMode = "tdm";
+let botCount = 0;
+const MAX_BOTS = 5;
+let myTeam = 0;
+let myTeamChoice = 0;
+let lastDamageTime = 0;
+const REGEN_DELAY_MS = 4000;
+const REGEN_RATE = 4;
+
+const SPAWN_PROTECTION_MS = 4000;
+let mySpawnProtectedUntil = 0;
+
+const clock = new THREE.Clock();
+
+const HEIGHT_SHORT = 4.0;
+const HEIGHT_TALL  = 6.0;
+
+const CHARACTERS = [
+  { name:"Stu",         url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/Stu.glb",         color:0xff0000, scale:0.25,  weapon:"bullet" },
+  { name:"blake",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/blake.glb",        color:0x00ff00, scale:3.0,   weapon:"bullet" },
+  { name:"Clown",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/clown.glb",        color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2" },
+
+{ name:"Barbie",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/Barbie.glb",        color:0x00ff00, scale:3.0,   weapon:"bullet" , facingOffset:Math.PI},
+
+{ name:"rabbits",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/rabbits.glb",        color:0x00ff00, scale:3.0,   weapon:"bullet" },
+
+{ name:"Ana",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/Ana.glb",        color:0x00ff00, scale:3.0,   weapon:"bullet" },
+
+{ name:"Zinnia",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/Zinnia.glb",        color:0x00ff00, scale:3.0,   weapon:"bullet" , facingOffset:-Math.PI/6},
+
+{ name:"pink woman",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/pinkwoman.glb",        color:0x00ff00, scale:3.0,   weapon:"bullet" , facingOffset:Math.PI},
+
+  { name:"redmech",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/redmech.glb",        color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2" },
+  { name:"bluemech",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/bluemech.glb",        color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2" },
+    { name:"luna",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/lunas.glb",        color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2", facingOffset:Math.PI },
+
+  { name:"cyclops",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/cyclops.glb",        color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2" },
+  { name:"kitty",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/kitty.glb",        color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2" },
+  { name:"magician",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/magician.glb",color:0xffff00, scale:0.65,  weapon:"proj",proj:"proj2" },
+  { name:"dragon",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/dragon.glb",        color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2" },
+  { name:"cyborg",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/cyborg.glb",        color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2" },
+  { name:"bubblegum girl",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/gumgirl.glb",        color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2" },
+ { name:"super girl",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/sgirl.glb",        color:0x00ffff, scale:0.65,  weapon:"proj", proj:"proj2" },
+ { name:"fire dragon",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/firedragon.glb",        color:0xff7777, scale:0.65,  weapon:"proj", proj:"proj2" },
+ { name:"happy girl",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/hgirl.glb",        color:0xff00ff, scale:0.65,  weapon:"proj", proj:"proj2" },
+ { name:"demon",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/demon.glb",        color:0xf00000, scale:0.65,  weapon:"proj", proj:"proj2" },
+ { name:"pumpkinhead",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/pumpkinhead.glb",        color:0xff8822, scale:0.65,  weapon:"proj", proj:"proj2" },
+ { name:"Cop",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/cop.glb",        color:0x339933, scale:0.65,  weapon:"proj", proj:"proj2" },
+ { name:"Voodoo priestess",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/voodoo.glb",        color:0x33ffff, scale:0.65,  weapon:"proj", proj:"proj2" },
+  { name:"shooter_bot", url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/shooter_bot.glb",  color:0x00f000, scale:0.68,  weapon:"proj", proj:"proj2" },
+ { name:"tank", url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/tank.glb",  color:0x0f0e0e, scale:0.68,  weapon:"proj", proj:"proj2", facingOffset:Math.PI/2 },
+  { name:"Unicorn",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/unicorn_fly_loop.glb", color:0xff1418, scale:1.5, weapon:"proj", proj:"proj2" },
+  { name:"woman",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/aer.glb", color:0x833838, scale:1.5, weapon:"bullet" },
+  { name:"diva",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/diva.glb", color:0x38ff38, scale:1.5, weapon:"bullet" },
+  { name:"robot",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/robot.glb", color:0xaaf0f0, scale:1.5, weapon:"bullet" },
+  { name:"girl",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/narutomap.glb", color:0xffffff, scale:1.5, weapon:"bullet" },
+  { name:"dancer",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/doncer.glb",color:0xffff00, scale:0.65,  weapon:"proj", proj:"proj2" },
+  { name:"Sasha",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/sasha.glb", color:0xfaf000, scale:1.5, weapon:"proj", proj:"proj6" },
+  { name:"miss",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/miss.glb", color:0xffe017, scale:1.5, weapon:"bullet" },
+  { name:"witch",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/witch.glb", color:0x020503, scale:1.5, weapon:"proj", proj:"proj2" },
+
+  { name:"bumblebee",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/bumblebe.glb", color:0xff22ff, scale:1.5, weapon:"bullet", eyeHeight:19.0, tpsBack:20, tpsUp:13, muzzleDropFromEye:0, muzzleForwardOffset:5, maxHp:800, projDamage:75, projHitRadius:0.4, bulletScale:2.5, splashRadius:15, splashFlatDamage:true, vehicleChar:true },
+
+  { name:"OptimusPrime", url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/OptimusPrime.glb", color:0xcc2222, scale:1.5 /* <-- ADJUST THIS fallback scale if Optimus looks wrong (only used if auto-scaling fails) */, weapon:"bullet", eyeHeight:51, tpsBack:20, tpsUp:13, muzzleDropFromEye:0, muzzleForwardOffset:13, maxHp:800, projDamage:75, projHitRadius:0.4, bulletScale:2.5, splashRadius:15, splashFlatDamage:true, vehicleChar:true, modelHeight:24/* <-- ADJUST THIS to correct Optimus's size: bumblebee's height (6) x2, plus 4ft, so both his robot and truck forms scale up together */, transformInClip:"transform t", vehicleLoopClip:"truck", transformOutClip:"transform r" },
+
+
+  { name:"Arcee", url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/Arcee.glb", color:0xcc2222, scale:1.5 /* <-- ADJUST THIS fallback scale if Optimus looks wrong (only used if auto-scaling fails) */, weapon:"bullet", eyeHeight:19, tpsBack:12, tpsUp:8, muzzleDropFromEye:0, muzzleForwardOffset:13, maxHp:800, projDamage:75, projHitRadius:0.4, bulletScale:2.5, splashRadius:15, splashFlatDamage:true, vehicleChar:true, modelHeight:25/* <-- ADJUST THIS to correct Optimus's size: bumblebee's height (6) x2, plus 4ft, so both his robot and truck forms scale up together */, transformInClip:"transform c", vehicleLoopClip:"car", transformOutClip:"transform r" },
+
+  { name:"megaman",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/mega_man_volnutt.glb", color:0x32ff38, scale:1.5, weapon:"proj", proj:"proj1" },
+  { name:"gigi",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/gigi.glb", color:0xe7f8ff, scale:1.5, weapon:"proj", proj:"proj2", facingOffset:-Math.PI/2 },
+  { name:"spiderbot",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/spiderbot.glb", color:0x402030, scale:1.5, weapon:"proj", proj:"proj3", facingOffset:Math.PI/2/* <-- ADJUST THIS: was walking sideways-left; flip to Math.PI/2 if it now walks sideways the other way, or back to 0 if this over-corrected */ },
+  { name:"kai",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/kai.glb", color:0xefe8e8, scale:1.5, weapon:"proj", proj:"proj2" },
+  { name:"bat",     url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/bat.glb", color:0x222222, scale:1.5, weapon:"proj", proj:"proj6" },
+
+ { name:"LolaBunny",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/LolaBunny.glb",        color:0x898288, scale:1.5, weapon:"proj", proj:"proj6" , facingOffset:-Math.PI/2},
+
+ { name:"HarleyQuinn",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/HarleyQuinn5.glb",        color:0x898288, scale:1.5, weapon:"proj", proj:"proj6" , facingOffset:-Math.PI/2},
+
+ { name:"PrincessPeach",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/princesspeach.glb",        color:0x898288, scale:1.5, weapon:"proj", proj:"proj6" },
+
+  { name:"Boris",       url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/Boris.glb",        color:0x898288, scale:1.5, weapon:"proj", proj:"proj6" }
+];
+
+function heightOf(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  /* modelHeight lets a character override the normalized model height
+     directly (e.g. OptimusPrime is set to exactly 2x bumblebee's height)
+     instead of only choosing between the two fixed short/tall constants. */
+  if(typeof c.modelHeight === "number") return c.modelHeight;
+  return c.short ? HEIGHT_SHORT : HEIGHT_TALL;
+}
+
+function eyeHeightOf(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  if(typeof c.eyeHeight === "number") return c.eyeHeight;
+  return heightOf(charIdx) * 0.75;
+}
+
+function maxHpOf(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  return (typeof c.maxHp === "number") ? c.maxHp : 100;
+}
+
+function isBumblebee(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  /* Despite the name, this now gates any character flagged vehicleChar
+     (currently bumblebee and OptimusPrime) into the shared vehicle-mode
+     mechanics: 2x/6x move speed, 4x jump height, car-ram tumble, and
+     blocked shoot/taunt while transformed. */
+  return !!c && !!c.vehicleChar;
+}
+
+const PROJECTILES = {
+  proj1:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj1.glb" },
+  proj2:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj2.glb" },
+  proj3:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj3.glb" },
+  proj4:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj4.glb" },
+  proj5:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj5.glb" },
+  proj6:{ url:"https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/proj6.glb" }
+};
+
+const PLAYER_HEIGHT = HEIGHT_TALL;
+const PROJ_SIZE     = 1.0;
+const PLAYER_HIT_RADIUS = 1.3;
+const PROJ_HIT_RADIUS   = 0.35;
+const BULLET_HIT_RADIUS = 0.15;
+
+const BULLET_SPEED    = 6.5;
+const BULLET_LIFE_MS  = 5000;
+const BULLET_DAMAGE   = 20;
+const BULLET_FIRE_RATE= 160;
+/* How long a "shoot" animation state stays active after a fire event,
+   so rapid, fire-rate-limited shots still look like continuous firing
+   instead of the pose flickering between shots. Refreshed on every shot. */
+const SHOOT_ANIM_HOLD_MS = 350;
+
+const PROJ_SPEED       = 4.8;
+const PROJ_DAMAGE       = 20;
+const PROJ_FIRE_RATE   = 250;
+
+function projDamageFor(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  return (typeof c.projDamage === "number") ? c.projDamage : PROJ_DAMAGE;
+}
+function projHitRadiusFor(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  return (typeof c.projHitRadius === "number") ? c.projHitRadius : PROJ_HIT_RADIUS;
+}
+function splashRadiusFor(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  return (typeof c.splashRadius === "number") ? c.splashRadius : 0;
+}
+function splashFlatFor(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  return !!c.splashFlatDamage;
+}
+/* Generic per-character overrides that apply to whichever weapon type
+   (bullet or proj) the character actually uses - so a character like
+   bumblebee can keep its custom damage/hit-radius numbers after being
+   switched from a projectile weapon to a plain bullet weapon. */
+function weaponDamageFor(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  if(typeof c.projDamage === "number") return c.projDamage;
+  return (c.weapon==="bullet") ? BULLET_DAMAGE : PROJ_DAMAGE;
+}
+function weaponHitRadiusFor(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  if(typeof c.projHitRadius === "number") return c.projHitRadius;
+  return (c.weapon==="bullet") ? BULLET_HIT_RADIUS : PROJ_HIT_RADIUS;
+}
+function bulletScaleFor(charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  return (typeof c.bulletScale === "number") ? c.bulletScale : 1;
+}
+
+const charGLBCache = {};
+const charGLBLoading = {};
+/* Character taunt-preview loading (loadCharacterTaunts), the local avatar
+   setup (setupLocalAvatar), and remote/bot avatar setup (makeRemote) can
+   all independently request the same character GLB at nearly the same
+   time (e.g. selecting a character then immediately hitting DEPLOY). Every
+   caller is routed through this shared loader so only one request per URL
+   is ever in flight and every interested caller gets notified once it
+   completes.
+
+   Heavy characters (bumblebee's rig is large - two full pose states plus
+   a big mesh) are the ones most likely to hit a flaky mobile connection
+   mid-download. A single failed GLTFLoader request used to just log a
+   warning and quietly leave every queued caller (including the taunt
+   button population) unresolved forever - which is why bumblebee's taunt
+   buttons in particular would "randomly" never show up. Failed loads now
+   retry automatically (with a short backoff) before giving up, and the
+   in-flight queue is kept alive across retries so late callers still get
+   notified once a retry succeeds. */
+const CHAR_GLB_MAX_ATTEMPTS = 3;
+function attemptLoadCharacterGLB(url, attempt){
+  new GLTFLoader().load(url, (gltf)=>{
+    charGLBCache[url] = gltf;
+    const cbs = charGLBLoading[url] || [];
+    delete charGLBLoading[url];
+    cbs.forEach(cb=>{ try{ cb(gltf); }catch(e){ console.warn("Character GLB callback failed:", e); } });
+  }, undefined, (err)=>{
+    console.warn("Failed to load character GLB (attempt "+attempt+"/"+CHAR_GLB_MAX_ATTEMPTS+"):", url, err);
+    if(attempt < CHAR_GLB_MAX_ATTEMPTS){
+      setTimeout(()=>attemptLoadCharacterGLB(url, attempt+1), 500*attempt);
+    } else {
+      delete charGLBLoading[url];
+    }
+  });
+}
+function loadCharacterGLB(url, onReady){
+  if(charGLBCache[url]){ onReady(charGLBCache[url]); return; }
+  if(charGLBLoading[url]){ charGLBLoading[url].push(onReady); return; }
+  charGLBLoading[url] = [onReady];
+  attemptLoadCharacterGLB(url, 1);
+}
+const projGLBCache = {};
+
+const globalScores = {};
+
+function normalizeToHeight(model, desiredHeight, preScale){
+  const pre = (preScale && preScale>0) ? preScale : 1;
+  model.scale.setScalar(pre);
+  model.position.set(0,0,0);
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const dim = Math.max(size.y, 0.0001);
+  const corrective = desiredHeight / dim;
+  if(corrective < 0.1 || corrective > 10 || !isFinite(corrective)){
+    model.scale.setScalar(pre);
+  } else {
+    model.scale.setScalar(pre * corrective);
+  }
+  const newBox = new THREE.Box3().setFromObject(model);
+  const center = newBox.getCenter(new THREE.Vector3());
+  model.position.x -= center.x;
+  model.position.z -= center.z;
+  model.position.y -= 0.9;
+}
+
+const menu = document.getElementById("menu");
+const nameIn = document.getElementById("nameIn");
+const playBtn = document.getElementById("playBtn");
+const scoreList = document.getElementById("scoreList");
+
+nameIn.value = localStorage.getItem("snow_name") || "";
+
+const charRow = document.getElementById("charRow");
+function randomBrightColor(){
+  const h = Math.floor(Math.random()*360);
+  const s = 85 + Math.floor(Math.random()*15);
+  const l = 55 + Math.floor(Math.random()*10);
+  return `hsl(${h},${s}%,${l}%)`;
+}
+/* This block (taunt button setup) must be defined BEFORE the
+   CHARACTERS.forEach/auto-select-click block below, since that block
+   synchronously calls loadCharacterTaunts() (via the saved-character
+   auto .click()) while the script is still executing top-to-bottom.
+   Referencing tauntButtonsEl/clipsFoundEl before their `const` line runs
+   throws a ReferenceError (temporal dead zone) - and because that first
+   auto-selection fires from inside a real click() event, the browser
+   silently swallows the error instead of halting the whole script, which
+   made it look like taunt buttons/clips just randomly never loaded for
+   whichever character was auto-restored from localStorage. Declaring
+   everything here first fixes that for good. */
+const tauntButtonsEl = document.getElementById("tauntButtons");
+const clipsFoundEl = document.getElementById("clipsFound");
+let myTauntNames = [];
+let myHasTransform = false;
+/* Only clip names relevant to the on-screen buttons (taunts, transform/
+   car) are worth showing in the debug readout - routine action clips
+   (idle/walk/run/jump/shoot/etc.) are noise and were cluttering it. */
+const ACTION_CLIP_KEYWORDS = ["idle","stand","walk","run","sprint","jump","leap","shoot","fire","attack","death","die","back","reverse"];
+function isDebugWorthyClip(name){
+  const n = name.toLowerCase();
+  return !ACTION_CLIP_KEYWORDS.some(k=>n.includes(k));
+}
+function loadCharacterTaunts(charIdx){
+  const cc = CHARACTERS[charIdx] || CHARACTERS[0];
+  myTauntNames = [];
+  myHasTransform = false;
+  renderTauntButtons();
+  if(clipsFoundEl) clipsFoundEl.textContent = "Loading clips for "+cc.name+"...";
+  const applyClips = (gltf)=>{
+    if(charIdx !== myChar) return;
+    const clips = gltf.animations||[];
+    myTauntNames = clips.filter(c=>c.name.toLowerCase().includes("taunt")).map(c=>c.name);
+    const transformInName = (cc.transformInClip||"transform").toLowerCase();
+    const vehicleLoopName = (cc.vehicleLoopClip||"car").toLowerCase();
+    myHasTransform = clips.some(c=>c.name.toLowerCase()===transformInName) && clips.some(c=>c.name.toLowerCase()===vehicleLoopName);
+    renderTauntButtons();
+    if(clipsFoundEl){
+      const relevant = clips.filter(c=>isDebugWorthyClip(c.name)).map(c=>c.name);
+      clipsFoundEl.textContent = relevant.length
+        ? ("Clips found: "+relevant.join(", "))
+        : "Clips found: (no taunt/transform clips in this GLB)";
+    }
+  };
+  loadCharacterGLB(cc.url, applyClips);
+}
+function renderTauntButtons(){
+  tauntButtonsEl.innerHTML = "";
+  myTauntNames.forEach((name,i)=>{
+    const b=document.createElement("button");
+    b.textContent = "Taunt "+(i+1);
+    b.addEventListener("click", ()=>sendTaunt(i));
+    b.addEventListener("touchstart", e=>{ e.preventDefault(); sendTaunt(i); }, {passive:false});
+    tauntButtonsEl.appendChild(b);
+  });
+  if(myHasTransform){
+    const b=document.createElement("button");
+    b.textContent = "Transform";
+    b.addEventListener("click", ()=>toggleLocalTransform());
+    b.addEventListener("touchstart", e=>{ e.preventDefault(); toggleLocalTransform(); }, {passive:false});
+    tauntButtonsEl.appendChild(b);
+  }
+}
+function sendTaunt(i){
+  if(!started) return;
+  if(localAvatar && localAvatar.carMode) return;
+  playLocalTaunt(i);
+  channel.send({type:"broadcast",event:"taunt",payload:{id:localID,index:i}});
+}
+
+CHARACTERS.forEach((c,i)=>{
+  const b=document.createElement("button");
+  b.innerHTML=`<span class="charSwatch" style="background:${randomBrightColor()}"></span>${c.name}`;
+  if(i===0) b.classList.add("sel");
+  b.onclick=()=>{
+    myChar=i;
+    [...charRow.children].forEach(x=>x.classList.remove("sel"));
+    b.classList.add("sel");
+    loadCharacterTaunts(i);
+  };
+  charRow.appendChild(b);
+});
+const savedChar = parseInt(localStorage.getItem("snow_char")||"0",10);
+if(savedChar>=0 && savedChar<CHARACTERS.length){ charRow.children[savedChar].click(); }
+else { loadCharacterTaunts(0); }
+
+const menuBoxEl = document.querySelector("#boxOuter .box");
+const scrollTrackEl = document.getElementById("scrollTrack");
+const scrollThumbEl = document.getElementById("scrollThumb");
+function updateScrollThumb(){
+  const trackH = scrollTrackEl.clientHeight;
+  const contentH = menuBoxEl.scrollHeight;
+  const viewH = menuBoxEl.clientHeight;
+  if(contentH<=viewH+1){
+    scrollThumbEl.style.height = trackH+"px";
+    scrollThumbEl.style.top = "0px";
+    return;
+  }
+  const thumbH = Math.max(30, (viewH/contentH)*trackH);
+  const maxThumbTravel = trackH - thumbH;
+  const maxScroll = contentH - viewH;
+  const frac = maxScroll>0 ? (menuBoxEl.scrollTop/maxScroll) : 0;
+  scrollThumbEl.style.height = thumbH+"px";
+  scrollThumbEl.style.top = (frac*maxThumbTravel)+"px";
+}
+menuBoxEl.addEventListener("scroll", updateScrollThumb);
+addEventListener("resize", updateScrollThumb);
+updateScrollThumb();
+setTimeout(updateScrollThumb, 200);
+
+let thumbDragging = false, thumbDragStartY = 0, thumbDragStartScroll = 0;
+function thumbPointerDown(clientY){
+  thumbDragging = true;
+  thumbDragStartY = clientY;
+  thumbDragStartScroll = menuBoxEl.scrollTop;
+}
+function thumbPointerMove(clientY){
+  if(!thumbDragging) return;
+  const trackH = scrollTrackEl.clientHeight;
+  const thumbH = scrollThumbEl.clientHeight;
+  const maxThumbTravel = Math.max(1, trackH - thumbH);
+  const maxScroll = Math.max(1, menuBoxEl.scrollHeight - menuBoxEl.clientHeight);
+  const deltaY = clientY - thumbDragStartY;
+  const scrollDelta = (deltaY / maxThumbTravel) * maxScroll;
+  menuBoxEl.scrollTop = thumbDragStartScroll + scrollDelta;
+}
+function thumbPointerUp(){ thumbDragging = false; }
+
+scrollThumbEl.addEventListener("mousedown", e=>{ e.preventDefault(); thumbPointerDown(e.clientY); });
+addEventListener("mousemove", e=>{ if(thumbDragging){ e.preventDefault(); thumbPointerMove(e.clientY); } });
+addEventListener("mouseup", thumbPointerUp);
+
+scrollThumbEl.addEventListener("touchstart", e=>{ thumbPointerDown(e.touches[0].clientY); }, {passive:true});
+addEventListener("touchmove", e=>{ if(thumbDragging) thumbPointerMove(e.touches[0].clientY); }, {passive:true});
+addEventListener("touchend", thumbPointerUp);
+
+scrollTrackEl.addEventListener("mousedown", e=>{
+  if(e.target===scrollThumbEl) return;
+  const trackRect = scrollTrackEl.getBoundingClientRect();
+  const thumbRect = scrollThumbEl.getBoundingClientRect();
+  const clickY = e.clientY - trackRect.top;
+  const thumbMidY = (thumbRect.top - trackRect.top) + thumbRect.height/2;
+  const dir = clickY < thumbMidY ? -1 : 1;
+  menuBoxEl.scrollTop += dir * menuBoxEl.clientHeight * 0.8;
+});
+
+const teamRedBtn = document.getElementById("teamRedBtn");
+const teamBlueBtn = document.getElementById("teamBlueBtn");
+teamRedBtn.onclick=()=>{ myTeamChoice=0; teamRedBtn.classList.add("sel"); teamBlueBtn.classList.remove("sel"); };
+teamBlueBtn.onclick=()=>{ myTeamChoice=1; teamBlueBtn.classList.add("sel"); teamRedBtn.classList.remove("sel"); };
+function updateTeamCounts(){
+  let c0=0,c1=0;
+  for(const id in remote){
+    const r = remote[id];
+    if(!r) continue;
+    (r.team===1) ? c1++ : c0++;
+  }
+  if(teamRedBtn) teamRedBtn.textContent = `RED TEAM (${c0})`;
+  if(teamBlueBtn) teamBlueBtn.textContent = `BLUE TEAM (${c1})`;
+}
+setInterval(updateTeamCounts, 1000);
+const botSelect = document.getElementById("botSelect");
+botSelect.onchange=()=>{ botCount = Math.max(0, Math.min(MAX_BOTS, parseInt(botSelect.value,10)||0)); };
+
+function isLeader(){
+  try{
+    const state = channel.presenceState();
+    const ids = Object.keys(state);
+    if(!ids.includes(localID)) ids.push(localID);
+    return ids.sort()[0] === localID;
+  }catch(e){ return true; }
+}
+
+function renderLeaderboard(){
+  const rows = Object.values(globalScores)
+    .sort((a,b)=>(b.kills||0)-(a.kills||0))
+    .slice(0,10);
+  scoreList.innerHTML = rows.map((r,i)=>
+    `<div class="scoreRow"><span><span class="rank">#${i+1}</span><span class="pname">${r.name}</span></span><span>${r.kills||0} pts</span></div>`
+  ).join("") || "<div>Waiting for players&hellip;</div>";
+}
+renderLeaderboard();
+
+playBtn.onclick=()=>{
+  myName = (nameIn.value||"Operator").slice(0,16);
+  localStorage.setItem("snow_name", myName);
+  localStorage.setItem("snow_char", String(myChar));
+
+  myTeam = myTeamChoice;
+
+  player.position.copy(spawnPos(gameMode==="tdm" ? myTeam : undefined));
+  mySpawnProtectedUntil = performance.now() + SPAWN_PROTECTION_MS;
+
+  menu.classList.add("hidden");
+  document.querySelectorAll("#hud,#minimap,#killfeed,#crosshair,#joy,#fireBtn,#jumpBtn,#viewBtn,#tauntButtons,#chatBtn,#chatLog,#voiceBtn").forEach(e=>e.classList.remove("hidden"));
+  document.getElementById("hName").textContent = myName;
+  started = true;
+  lastDamageTime = performance.now();
+  myMaxHP = maxHpOf(myChar);
+  myHP = myMaxHP;
+  document.getElementById("hK").textContent=kills;
+  document.getElementById("hD").textContent=deaths;
+  updateHUD();
+  globalScores[persistentPID] = {name:myName,char:myChar,kills,deaths,t:Date.now()};
+  channel.send({type:"broadcast",event:"join",payload:{id:localID,pid:persistentPID,name:myName,char:myChar,team:myTeam,kills,deaths}});
+  channel.track({id:localID,pid:persistentPID,name:myName,char:myChar});
+  broadcastScore();
+
+  /* Defensive: guarantees taunt buttons/clip data are loaded for whatever
+     character is actually being deployed, even if the menu's earlier
+     auto-selection (from a saved character) never triggered it. */
+  loadCharacterTaunts(myChar);
+
+  setupLocalAvatar(myChar);
+
+  setTimeout(()=>{
+    /* Read the selector directly at deploy time instead of only trusting
+       the onchange-tracked botCount - if that change event was ever
+       missed (some embedded/mobile pickers don't fire it reliably), a
+       visibly-selected bot count would otherwise silently never reach
+       botCount and no bots would spawn. Also no longer gated on
+       isLeader(): that check can resolve incorrectly right after a
+       reload (stale presence) or before presence has finished syncing,
+       silently skipping the spawn even though a count was picked. Bot
+       IDs are already namespaced per-player (see spawnBots), so any
+       player spawning their own requested bots is safe. */
+    const selectedBotCount = Math.max(0, Math.min(MAX_BOTS, parseInt(botSelect.value,10)||0));
+    botCount = selectedBotCount;
+    if(botCount>0) spawnBots(botCount);
+  }, 500);
+};
+
+const scene = new THREE.Scene();
+/*scene.background = new THREE.Color(0x87ceeb);*/
+
+scene.background = new THREE.Color(0x87ceeb); // fallback, harmless to leave
+
+const skyGeo = new THREE.SphereGeometry(4000, 32, 32);
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide,
+  /*uniforms: {
+    colorA: { value: new THREE.Color(0x0033ff) }, // electric blue
+    colorB: { value: new THREE.Color(0xbfe6ff) }  // light blue
+  },*/
+ uniforms: {
+  colorLight: { value: new THREE.Color(0xbfe6ff) }, // light blue, starting side
+  colorDark:  { value: new THREE.Color(0x0033ff) }, // darker blue, reached at 75%
+  colorPink:  { value: new THREE.Color(0xffb6e6) }  // pink/violet, fills the last 25%
+},
+
+  vertexShader: `
+    varying vec3 vPos;
+    void main(){
+      vPos = position;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+    }
+  `,
+  /*fragmentShader: `
+    varying vec3 vPos;
+    uniform vec3 colorA;
+    uniform vec3 colorB;
+    void main(){
+      // gradient across X (one side to the other), normalized -1..1 -> 0..1
+      float t = clamp((normalize(vPos).x + 1.0) / 2.0, 0.0, 1.0);
+      gl_FragColor = vec4(mix(colorA, colorB, t), 1.0);
+    }
+  ` */
+ fragmentShader: `
+  varying vec3 vPos;
+  uniform vec3 colorLight;
+  uniform vec3 colorDark;
+  uniform vec3 colorPink;
+  void main(){
+    float t = clamp((normalize(vPos).x + 1.0) / 2.0, 0.0, 1.0);
+    float breakpoint = 0.75;
+    vec3 col;
+    if(t < breakpoint){
+      float localT = smoothstep(0.0, breakpoint, t);
+      col = mix(colorLight, colorDark, localT);
+    } else {
+      float localT = smoothstep(breakpoint, 1.0, t);
+      col = mix(colorDark, colorPink, localT);
+    }
+    gl_FragColor = vec4(col, 1.0);
+  }
+`
+
+});
+const sky = new THREE.Mesh(skyGeo, skyMat);
+scene.add(sky);
+
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 10000);
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xffffff,0xffffff,1.2));
+
+const light = new THREE.DirectionalLight(0xffffff, 3.5);
+light.position.set(100, 200, 100);
+scene.add(light);
+
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(3000,3000),
+  new THREE.MeshStandardMaterial({color:0xe2ca76})
+);
+ground.rotation.x=-Math.PI/2;
+scene.add(ground);
+
+const loader = new GLTFLoader();
+
+const colliders = [];
+
+const cityColliderBoxes = [];
+
+function bakeCityCollision(){
+  cityColliderBoxes.length = 0;
+  for(const o of colliders){
+    o.updateWorldMatrix(true,false);
+    const box = new THREE.Box3().setFromObject(o);
+    if(box.isEmpty()) continue;
+    const sphere = box.getBoundingSphere(new THREE.Sphere());
+    cityColliderBoxes.push({
+      min:box.min.clone(), max:box.max.clone(),
+      center:sphere.center.clone(), radius:sphere.radius
+    });
+  }
+  colliders.length = 0;
+}
+
+function sphereIntersectsBox(center, radius, b){
+  const cx = Math.max(b.min.x, Math.min(center.x, b.max.x));
+  const cy = Math.max(b.min.y, Math.min(center.y, b.max.y));
+  const cz = Math.max(b.min.z, Math.min(center.z, b.max.z));
+  const dx = center.x-cx, dy = center.y-cy, dz = center.z-cz;
+  return (dx*dx+dy*dy+dz*dz) <= radius*radius;
+}
+
+function citySphereBlocked(center, radius){
+  for(const b of cityColliderBoxes){
+    const dx=center.x-b.center.x, dy=center.y-b.center.y, dz=center.z-b.center.z;
+    const rr=radius+b.radius;
+    if(dx*dx+dy*dy+dz*dz > rr*rr) continue;
+    if(sphereIntersectsBox(center, radius, b)) return true;
+  }
+  return false;
+}
+
+function groundLevelAt(pos){
+  let top = 0.2;
+  for(const b of cityColliderBoxes){
+    if(pos.x>=b.min.x-0.5 && pos.x<=b.max.x+0.5 && pos.z>=b.min.z-0.5 && pos.z<=b.max.z+0.5){
+      if(b.max.y>top) top=b.max.y;
+    }
+  }
+  return top;
+}
+
+loader.load(
+  "https://cdn.jsdelivr.net/gh/bigleydave1-gif/Node@main/city3.glb",
+  (gltf) => {
+
+    const city = gltf.scene;
+    city.position.y = 1.2;
+    scene.add(city);
+
+    city.scale.setScalar(4.5);
+
+    const box = new THREE.Box3().setFromObject(city);
+
+    const center = box.getCenter(new THREE.Vector3());
+    city.position.x -= center.x;
+    city.position.z -= center.z;
+
+    city.position.y += 0.2;
+
+/* Returns true only if `o` is genuinely invisible in the rendered scene:
+   itself hidden, an ancestor hidden, no usable material, the material
+   explicitly marked invisible, or fully transparent (opacity ~0) /
+   colorWrite disabled (a common "invisible collision helper" pattern in
+   authored GLBs). Deliberately does NOT flag ordinary alpha-blended or
+   alphaTest materials as invisible - a windowed or foliage mesh that is
+   still visibly rendered (just partially transparent) must keep its
+   collision, otherwise textured/visible parts of the city silently lose
+   their collision boxes. */
+function isEffectivelyInvisible(o){
+    if(!o.visible) return true;
+
+    let p = o.parent;
+    while(p){
+        if(!p.visible) return true;
+        p = p.parent;
+    }
+
+    const mats = Array.isArray(o.material) ? o.material : [o.material];
+    if(mats.length===0) return true;
+
+    for(const mat of mats){
+        if(!mat) return true;
+        if(mat.visible === false) return true;
+        if(typeof mat.opacity === "number" && mat.opacity <= 0.01) return true;
+        if(mat.colorWrite === false) return true;
+    }
+
+    return false;
+}
+
+city.traverse((o) => {
+
+    if (!o.isMesh) return;
+
+    if (isEffectivelyInvisible(o)) {
+        o.visible = false;
+        return;
+    }
+
+    o.material = Array.isArray(o.material)
+        ? o.material.map(m => m.clone())
+        : o.material.clone();
+
+    const materials = Array.isArray(o.material)
+        ? o.material
+        : [o.material];
+
+    materials.forEach(mat => {
+        mat.side = THREE.DoubleSide;
+    });
+
+    o.castShadow = true;
+    o.receiveShadow = true;
+
+    /* Only meshes that pass the visibility check above (i.e. the ones
+       that actually render, textures and all) are added as colliders -
+       this is what bakeCityCollision() below turns into the AABB list
+       used for movement/bullet/projectile blocking. */
+    colliders.push(o);
+
+});
+
+    
+    bakeCityCollision();
+  },
+  undefined,
+  (err) => { console.error("Failed to load city GLB - map/collision will be missing:", err); }
+);
+
+const player = new THREE.Group();
+scene.add(player);
+const SPAWN_POINTS = [
+  new THREE.Vector3(-220,20,-40),
+  new THREE.Vector3(220,20,40),
+  new THREE.Vector3(-220,20,40),
+  new THREE.Vector3(220,20,-40),
+  new THREE.Vector3(0,20,260),
+  new THREE.Vector3(0,20,-260)
+];
+const SPAWN_POINTS_TEAM0 = [
+  new THREE.Vector3(-220,20,-40),
+  new THREE.Vector3(-220,20,40),
+  new THREE.Vector3(-320,20,0),
+  new THREE.Vector3(-200,20,220),
+  new THREE.Vector3(-200,20,-220)
+];
+const SPAWN_POINTS_TEAM1 = [
+  new THREE.Vector3(220,20,40),
+  new THREE.Vector3(220,20,-40),
+  new THREE.Vector3(320,20,0),
+  new THREE.Vector3(200,20,220),
+  new THREE.Vector3(200,20,-220)
+];
+function spawnPos(team, excludeId){
+  const pool = (typeof team === "number")
+    ? (team===1 ? SPAWN_POINTS_TEAM1 : SPAWN_POINTS_TEAM0)
+    : SPAWN_POINTS;
+  return pickClearSpawn(pool, excludeId || "local");
+}
+
+const SPAWN_CLEAR_RADIUS = 6;
+function pickClearSpawn(pool, excludeId){
+  const candidates = pool.slice();
+  for(let i=candidates.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    const tmp = candidates[i]; candidates[i]=candidates[j]; candidates[j]=tmp;
+  }
+  let fallback=null, fallbackDist=-1;
+  for(const c of candidates){
+    let minDist = Infinity;
+    if(started && excludeId!=="local"){
+      const d = Math.hypot(c.x-player.position.x, c.z-player.position.z);
+      if(d<minDist) minDist=d;
+    }
+    for(const id in remote){
+      if(id===excludeId) continue;
+      const r = remote[id];
+      if(!r || r.hp<=0) continue;
+      const d = Math.hypot(c.x-r.mesh.position.x, c.z-r.mesh.position.z);
+      if(d<minDist) minDist=d;
+    }
+    if(minDist>=SPAWN_CLEAR_RADIUS) return c.clone();
+    if(minDist>fallbackDist){ fallbackDist=minDist; fallback=c; }
+  }
+  return (fallback || candidates[0]).clone();
+}
+player.position.copy(spawnPos());
+let myEyeHeight = eyeHeightOf(myChar);
+camera.position.set(0,myEyeHeight,0);
+
+player.add(camera);
+
+/* ============ VIEW MODE (FPS / TPS) ============ */
+let viewMode = "fps";
+let localAvatar = null;
+/* Measured hitbox for the LOCAL player's own model, expressed the same
+   way remote hitboxes are (half-extents in X/Z, min/max Y relative to
+   ground level) - see makeRemote()'s hitHalfX/hitHalfZ/hitMinY/hitMaxY.
+   Used by localPlayerWorldBox() so bots (and anyone else testing hits
+   against the local player) test against a box that actually matches
+   the character's real size instead of one fixed generic radius. */
+let localHitHalfX = null, localHitHalfZ = null, localHitMinY = null, localHitMaxY = null;
+const TPS_BACK_DIST = 7;
+const TPS_UP_OFFSET = 2.5;
+const CAM_COLLIDE_RADIUS = 0.3;
+
+function isLocalTaunting(){
+  return !!(localAvatar && localAvatar.tauntUntil && performance.now() < localAvatar.tauntUntil);
+}
+
+function setupLocalAvatar(charIdx){
+  if(localAvatar){
+    player.remove(localAvatar.model);
+    localAvatar = null;
+  }
+  myEyeHeight = eyeHeightOf(charIdx);
+  if(viewMode==="fps") camera.position.set(0,myEyeHeight,0);
+  const cc = CHARACTERS[charIdx] || CHARACTERS[0];
+  const build = (gltf)=>{
+    if(charIdx !== myChar) return;
+    const av = SkeletonUtils.clone(gltf.scene);
+    av.rotation.y = Math.PI + (cc.facingOffset || 0);
+    av.scale.set(1,1,1);
+    av.position.set(0,0,0);
+    av.updateMatrixWorld(true);
+
+    const box = new THREE.Box3().setFromObject(av);
+    const size = box.getSize(new THREE.Vector3());
+    const dim = Math.max(size.y, 0.0001);
+    const targetHeight = heightOf(charIdx);
+    const scaleRatio = targetHeight / dim;
+    const fallbackScale = (cc.scale && cc.scale>0) ? cc.scale : 1;
+    if(!isFinite(scaleRatio) || scaleRatio < 0.01 || scaleRatio > 100){
+      av.scale.setScalar(fallbackScale);
+    } else {
+      av.scale.setScalar(scaleRatio);
+    }
+    av.updateMatrixWorld(true);
+
+    const scaledBox = new THREE.Box3().setFromObject(av);
+    if(!scaledBox.isEmpty() && isFinite(scaledBox.min.y)){
+      /* The `player` group's own y-position sits at groundY+height (see
+         updateMovement), unlike remote players' group which sits directly
+         at ground level. Without subtracting `height` here too, the local
+         avatar model ends up floating `height` units above the ground
+         while every remote avatar correctly touches down - that's the
+         "floating a foot above ground" bug in behind-view. */
+      av.position.y -= (scaledBox.min.y - 0.2) + 0.22 + height;
+      const center = scaledBox.getCenter(new THREE.Vector3());
+      av.position.x -= center.x;
+      av.position.z -= center.z;
+    }
+
+    /* Measure the local player's real hitbox from the fully positioned
+       model, before it's parented under `player` (so this box is still
+       expressed in "local to player.position" terms, same as remote's
+       pre-parenting measurement in makeRemote). Since player.position.y
+       sits at groundY+height (see the comment above), converting this
+       box's min/max Y into groundY-relative terms (what localPlayerWorldBox
+       and remoteWorldBox both expect) just requires adding `height` back. */
+    av.updateMatrixWorld(true);
+    const localBox = new THREE.Box3().setFromObject(av);
+    if(!localBox.isEmpty() && isFinite(localBox.min.y) && isFinite(localBox.max.y)){
+      localHitHalfX = Math.max(0.4, (localBox.max.x - localBox.min.x)/2);
+      localHitHalfZ = Math.max(0.4, (localBox.max.z - localBox.min.z)/2);
+      localHitMinY = localBox.min.y + height;
+      localHitMaxY = localBox.max.y + height;
+    } else {
+      localHitHalfX = localHitHalfZ = localHitMinY = localHitMaxY = null;
+    }
+
+    av.traverse(o=>{
+      if(o.isMesh){
+        o.material = o.material.clone();
+        o.material.side = THREE.DoubleSide;
+        const tex = o.material.map || null;
+        o.material = new THREE.MeshStandardMaterial({
+          map: tex, color:0xffffff, roughness:0.8, metalness:0.1
+        });
+        o.castShadow = true;
+        o.receiveShadow = true;
+      }
+    });
+
+    av.visible = (viewMode==="tps");
+    player.add(av);
+
+    const mixer = new THREE.AnimationMixer(av);
+    const clips = gltf.animations||[];
+    const pick=(...names)=>{
+      for(const n of names){
+        const forwardOnly = clips.find(c=>{
+          const cn = c.name.toLowerCase();
+          return cn.includes(n) && !cn.includes("back") && !cn.includes("reverse");
+        });
+        if(forwardOnly) return forwardOnly;
+        const anyMatch = clips.find(c=>c.name.toLowerCase().includes(n));
+        if(anyMatch) return anyMatch;
+      }
+      return null;
+    };
+    const idle = pick("idle","stand") || clips[0];
+    const walk = pick("walk") || clips[1] || idle;
+    const run  = pick("run","sprint") || walk;
+    const shoot = pick("shoot","fire","attack") || null;
+    const jump = pick("jump","leap") || null;
+    const transformInName = (cc.transformInClip||"transform").toLowerCase();
+    const vehicleLoopName = (cc.vehicleLoopClip||"car").toLowerCase();
+    const transformOutName = cc.transformOutClip ? cc.transformOutClip.toLowerCase() : null;
+    const transformClip = clips.find(c=>c.name.toLowerCase()===transformInName) || null;
+    const carClip = clips.find(c=>c.name.toLowerCase()===vehicleLoopName) || null;
+    const transformOutClip = transformOutName ? (clips.find(c=>c.name.toLowerCase()===transformOutName) || null) : null;
+    const deathClip = pick("death","die") || null;
+    const actions = {};
+    if(idle){ actions.idle = mixer.clipAction(idle); actions.idle.play(); }
+    if(walk && walk!==idle) actions.walk = mixer.clipAction(walk);
+    if(run && run!==walk) actions.run = mixer.clipAction(run);
+    if(shoot && shoot!==idle){
+      actions.shoot = mixer.clipAction(shoot);
+    }
+    if(jump && jump!==idle){
+      actions.jump = mixer.clipAction(jump);
+      actions.jump.setLoop(THREE.LoopOnce);
+      actions.jump.clampWhenFinished = true;
+    }
+    if(transformClip){
+      actions.transform = mixer.clipAction(transformClip);
+      actions.transform.setLoop(THREE.LoopOnce);
+      actions.transform.clampWhenFinished = true;
+    }
+    if(carClip){
+      actions.car = mixer.clipAction(carClip);
+    }
+    if(transformOutClip){
+      actions.transformOut = mixer.clipAction(transformOutClip);
+      actions.transformOut.setLoop(THREE.LoopOnce);
+      actions.transformOut.clampWhenFinished = true;
+    }
+    if(deathClip){
+      actions.death = mixer.clipAction(deathClip);
+      actions.death.setLoop(THREE.LoopOnce);
+      actions.death.clampWhenFinished = true;
+    }
+
+    const tauntClips = clips.filter(c=>c.name.toLowerCase().includes("taunt"));
+    const tauntDurations = [];
+    tauntClips.forEach((tc,ti)=>{
+      const act = mixer.clipAction(tc);
+      act.setLoop(THREE.LoopOnce);
+      act.clampWhenFinished = true;
+      actions["taunt"+ti] = act;
+      tauntDurations[ti] = tc.duration;
+    });
+
+    localAvatar = { model:av, mixer, actions, current: actions.idle||null, jumpUntil:0, tauntUntil:0, tauntDurations, carMode:false, transformUntil:0, deathUntil:0 };
+  };
+  loadCharacterGLB(cc.url, build);
+}
+
+function playLocalTaunt(idx){
+  if(!localAvatar || localAvatar.carMode) return;
+  const a = localAvatar.actions && localAvatar.actions["taunt"+idx];
+  if(!a) return;
+  if(localAvatar.current) localAvatar.current.fadeOut(0.1);
+  a.reset().fadeIn(0.05).play();
+  localAvatar.current = a;
+  const dur = (localAvatar.tauntDurations && typeof localAvatar.tauntDurations[idx]==="number") ? localAvatar.tauntDurations[idx]*1000 : 1500;
+  localAvatar.tauntUntil = performance.now() + dur;
+  /* Force the avatar visible for the duration of the taunt regardless of
+     current view mode, so the player can see themselves taunt even in
+     FPS mode (where the local avatar is normally hidden). Visibility is
+     reverted to whatever the active view mode dictates once the taunt
+     animation finishes. */
+  localAvatar.model.visible = true;
+  setTimeout(()=>{
+    if(!localAvatar) return;
+    if(localAvatar.current===a) setAnim(localAvatar,"idle");
+    localAvatar.model.visible = (viewMode==="tps");
+  }, dur+50);
+}
+
+function playLocalDeath(){
+  if(!localAvatar) return;
+  const a = localAvatar.actions && localAvatar.actions.death;
+  if(!a){ return; }
+  if(localAvatar.current) localAvatar.current.fadeOut(0.1);
+  a.reset().fadeIn(0.05).play();
+  localAvatar.current = a;
+  const dur = (a.getClip().duration*1000) || 1000;
+  localAvatar.deathUntil = performance.now() + dur;
+  localAvatar.model.visible = true;
+}
+
+function toggleLocalTransform(){
+  if(!localAvatar || !localAvatar.actions.transform || !localAvatar.actions.car) return;
+  if(!localAvatar.carMode){
+    localAvatar.carMode = true;
+    const a = localAvatar.actions.transform;
+    if(localAvatar.current) localAvatar.current.fadeOut(0.1);
+    a.reset().fadeIn(0.05).play();
+    localAvatar.current = a;
+    const dur = (a.getClip().duration*1000) || 800;
+    localAvatar.transformUntil = performance.now() + dur;
+    setTimeout(()=>{
+      if(localAvatar && localAvatar.carMode) setAnim(localAvatar,"car");
+    }, dur+30);
+  } else {
+    localAvatar.carMode = false;
+    const outA = localAvatar.actions.transformOut;
+    if(outA){
+      if(localAvatar.current) localAvatar.current.fadeOut(0.1);
+      outA.reset().fadeIn(0.05).play();
+      localAvatar.current = outA;
+      const outDur = (outA.getClip().duration*1000) || 800;
+      localAvatar.transformUntil = performance.now() + outDur;
+      setTimeout(()=>{
+        if(localAvatar && !localAvatar.carMode) setAnim(localAvatar,"idle");
+      }, outDur+30);
+    } else {
+      localAvatar.transformUntil = 0;
+      setAnim(localAvatar,"idle");
+    }
+  }
+  channel.send({type:"broadcast",event:"transform",payload:{id:localID, on:localAvatar.carMode}});
+}
+
+function setViewMode(mode){
+  viewMode = mode;
+  const btn = document.getElementById("viewBtn");
+  if(mode==="tps"){
+    if(btn) btn.textContent = "FPS";
+    if(localAvatar) localAvatar.model.visible = true;
+  } else {
+    if(btn) btn.textContent = "TPS";
+    if(localAvatar) localAvatar.model.visible = isLocalTaunting();
+    camera.position.set(0,myEyeHeight,0);
+  }
+}
+function toggleView(){ setViewMode(viewMode==="fps" ? "tps" : "fps"); }
+
+function updateCameraView(){
+  if(viewMode==="fps"){
+    camera.position.set(0,myEyeHeight,0);
+    return;
+  }
+  const cc = CHARACTERS[myChar] || CHARACTERS[0];
+  const backDist = (typeof cc.tpsBack === "number") ? cc.tpsBack : TPS_BACK_DIST;
+  const upOffset = (typeof cc.tpsUp === "number") ? cc.tpsUp : TPS_UP_OFFSET;
+  const forwardFlat = new THREE.Vector3(0,0,-1).applyAxisAngle(new THREE.Vector3(0,1,0), yaw);
+  const eyeWorld = new THREE.Vector3(player.position.x, player.position.y+myEyeHeight, player.position.z);
+  const desiredWorld = new THREE.Vector3(
+    player.position.x - forwardFlat.x*backDist,
+    player.position.y + myEyeHeight + upOffset,
+    player.position.z - forwardFlat.z*backDist
+  );
+  const fullDelta = new THREE.Vector3().subVectors(desiredWorld, eyeWorld);
+  const fullDist = fullDelta.length();
+  let safeFrac = 1;
+  if(fullDist>0.001){
+    const dirN = fullDelta.clone().normalize();
+    const steps = 10;
+    for(let i=1;i<=steps;i++){
+      const t = (fullDist*i)/steps;
+      const testPt = eyeWorld.clone().addScaledVector(dirN, t);
+      if(citySphereBlocked(testPt, CAM_COLLIDE_RADIUS)){
+        safeFrac = Math.max(0.15, (t-1)/fullDist);
+        break;
+      }
+    }
+  }
+  camera.position.set(0, myEyeHeight + upOffset*safeFrac, backDist*safeFrac);
+}
+
+const keys={};
+addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    if(chatInput.style.display==="block"){ sendChat(); }
+    return;
+  }
+  if(e.key.toLowerCase()==="t" && started && chatInput.style.display!=="block"){ openChat(); e.preventDefault(); return; }
+  if(e.key.toLowerCase()==="v" && started && chatInput.style.display!=="block"){ toggleView(); e.preventDefault(); return; }
+  if(e.key===" " && started && chatInput.style.display!=="block"){ jumpRequested=true; e.preventDefault(); return; }
+  keys[e.key.toLowerCase()]=true;
+});
+addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+
+const joy=document.getElementById("joy"), stick=document.getElementById("stick");
+let joyX=0,joyY=0,joyDrag=false,joyId=null;
+joy.addEventListener("touchstart",e=>{
+  const t=e.changedTouches[0]; joyDrag=true; joyId=t.identifier;
+},{passive:true});
+function endTouchTracking(e){
+  for(const t of e.changedTouches){
+    if(t.identifier===joyId){ joyDrag=false; joyId=null; joyX=joyY=0;
+      stick.style.left="37px"; stick.style.top="37px"; }
+    if(t.identifier===lookTouch.id){ lookTouch.active=false; lookTouch.id=null; }
+  }
+}
+addEventListener("touchend",endTouchTracking,{passive:true});
+addEventListener("touchcancel",endTouchTracking,{passive:true});
+addEventListener("touchmove",e=>{
+  for(const t of e.touches){
+    if(t.identifier===joyId){
+      const r=joy.getBoundingClientRect();
+      let x=(t.clientX-r.left-r.width/2)/(r.width/2);
+      let y=(t.clientY-r.top-r.height/2)/(r.height/2);
+      const len=Math.min(1,Math.hypot(x,y)), ang=Math.atan2(y,x);
+      joyX=Math.cos(ang)*len; joyY=Math.sin(ang)*len;
+      stick.style.left=(37+joyX*37)+"px";
+      stick.style.top=(37+joyY*37)+"px";
+    } else if(lookTouch.active && t.identifier===lookTouch.id){
+      const dx=t.clientX-lookTouch.lastX, dy=t.clientY-lookTouch.lastY;
+      yaw-=dx*0.008; pitch-=dy*0.008;
+      pitch=Math.max(-1.2,Math.min(1.2,pitch));
+      lookTouch.lastX=t.clientX; lookTouch.lastY=t.clientY;
+    }
+  }
+},{passive:true});
+
+let yaw=0,pitch=0;
+const lookTouch={active:false,id:null,lastX:0,lastY:0};
+addEventListener("touchstart",e=>{
+  for(const t of e.changedTouches){
+    const onJoy = t.target===joy || t.target===stick;
+    const onFire = t.target.id==="fireBtn";
+    const onJump = t.target.id==="jumpBtn";
+    const onView = t.target.id==="viewBtn";
+    const onTaunt = t.target.closest && t.target.closest("#tauntButtons");
+    if(!onJoy && !onFire && !onJump && !onView && !onTaunt && t.clientX>innerWidth*0.35 && !lookTouch.active){
+      lookTouch.active=true; lookTouch.id=t.identifier;
+      lookTouch.lastX=t.clientX; lookTouch.lastY=t.clientY;
+    }
+  }
+},{passive:true});
+
+let mouseLook=false;
+renderer.domElement.addEventListener("click",()=>{
+  if(!started) return;
+  renderer.domElement.requestPointerLock?.();
+});
+document.addEventListener("pointerlockchange",()=>{ mouseLook=!!document.pointerLockElement; if(!mouseLook) manualFire=false; });
+addEventListener("mousemove",e=>{
+  if(!mouseLook) return;
+  yaw -= e.movementX*0.002;
+  pitch -= e.movementY*0.002;
+  pitch=Math.max(-1.2,Math.min(1.2,pitch));
+});
+
+const fireBtn = document.getElementById("fireBtn");
+let manualFire=false;
+fireBtn.addEventListener("touchstart",e=>{e.preventDefault();manualFire=true;},{passive:false});
+fireBtn.addEventListener("touchend",e=>{e.preventDefault();manualFire=false;},{passive:false});
+fireBtn.addEventListener("touchcancel",e=>{e.preventDefault();manualFire=false;},{passive:false});
+addEventListener("mousedown",e=>{ if(started && mouseLook) manualFire=true; });
+addEventListener("mouseup",()=>manualFire=false);
+
+const jumpBtn = document.getElementById("jumpBtn");
+jumpBtn.addEventListener("touchstart",e=>{e.preventDefault();jumpRequested=true;},{passive:false});
+jumpBtn.addEventListener("click",()=>{ if(started) jumpRequested=true; });
+
+const viewBtn = document.getElementById("viewBtn");
+viewBtn.addEventListener("touchstart",e=>{e.preventDefault(); if(started) toggleView();},{passive:false});
+viewBtn.addEventListener("click",()=>{ if(started) toggleView(); });
+
+/* Defensive reset: if the tab loses focus/visibility mid-gesture (system
+   dialogs, app switch, incoming call, etc.) touch/mouse end events can be
+   swallowed by the OS so flags like manualFire/joyDrag/lookTouch.active
+   would otherwise stay stuck "on" forever. Clear all transient input
+   state whenever that happens. */
+function resetTransientInputState(){
+  manualFire=false;
+  joyDrag=false; joyId=null; joyX=0; joyY=0;
+  stick.style.left="37px"; stick.style.top="37px";
+  lookTouch.active=false; lookTouch.id=null;
+  jumpRequested=false;
+}
+addEventListener("blur", resetTransientInputState);
+document.addEventListener("visibilitychange", ()=>{ if(document.hidden) resetTransientInputState(); });
+
+const velocity=new THREE.Vector3();
+const moveDir=new THREE.Vector3();
+const speed=0.35, gravity=0.02, friction=0.72, height=1.2;
+const PLAYER_MOVE_RADIUS=0.6;
+const JUMP_FORCE=0.5;
+let jumpRequested=false;
+let grounded=false;
+let currentGroundY=0;
+
+function localSpeedMultiplier(){
+  if(!isBumblebee(myChar)) return 1;
+  return (localAvatar && localAvatar.carMode) ? 6 : 2;
+}
+
+function jumpForceFor(charIdx){
+  /* Height under constant gravity scales with velocity^2, so to make the
+     jump 4x taller for bumblebee the initial vertical velocity only needs
+     to be multiplied by sqrt(4) = 2, not 4. */
+  return isBumblebee(charIdx) ? JUMP_FORCE * Math.sqrt(4) : JUMP_FORCE;
+}
+
+const ENTITY_COLLIDE_RADIUS = 0.9;
+
+/* ============ BUMBLEBEE CAR-RAM TUMBLE ============ */
+const CAR_RAM_RADIUS = 6;
+const CAR_RAM_DAMAGE = 20;
+const CAR_RAM_COOLDOWN_MS = 700;
+const TUMBLE_DURATION_MS = 900;
+const TUMBLE_LAUNCH_FORCE = 0.9;
+const TUMBLE_SPIN_SPEED = 0.4;
+/* Ram victims now fly off in a random horizontal direction (not simply
+   "away from the attacker") and travel a real 10-20 unit distance before
+   the knockback velocity fully decays, instead of just spinning in place
+   and popping straight up. TUMBLE_KNOCKBACK_DECAY is the per-frame decay
+   factor; summing the resulting geometric series gives the total travel
+   distance for a given initial speed, so v0 = distance / sumFactor. */
+const TUMBLE_MIN_DIST = 10;
+const TUMBLE_MAX_DIST = 20;
+const TUMBLE_KNOCKBACK_DECAY = 0.9;
+const TUMBLE_KNOCKBACK_SUM_FACTOR = TUMBLE_KNOCKBACK_DECAY/(1-TUMBLE_KNOCKBACK_DECAY);
+let localTumbleUntil = 0;
+let lastCarRamTime = 0;
+const localKnockbackVel = new THREE.Vector3();
+
+function randomTumbleOffset(){
+  const ang = Math.random()*Math.PI*2;
+  const dist = TUMBLE_MIN_DIST + Math.random()*(TUMBLE_MAX_DIST-TUMBLE_MIN_DIST);
+  return { x: Math.cos(ang)*dist, z: Math.sin(ang)*dist, dist };
+}
+
+function findCarRamAttacker(victimPos, victimTeam, excludeId){
+  /* Car-ram always knocks victims around regardless of team, but the
+     caller is responsible for skipping the damage/kill portion when the
+     attacker and victim share a team (see the team checks at each call
+     site below) - so bumblebee's car form still sends teammates
+     head-over-heels, it just no longer hurts them. */
+  if(started && excludeId!=="local" && isBumblebee(myChar) && localAvatar && localAvatar.carMode && !isDead){
+    const d = Math.hypot(player.position.x-victimPos.x, player.position.z-victimPos.z);
+    if(d < CAR_RAM_RADIUS) return {id:localID, name:myName, pos:player.position, team:myTeam};
+  }
+  for(const id in remote){
+    if(id===excludeId) continue;
+    const r = remote[id];
+    if(!r || r.hp<=0) continue;
+    if(!isBumblebee(r.char) || !r.carMode) continue;
+    const d = Math.hypot(r.mesh.position.x-victimPos.x, r.mesh.position.z-victimPos.z);
+    if(d < CAR_RAM_RADIUS) return {id, name:r.name, pos:r.mesh.position, team:r.team};
+  }
+  return null;
+}
+
+function triggerLocalTumble(fromPos){
+  localTumbleUntil = performance.now() + TUMBLE_DURATION_MS;
+  const off = randomTumbleOffset();
+  const v0 = off.dist / TUMBLE_KNOCKBACK_SUM_FACTOR;
+  localKnockbackVel.set((off.x/off.dist)*v0, 0, (off.z/off.dist)*v0);
+  velocity.y = TUMBLE_LAUNCH_FORCE;
+  grounded = false;
+}
+
+function triggerRemoteTumble(r){
+  r.tumbleUntil = performance.now() + TUMBLE_DURATION_MS;
+  r.velY = TUMBLE_LAUNCH_FORCE;
+}
+
+function entityBlockedAt(x, z, excludeId){
+  const rr = ENTITY_COLLIDE_RADIUS * 2;
+  const rr2 = rr*rr;
+  if(excludeId !== "local" && started){
+    const dx = x - player.position.x, dz = z - player.position.z;
+    if(dx*dx + dz*dz < rr2) return true;
+  }
+  for(const id in remote){
+    if(id === excludeId) continue;
+    const r = remote[id];
+    if(!r || r.hp<=0) continue;
+    const dx = x - r.mesh.position.x, dz = z - r.mesh.position.z;
+    if(dx*dx + dz*dz < rr2) return true;
+  }
+  return false;
+}
+
+const MAX_RANGE=200;
+const PROJ_LIFE_MS = (MAX_RANGE/PROJ_SPEED) * (1000/60) + 300;
+/* Distance a shot must travel before city-collision blocking is tested -
+   see the comment at each usage site for why. */
+const PROJ_CITY_GRACE_DIST = 4;
+const BULLET_CITY_GRACE_DIST = 4;
+const activeProjectiles = [];
+const activeBullets = [];
+const activeExplosions = [];
+
+const BULLET_GEO = new THREE.SphereGeometry(0.15, 6, 6);
+const BULLET_MAT = new THREE.MeshBasicMaterial({color:0x2fc3ff});
+
+const WHITE_TEX = (()=>{
+  const c=document.createElement("canvas"); c.width=c.height=2;
+  const ctx=c.getContext("2d"); ctx.fillStyle="#fff"; ctx.fillRect(0,0,2,2);
+  return new THREE.CanvasTexture(c);
+})();
+function hpBarColor(hp,maxHp){
+  const m = maxHp || 100;
+  return hp>m*0.5 ? 0x10b981 : hp>m*0.25 ? 0xf59e0b : 0xef4444;
+}
+function roundRectPath(ctx,x,y,w,h,r){
+  r = Math.max(0, Math.min(r, w/2, h/2));
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function drawHpBarCanvas(canvas, ctx, hp, maxHp){
+  const m = maxHp || 100;
+  const w=canvas.width, h=canvas.height;
+  const frac = Math.max(0, Math.min(1, hp/m));
+  ctx.clearRect(0,0,w,h);
+  roundRectPath(ctx,1,1,w-2,h-2,6);
+  ctx.fillStyle = "#222222";
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#555555";
+  ctx.stroke();
+  const fw = Math.max(0,(w-8)*frac);
+  if(fw>0){
+    roundRectPath(ctx,4,4,fw,h-8,4);
+    ctx.fillStyle = "#"+hpBarColor(hp,m).toString(16).padStart(6,"0");
+    ctx.fill();
+  }
+}
+
+function loadProjectileModel(url, onReady){
+  if(projGLBCache[url]){ onReady(projGLBCache[url]); return; }
+  new GLTFLoader().load(url, (gltf)=>{ projGLBCache[url]=gltf; onReady(gltf); },
+    undefined,
+    (err)=>{ console.warn("Failed to load projectile GLB:", url, err); });
+}
+
+/* ============ SPLASH DAMAGE / EXPLOSION VISUAL ============ */
+function spawnExplosionVisual(pos, radius){
+  const geo = new THREE.SphereGeometry(1, 16, 16);
+  const mat = new THREE.MeshBasicMaterial({color:0xffaa33, transparent:true, opacity:0.8, depthWrite:false});
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.copy(pos);
+  mesh.scale.setScalar(0.1);
+  scene.add(mesh);
+  /* Fast punchy growth (short life) so the sphere visibly snaps out to
+     full size almost instantly rather than slowly inflating. */
+  activeExplosions.push({mesh, born:performance.now(), life:220, maxRadius:Math.max(1,radius), baseOpacity:0.8});
+}
+function updateExplosions(){
+  const now = performance.now();
+  for(let i=activeExplosions.length-1;i>=0;i--){
+    const e = activeExplosions[i];
+    const t = (now-e.born)/e.life;
+    if(t>=1){ scene.remove(e.mesh); e.mesh.geometry.dispose(); e.mesh.material.dispose(); activeExplosions.splice(i,1); continue; }
+    /* ease-out: grows almost to full size immediately, then holds while fading */
+    const growT = 1 - Math.pow(1-t, 3);
+    e.mesh.scale.setScalar(0.1 + e.maxRadius*growT);
+    e.mesh.material.opacity = e.baseOpacity*(1-t);
+  }
+}
+
+/* Deals falloff damage to everyone within `radius` of `center` (excluding
+   the owner), regardless of whether the projectile that caused it landed
+   a direct hit. This is what makes a big splash-damage weapon still land
+   damage on nearby enemies even when the shot itself doesn't precisely
+   track a moving target. Only the client that resolves the projectile's
+   hits (the shooter) calls this, so damage isn't applied multiple times
+   by different clients. */
+function applySplashDamage(center, radius, maxDamage, ownerId, ownerTeam, ownerName, flat){
+  if(!(radius>0)) return;
+  const now = performance.now();
+  for(const id in remote){
+    if(id===ownerId) continue;
+    const r = remote[id];
+    if(!r || r.hp<=0) continue;
+    if(gameMode==="tdm" && typeof ownerTeam==="number" && r.team===ownerTeam) continue;
+    if(r.spawnProtectedUntil && now < r.spawnProtectedUntil) continue;
+    const d = r.mesh.position.distanceTo(center);
+    if(d>radius) continue;
+    const dmg = flat ? maxDamage : Math.max(1, Math.round(maxDamage*(1-d/radius)));
+    channel.send({type:"broadcast",event:"hit",payload:{target:id, from:ownerId, fromName:ownerName, damage:dmg}});
+  }
+  if(started && ownerId!==localID && !isDead){
+    if(gameMode!=="tdm" || ownerTeam!==myTeam){
+      if(!mySpawnProtectedUntil || now>mySpawnProtectedUntil){
+        const d = player.position.distanceTo(center);
+        if(d<=radius){
+          const dmg = flat ? maxDamage : Math.max(1, Math.round(maxDamage*(1-d/radius)));
+          channel.send({type:"broadcast",event:"hit",payload:{target:localID, from:ownerId, fromName:ownerName, damage:dmg}});
+        }
+      }
+    }
+  }
+}
+
+function spawnProjectile(origin, dir, ownerId, charIdx, resolveHits, ownerTeam){
+  const charDef = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  const def = PROJECTILES[charDef.proj] || PROJECTILES.proj1;
+  const dirN = dir.clone().normalize();
+  const proj = {
+    mesh:null, mixer:null,
+    pos:origin.clone(), dir:dirN,
+    ownerId, team:ownerTeam,
+    born:performance.now(),
+    resolveHits: !!resolveHits,
+    alive:true, traveled:0,
+    damage: projDamageFor(charIdx),
+    hitRadius: projHitRadiusFor(charIdx),
+    splashRadius: splashRadiusFor(charIdx),
+    splashFlat: splashFlatFor(charIdx)
+  };
+  activeProjectiles.push(proj);
+
+  loadProjectileModel(def.url, (gltf)=>{
+    if(!proj.alive) return;
+    const inst = SkeletonUtils.clone(gltf.scene);
+    normalizeToHeight(inst, PROJ_SIZE);
+
+if (charDef.proj === "proj5") {
+    inst.scale.multiplyScalar(0.08);
+}
+
+if (typeof charDef.projScaleMult === "number") {
+    inst.scale.multiplyScalar(charDef.projScaleMult);
+}
+
+    inst.traverse(o=>{
+      if(o.isMesh){
+        o.material = o.material.clone();
+        o.material.side = THREE.DoubleSide;
+      }
+    });
+
+    const quat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,-1), dirN);
+    inst.quaternion.copy(quat);
+    inst.position.copy(origin);
+    scene.add(inst);
+    proj.mesh = inst;
+
+    const clips = gltf.animations||[];
+    if(clips.length){
+      proj.mixer = new THREE.AnimationMixer(inst);
+      proj.mixer.clipAction(clips[0]).play();
+    }
+  });
+}
+
+function removeProjectile(p){
+  p.alive=false;
+  if(p.mesh){ scene.remove(p.mesh); }
+}
+
+function updateProjectiles(){
+  const now = performance.now();
+  for(let i=activeProjectiles.length-1;i>=0;i--){
+    const p = activeProjectiles[i];
+    if(!p.alive){ activeProjectiles.splice(i,1); continue; }
+
+    const prevPos = p.pos.clone();
+    const step = p.dir.clone().multiplyScalar(PROJ_SPEED);
+    p.pos.add(step);
+    p.traveled += PROJ_SPEED;
+    if(p.mesh) p.mesh.position.copy(p.pos);
+    if(p.mixer) p.mixer.update(0.016);
+
+    let hit=false;
+
+    /* Grace distance: don't test city-collision blocking for the first
+       few units of flight. Right at the muzzle a shot can be very close
+       to the shooter's own feet/nearby ground clutter, and since city
+       collision boxes are baked per-mesh (not per-voxel) a large or
+       irregularly shaped piece of geometry nearby can register a false
+       block before the shot has even cleared the area around the
+       shooter, well short of the actual target. */
+    if(p.traveled >= PROJ_CITY_GRACE_DIST && citySphereBlocked(p.pos, p.hitRadius)) hit=true;
+
+    if(!hit && p.resolveHits){
+      const hitId = raycastHitEnemy(prevPos, p.pos, p.ownerId, p.team);
+      if(hitId){
+        channel.send({type:"broadcast",event:"hit",payload:{
+          target:hitId, from:p.ownerId, fromName:myName, damage:p.damage
+        }});
+        flashHitmarker();
+        hit=true;
+      }
+    }
+
+    if(hit || p.traveled>=MAX_RANGE || (now-p.born)>=PROJ_LIFE_MS){
+      if(hit && p.splashRadius>0){
+        spawnExplosionVisual(p.pos, p.splashRadius);
+        if(p.resolveHits){
+          const ownerName = (p.ownerId===localID) ? myName : (remote[p.ownerId] ? remote[p.ownerId].name : "");
+          applySplashDamage(p.pos, p.splashRadius, p.damage, p.ownerId, p.team, ownerName, p.splashFlat);
+        }
+      }
+      removeProjectile(p);
+      activeProjectiles.splice(i,1);
+    }
+  }
+}
+
+function spawnBullet(origin, dir, ownerId, resolveHits, ownerTeam, charIdx){
+  const dirN = dir.clone().normalize();
+  const mesh = new THREE.Mesh(BULLET_GEO, BULLET_MAT);
+  mesh.position.copy(origin);
+  const scale = bulletScaleFor(charIdx);
+  if(scale !== 1) mesh.scale.setScalar(scale);
+  scene.add(mesh);
+  activeBullets.push({
+    mesh, pos:origin.clone(), dir:dirN,
+    ownerId, team:ownerTeam,
+    born:performance.now(),
+    resolveHits: !!resolveHits,
+    alive:true,
+    traveled:0,
+    damage: weaponDamageFor(charIdx),
+    hitRadius: weaponHitRadiusFor(charIdx),
+    splashRadius: splashRadiusFor(charIdx),
+    splashFlat: splashFlatFor(charIdx)
+  });
+}
+
+function removeBullet(b){
+  b.alive=false;
+  if(b.mesh) scene.remove(b.mesh);
+}
+
+function updateBullets(){
+  const now = performance.now();
+  for(let i=activeBullets.length-1;i>=0;i--){
+    const b = activeBullets[i];
+    if(!b.alive){ activeBullets.splice(i,1); continue; }
+
+    const prevPos = b.pos.clone();
+    b.pos.addScaledVector(b.dir, BULLET_SPEED);
+    b.traveled += BULLET_SPEED;
+    b.mesh.position.copy(b.pos);
+
+    let hit=false;
+    if(b.traveled >= BULLET_CITY_GRACE_DIST && citySphereBlocked(b.pos, b.hitRadius)) hit=true;
+
+    if(!hit && b.resolveHits){
+      const hitId = raycastHitEnemy(prevPos, b.pos, b.ownerId, b.team);
+      if(hitId){
+        channel.send({type:"broadcast",event:"hit",payload:{
+          target:hitId, from:b.ownerId, fromName:myName, damage:b.damage
+        }});
+        flashHitmarker();
+        hit=true;
+      }
+    }
+
+    if(hit || (now-b.born)>=BULLET_LIFE_MS){
+      if(hit && b.splashRadius>0){
+        spawnExplosionVisual(b.pos, b.splashRadius);
+        if(b.resolveHits){
+          const ownerName = (b.ownerId===localID) ? myName : (remote[b.ownerId] ? remote[b.ownerId].name : "");
+          applySplashDamage(b.pos, b.splashRadius, b.damage, b.ownerId, b.team, ownerName, b.splashFlat);
+        }
+      }
+      removeBullet(b);
+      activeBullets.splice(i,1);
+    }
+  }
+}
+
+const CHEST_HEIGHT_RATIO = 0.82;
+const MUZZLE_FORWARD_OFFSET = 1.5;
+
+/* Most characters are normalized to a fixed heightOf() (6 units), so a
+   flat chest-height ratio works for all of them. Bumblebee is rendered
+   far larger than that constant (his eyeHeight/tpsBack/tpsUp overrides
+   only make sense if his real model is ~20+ units tall) - using the same
+   flat ratio for him puts the muzzle down around his ankles, which is
+   why his shots looked like they weren't firing (spawning inside his own
+   legs and getting instantly blocked by nearby ground/props). Characters
+   with a muzzleDropFromEye override get their muzzle measured down from
+   their own (also overridden) eye height instead, so it scales correctly
+   with however tall they actually render. */
+function muzzleHeightAbove(groundY, charIdx){
+  const c = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  if(typeof c.muzzleDropFromEye === "number"){
+    return groundY + eyeHeightOf(charIdx) - c.muzzleDropFromEye;
+  }
+  return groundY + heightOf(charIdx)*CHEST_HEIGHT_RATIO;
+}
+
+let lastFire=0;
+function tryFire(){
+  if(isBumblebee(myChar) && localAvatar && localAvatar.carMode) return;
+  const myCharDef = CHARACTERS[myChar] || CHARACTERS[0];
+  const wpn = myCharDef.weapon || "bullet";
+  const rate = wpn==="bullet" ? BULLET_FIRE_RATE : PROJ_FIRE_RATE;
+  if(performance.now()-lastFire < rate) return;
+  lastFire=performance.now();
+
+  const dir=new THREE.Vector3(); camera.getWorldDirection(dir);
+  const eyeWorld=new THREE.Vector3(); camera.getWorldPosition(eyeWorld);
+  /* Origin sits directly on the aim ray (camera position + view direction,
+     pitch included) instead of the old yaw-only "forwardFlat" offset from
+     a fixed muzzle height - that approximation drifted away from the
+     crosshair whenever you looked up or down, which is why shots looked
+     misaligned. Since the direction of travel is the same ray, anything
+     downstream of the origin stays exactly in line with the crosshair. */
+  const fwdOffset = (typeof myCharDef.muzzleForwardOffset === "number") ? myCharDef.muzzleForwardOffset : MUZZLE_FORWARD_OFFSET;
+  const origin = eyeWorld.clone().addScaledVector(dir, fwdOffset);
+
+  /* When the crosshair shows a lock (auto-fire, or manual fire while
+     locked), point the fired shot exactly at that enemy's hitbox center
+     from the muzzle instead of the raw camera direction. The lock itself
+     is only re-evaluated every few frames and the muzzle sits a few feet
+     in front of the eye, so a tiny amount of drift between "what the
+     crosshair shows" and "the literal camera ray from the muzzle" was
+     enough for a shot to clip the ground or a ledge short of the target -
+     this guarantees the two always agree, for every character. */
+  let fireDir = dir;
+  if(lastAimEnemy && remote[lastAimEnemy] && remote[lastAimEnemy].mesh && remote[lastAimEnemy].hp>0){
+    const rp = remote[lastAimEnemy];
+    remoteWorldBox(rp, _boxMin, _boxMax);
+    const targetPoint = new THREE.Vector3(
+      (_boxMin.x+_boxMax.x)/2,
+      (_boxMin.y+_boxMax.y)/2,
+      (_boxMin.z+_boxMax.z)/2
+    );
+    const toTarget = targetPoint.clone().sub(origin);
+    if(toTarget.lengthSq() > 0.0001) fireDir = toTarget.normalize();
+  }
+
+  if(wpn==="bullet"){
+    spawnBullet(origin,fireDir,localID,true,myTeam,myChar);
+  } else {
+    spawnProjectile(origin,fireDir,localID,myChar,true,myTeam);
+  }
+  channel.send({type:"broadcast",event:"bullet",payload:{
+    x:origin.x,y:origin.y,z:origin.z,dx:fireDir.x,dy:fireDir.y,dz:fireDir.z,id:localID,char:myChar,wpn
+  }});
+}
+
+const crosshairEl = document.getElementById("crosshair");
+const AIM_MAX_RANGE=200;
+const _fwd=new THREE.Vector3(), _origin=new THREE.Vector3();
+const _boxMin=new THREE.Vector3(), _boxMax=new THREE.Vector3();
+const _lpBoxMin=new THREE.Vector3(), _lpBoxMax=new THREE.Vector3();
+
+function rayIntersectAABB(origin, dir, boxMin, boxMax, tMax){
+  let tmin = 0, tmax = tMax;
+  const axes = ["x","y","z"];
+  for(let i=0;i<3;i++){
+    const ax = axes[i];
+    const o = origin[ax], d = dir[ax];
+    if(Math.abs(d) < 1e-8){
+      if(o < boxMin[ax] || o > boxMax[ax]) return null;
+      continue;
+    }
+    let t1 = (boxMin[ax]-o)/d;
+    let t2 = (boxMax[ax]-o)/d;
+    if(t1>t2){ const tmp=t1; t1=t2; t2=tmp; }
+    tmin = Math.max(tmin, t1);
+    tmax = Math.min(tmax, t2);
+    if(tmin > tmax) return null;
+  }
+  return tmin;
+}
+
+function remoteWorldBox(r, boxMin, boxMax){
+  const halfX = (typeof r.hitHalfX==="number") ? r.hitHalfX : PLAYER_HIT_RADIUS;
+  const halfZ = (typeof r.hitHalfZ==="number") ? r.hitHalfZ : PLAYER_HIT_RADIUS;
+  const minY  = (typeof r.hitMinY==="number") ? r.hitMinY : 0;
+  const maxY  = (typeof r.hitMaxY==="number") ? r.hitMaxY : heightOf(r.char);
+  const px = r.mesh.position.x, py = r.mesh.position.y, pz = r.mesh.position.z;
+  boxMin.set(px-halfX, py+minY, pz-halfZ);
+  boxMax.set(px+halfX, py+maxY, pz+halfZ);
+}
+
+function localPlayerWorldBox(boxMin, boxMax){
+  const halfX = (typeof localHitHalfX==="number") ? localHitHalfX : PLAYER_HIT_RADIUS;
+  const halfZ = (typeof localHitHalfZ==="number") ? localHitHalfZ : PLAYER_HIT_RADIUS;
+  const minY  = (typeof localHitMinY==="number") ? localHitMinY : 0;
+  const maxY  = (typeof localHitMaxY==="number") ? localHitMaxY : heightOf(myChar);
+  const px = player.position.x, pz = player.position.z;
+  const groundY = currentGroundY;
+  boxMin.set(px-halfX, groundY+minY, pz-halfZ);
+  boxMax.set(px+halfX, groundY+maxY, pz+halfZ);
+}
+
+function raycastHitEnemy(prevPos, newPos, excludeId, shooterTeam){
+  const dir = new THREE.Vector3().subVectors(newPos, prevPos);
+  const dist = dir.length();
+  if(dist < 1e-5) return null;
+  dir.normalize();
+  const now = performance.now();
+  let bestId=null, bestDist=Infinity;
+  for(const id in remote){
+    if(id===excludeId) continue;
+    const rp = remote[id];
+    if(!rp || rp.hp<=0) continue;
+    if(gameMode==="tdm" && typeof shooterTeam==="number" && rp.team===shooterTeam) continue;
+    if(rp.spawnProtectedUntil && now < rp.spawnProtectedUntil) continue;
+
+    remoteWorldBox(rp, _boxMin, _boxMax);
+    const t = rayIntersectAABB(prevPos, dir, _boxMin, _boxMax, dist);
+    if(t!==null && t<bestDist){ bestDist=t; bestId=id; }
+  }
+  return bestId;
+}
+
+function aimedAtEnemy(){
+  camera.getWorldDirection(_fwd);
+  camera.getWorldPosition(_origin);
+  const now = performance.now();
+  let best=null, bestDist=Infinity;
+  for(const id in remote){
+    const p=remote[id];
+    if(!p || p.hp<=0) continue;
+    if(gameMode==="tdm" && p.team===myTeam) continue;
+    if(p.spawnProtectedUntil && now < p.spawnProtectedUntil) continue;
+
+    remoteWorldBox(p, _boxMin, _boxMax);
+    const t = rayIntersectAABB(_origin, _fwd, _boxMin, _boxMax, AIM_MAX_RANGE);
+    if(t===null || t>=bestDist) continue;
+
+    const steps=6;
+    let blocked=false;
+    for(let s=1;s<=steps;s++){
+      const dd=(t*s)/steps;
+      const testPt=_origin.clone().addScaledVector(_fwd,dd);
+      if(citySphereBlocked(testPt, 0.4)){ blocked=true; break; }
+    }
+    if(!blocked){ bestDist=t; best=id; }
+  }
+  return best;
+}
+
+const BOT_SPEED = 0.50;
+const BOT_ENGAGE_RANGE = 55;
+const BOT_KEEP_DIST = 12;
+const BOT_FIRE_RATE = 420;
+const BOT_AVOID_ANGLES = [0, 0.5, -0.5, 1.0, -1.0, 1.6, -1.6, 2.2, -2.2, Math.PI];
+
+function findBotMoveDir(b, desiredDir, selfId){
+  const botSpeedEff = BOT_SPEED * (isBumblebee(b.char) ? 2 : 1);
+  const testDirClear = (testDir)=>{
+    const nx = b.mesh.position.x + testDir.x*botSpeedEff;
+    const nz = b.mesh.position.z + testDir.z*botSpeedEff;
+    if(citySphereBlocked(new THREE.Vector3(nx, b.mesh.position.y+1.0, nz), PLAYER_MOVE_RADIUS)) return false;
+    if(entityBlockedAt(nx, nz, selfId)) return false;
+    return true;
+  };
+
+  /* If already committed to a 90-degree avoidance turn from a previous
+     frame, keep heading that way until the ORIGINAL desired direction is
+     clear again - this is what makes a bot turn and walk alongside an
+     obstacle instead of endlessly re-testing tiny angle offsets against
+     it every single frame (which looked like jittering in place). */
+  if(b.avoiding){
+    if(testDirClear(desiredDir)){
+      b.avoiding = false;
+      b.avoidDir = null;
+    } else if(b.avoidDir && testDirClear(b.avoidDir)){
+      return b.avoidDir;
+    } else {
+      b.avoiding = false;
+      b.avoidDir = null;
+      // fall through and re-evaluate a fresh avoidance turn below
+    }
+  }
+
+  if(testDirClear(desiredDir)){
+    return desiredDir;
+  }
+
+  // Blocked - commit to a fixed 90-degree turn (prefer right, then left).
+  const rightTurn = desiredDir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), -Math.PI/2);
+  const leftTurn  = desiredDir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), Math.PI/2);
+  if(testDirClear(rightTurn)){ b.avoiding=true; b.avoidDir=rightTurn; return rightTurn; }
+  if(testDirClear(leftTurn)){ b.avoiding=true; b.avoidDir=leftTurn; return leftTurn; }
+
+  // Both 90-degree options are also blocked (a corner/dead end) - fall
+  // back to the wider angle sweep as a last resort so the bot doesn't
+  // freeze completely.
+  for(const a of BOT_AVOID_ANGLES){
+    const testDir = desiredDir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), a);
+    if(testDirClear(testDir)){ b.avoiding=true; b.avoidDir=testDir; return testDir; }
+  }
+  return null;
+}
+
+function spawnBots(n){
+  let t0=0,t1=0;
+  if(gameMode==="tdm"){
+    myTeam===1 ? t1++ : t0++;
+    for(const id in remote){ remote[id].team===1 ? t1++ : t0++; }
+  }
+  for(let i=0;i<Math.min(n,MAX_BOTS);i++){
+    const id = "bot_"+i+"_"+persistentPID.slice(0,4);
+    if(remote[id]) continue;
+    const name = "Bot "+(i+1);
+    const charIdx = Math.floor(Math.random()*CHARACTERS.length);
+    let team = 0;
+    if(gameMode==="tdm"){
+      team = t0<=t1 ? 0 : 1;
+      team===0 ? t0++ : t1++;
+    }
+    const r = remote[id] = makeRemote(id, name, charIdx, team);
+    const sp = spawnPos(gameMode==="tdm" ? team : undefined, id);
+    r.mesh.position.copy(sp);
+    r.target.x = sp.x; r.target.z = sp.z;
+    r.groundY = groundLevelAt(sp);
+    r.hp = maxHpOf(charIdx);
+    r.isBot = true;
+    r.botLastFire = 0;
+    r.spawnProtectedUntil = performance.now() + SPAWN_PROTECTION_MS;
+    r.mesh.visible = true;
+    channel.send({type:"broadcast",event:"join",payload:{id, pid:id, name, char:charIdx, team, kills:0, deaths:0, isBot:true}});
+  }
+}
+
+function respawnBot(id){
+  const b = remote[id];
+  if(!b) return;
+  const sp = spawnPos(gameMode==="tdm" ? b.team : undefined, id);
+  b.mesh.position.copy(sp);
+  b.target.x = sp.x; b.target.z = sp.z;
+  b.groundY = groundLevelAt(sp);
+  b.hp = maxHpOf(b.char);
+  b.deathUntil = 0;
+  b.avoiding = false;
+  b.avoidDir = null;
+  b.spawnProtectedUntil = performance.now() + SPAWN_PROTECTION_MS;
+  b.mesh.visible = true;
+  channel.send({type:"broadcast",event:"state",payload:{
+    id, name:b.name, char:b.char, team:b.team,
+    x:sp.x, z:sp.z, yaw:b.yaw||0, hp:b.hp, moving:false, running:false
+  }});
+}
+
+function botHitLocalPlayer(origin, dir, maxDist){
+  if(mySpawnProtectedUntil && performance.now() < mySpawnProtectedUntil) return false;
+  localPlayerWorldBox(_lpBoxMin, _lpBoxMax);
+  const t = rayIntersectAABB(origin, dir, _lpBoxMin, _lpBoxMax, maxDist);
+  return t !== null;
+}
+
+function updateBots(){
+  if(!isLeader()) return;
+  const now = performance.now();
+  for(const id in remote){
+    const b = remote[id];
+    if(!b || !b.isBot || b.hp<=0) continue;
+
+    const isBotTumbling = b.tumbleUntil && now < b.tumbleUntil;
+
+    if(!isBotTumbling){
+      let best=null, bestDist=Infinity;
+      const consider=(pos,team,hp,protectedUntil)=>{
+        if(hp<=0) return;
+        if(gameMode==="tdm" && team===b.team) return;
+        if(protectedUntil && now < protectedUntil) return;
+        const d = b.mesh.position.distanceTo(pos);
+        if(d<bestDist){ bestDist=d; best={pos}; }
+      };
+      if(started) consider(player.position, myTeam, myHP, mySpawnProtectedUntil);
+      for(const rid in remote){
+        if(rid===id) continue;
+        const r=remote[rid];
+        if(!r) continue;
+        consider(r.mesh.position, r.team, r.hp, r.spawnProtectedUntil);
+      }
+
+      if(best){
+        const dir = new THREE.Vector3().subVectors(best.pos, b.mesh.position);
+        dir.y=0;
+        const dist = dir.length();
+        if(dist>0.01) dir.normalize();
+
+        const botSpeedEff = BOT_SPEED * (isBumblebee(b.char) ? 2 : 1);
+        let moveDir = null;
+        if(bestDist>BOT_KEEP_DIST){
+          moveDir = findBotMoveDir(b, dir, id);
+          if(moveDir){
+            const nx = b.mesh.position.x + moveDir.x*botSpeedEff;
+            const nz = b.mesh.position.z + moveDir.z*botSpeedEff;
+            b.target.x = nx; b.target.z = nz;
+            b.groundY = groundLevelAt({x:nx,z:nz});
+          }
+        }
+        /* While turning to walk around an obstacle, face the direction
+           actually being walked rather than the target - otherwise the
+           bot would appear to strafe/moonwalk sideways while still
+           looking at its target. Once the obstacle is cleared (b.avoiding
+           goes false again) facing reverts to the target as normal. */
+        const faceDir = (moveDir && b.avoiding) ? moveDir : dir;
+        b.yaw = Math.atan2(-faceDir.x, -faceDir.z);
+
+        b.moving = bestDist>BOT_KEEP_DIST;
+        b.running = false;
+
+        if(bestDist<=BOT_ENGAGE_RANGE && (now-(b.botLastFire||0))>BOT_FIRE_RATE && !(isBumblebee(b.char) && b.carMode)){
+          b.botLastFire = now;
+          const cc = CHARACTERS[b.char] || CHARACTERS[0];
+          const chestY = muzzleHeightAbove(b.mesh.position.y, b.char);
+          const origin = new THREE.Vector3(b.mesh.position.x, chestY, b.mesh.position.z);
+          const fireDir = dir.clone(); if(fireDir.lengthSq()<0.0001) fireDir.set(0,0,-1);
+
+          if(cc.weapon==="bullet"){ spawnBullet(origin, fireDir, id, false, b.team, b.char); }
+          else { spawnProjectile(origin, fireDir, id, b.char, false, b.team); }
+          channel.send({type:"broadcast",event:"bullet",payload:{
+            x:origin.x,y:origin.y,z:origin.z,dx:fireDir.x,dy:fireDir.y,dz:fireDir.z,id,char:b.char,wpn:cc.weapon
+          }});
+
+          const dmg = weaponDamageFor(b.char);
+          const end = origin.clone().addScaledVector(fireDir, AIM_MAX_RANGE);
+          const hitId = raycastHitEnemy(origin, end, id, b.team);
+          if(hitId){
+            channel.send({type:"broadcast",event:"hit",payload:{target:hitId, from:id, fromName:b.name, damage:dmg}});
+          } else if(started && (gameMode!=="tdm" || b.team!==myTeam) && botHitLocalPlayer(origin, fireDir, AIM_MAX_RANGE)){
+            channel.send({type:"broadcast",event:"hit",payload:{target:localID, from:id, fromName:b.name, damage:dmg}});
+          }
+        }
+      }
+    }
+     b.lastSeen = performance.now();
+
+    if(!b._lastCarRam || now-b._lastCarRam>CAR_RAM_COOLDOWN_MS){
+      const attacker = findCarRamAttacker(b.mesh.position, b.team, id);
+      if(attacker){
+        b._lastCarRam = now;
+        const isFriendly = gameMode==="tdm" && typeof attacker.team==="number" && attacker.team===b.team;
+        if(!isFriendly) b.hp = Math.max(0, b.hp - CAR_RAM_DAMAGE);
+        const off = randomTumbleOffset();
+        b.target.x = b.mesh.position.x + off.x;
+        b.target.z = b.mesh.position.z + off.z;
+        b.groundY = groundLevelAt({x:b.target.x, z:b.target.z});
+        b.tumbleUntil = now + TUMBLE_DURATION_MS;
+        b.velY = TUMBLE_LAUNCH_FORCE;
+        channel.send({type:"broadcast",event:"tumble",payload:{id}});
+        channel.send({type:"broadcast",event:"state",payload:{
+          id, name:b.name, char:b.char, team:b.team,
+          x:b.target.x, z:b.target.z, yaw:b.yaw||0,
+          hp:b.hp, moving:!!b.moving, running:!!b.running
+        }});
+        if(!isFriendly && b.hp<=0){
+          channel.send({type:"broadcast",event:"kill",payload:{
+            killer:attacker.id, killerName:attacker.name,
+            victim:id, victimName:b.name
+          }});
+          setTimeout(()=>respawnBot(id), 3000);
+        }
+      }
+    }
+
+    if(!b._lastSend || now-b._lastSend>150){
+      b._lastSend = now;
+      channel.send({type:"broadcast",event:"state",payload:{
+        id, name:b.name, char:b.char, team:b.team,
+        x:b.mesh.position.x, z:b.mesh.position.z,
+        yaw:b.yaw||0, hp:b.hp, moving:!!b.moving, running:!!b.running
+      }});
+    }
+  }
+}
+
+const STALE_TIMEOUT_MS = 1500000;
+
+function makeTriangleTexture(colorHex){
+  const c=document.createElement("canvas"); c.width=64; c.height=64;
+  const ctx=c.getContext("2d");
+  ctx.clearRect(0,0,64,64);
+  ctx.beginPath();
+  ctx.moveTo(4,4);
+  ctx.lineTo(60,4);
+  ctx.lineTo(32,58);
+  ctx.closePath();
+  ctx.fillStyle = colorHex;
+  ctx.fill();
+  return new THREE.CanvasTexture(c);
+}
+const TEAM_FRIEND_TEX = makeTriangleTexture("#39ff6a");
+const TEAM_ENEMY_TEX  = makeTriangleTexture("#ff2d3b");
+const TEAM_BOT_TEX    = makeTriangleTexture("#ff49e0");
+
+/* Sprite stacking above a character's head: healthbar sits one foot above
+   the character's actual measured top (head), name sits above the
+   healthbar, and the team triangle sits above the name. Gaps are derived
+   from each sprite's own vertical scale (so they can never visually
+   overlap) rather than a fixed cap - this applies to every character,
+   regular or vehicle-sized, since it's relative to their own real height. */
+const SPRITE_NAME_SCALE_Y = 2.5; // must match nameSprite.scale.set(...) in makeRemote
+const SPRITE_HP_SCALE_Y   = 0.45; // must match hpSprite.scale.set(...) in makeRemote (HP_BAR_H)
+const SPRITE_TEAM_SCALE_Y = 1.1; // must match teamSprite.scale.set(...) in makeRemote
+const SPRITE_STACK_GAP = 0.15;
+const ONE_FOOT = 1; // one world unit ~= one foot at this game's character scale
+function stackedSpriteYs(top){
+  const hpY = top + ONE_FOOT + SPRITE_HP_SCALE_Y/2;
+  const nameY = hpY + SPRITE_HP_SCALE_Y/2 + SPRITE_STACK_GAP + SPRITE_NAME_SCALE_Y/2;
+  const teamY = nameY + SPRITE_NAME_SCALE_Y/2 + SPRITE_STACK_GAP + SPRITE_TEAM_SCALE_Y/2;
+  return {hpY, nameY, teamY};
+}
+
+function applySpriteHeight(p, useCar){
+  const top = useCar ? (p.spriteTopCar!==undefined ? p.spriteTopCar : p.spriteTopIdle) : p.spriteTopIdle;
+  if(top===undefined) return;
+  const {hpY, nameY, teamY} = stackedSpriteYs(top);
+  p.hpSprite.position.y = hpY;
+  p.nameSprite.position.y = nameY;
+  p.teamSprite.position.y = teamY;
+}
+
+function makeRemote(id,name,charIdx,team){
+  const group=new THREE.Group();
+  const cc = CHARACTERS[charIdx||0] || CHARACTERS[0];
+  const color = cc.color;
+  const initialMaxHp = maxHpOf(charIdx);
+
+  const cv=document.createElement("canvas"); cv.width=256; cv.height=64;
+  const ctx=cv.getContext("2d");
+  ctx.fillStyle = "#ff13f0";
+  ctx.font="bold 32px Arial"; ctx.textAlign="center";
+  ctx.fillText(name||"player", 128, 42);
+  const tex=new THREE.CanvasTexture(cv);
+  const spr=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true}));
+  spr.scale.set(3.5,2.5,0.5);
+  const initialStack = stackedSpriteYs(heightOf(charIdx));
+  spr.position.y = initialStack.nameY;
+  group.add(spr);
+
+  const teamSprite = new THREE.Sprite(new THREE.SpriteMaterial({map:TEAM_FRIEND_TEX,transparent:true}));
+  teamSprite.scale.set(1.1,1.1,1);
+  teamSprite.position.y = initialStack.teamY;
+  teamSprite.visible = false;
+  group.add(teamSprite);
+
+  const HP_BAR_W = 3.2, HP_BAR_H = 0.45;
+  const hpCanvas = document.createElement("canvas");
+  hpCanvas.width = 200; hpCanvas.height = 28;
+  const hpCtx = hpCanvas.getContext("2d");
+  const hpTex = new THREE.CanvasTexture(hpCanvas);
+  drawHpBarCanvas(hpCanvas, hpCtx, initialMaxHp, initialMaxHp);
+  const hpSprite = new THREE.Sprite(new THREE.SpriteMaterial({map:hpTex,transparent:true}));
+  hpSprite.scale.set(HP_BAR_W, HP_BAR_H, 1);
+  hpSprite.position.y = initialStack.hpY;
+  group.add(hpSprite);
+
+  scene.add(group);
+  const p={
+    mesh:group, model:null, target:new THREE.Vector3(), yaw:0,
+    mixer:null, actions:{}, current:null,
+    name:name||"player", hp:initialMaxHp, maxHp:initialMaxHp, char:charIdx||0,
+    team: team||0,
+    velY:0,
+    hpCanvas, hpCtx, hpTex, hpLastDrawn:initialMaxHp,
+    nameSprite:spr, hpSprite, teamSprite,
+    spawnProtectedUntil: 0,
+    lastSeen: performance.now(),
+    carMode:false, transformUntil:0, deathUntil:0
+  };
+  const charUrl = cc.url;
+  const PLAYER_HEIGHT = heightOf(charIdx);
+
+function resizeModelToHeight(model) {
+
+    const targetHeight = PLAYER_HEIGHT;
+
+    model.scale.set(1, 1, 1);
+    model.updateMatrixWorld(true);
+
+    const box = new THREE.Box3().setFromObject(model);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+
+    const dim = Math.max(size.y, 0.0001);
+    const scaleRatio = targetHeight / dim;
+    const fallbackScale = (cc.scale && cc.scale > 0) ? cc.scale : 1;
+
+    if (!isFinite(scaleRatio) || scaleRatio < 0.01 || scaleRatio > 100) {
+      model.scale.setScalar(fallbackScale);
+    } else {
+      model.scale.setScalar(scaleRatio);
+    }
+
+    model.updateMatrixWorld(true);
+
+    const scaledBox = new THREE.Box3().setFromObject(model);
+    if (scaledBox.isEmpty() || !isFinite(scaledBox.min.y)) return;
+
+    model.position.y -= scaledBox.min.y - 0.2;
+
+    const center = new THREE.Vector3();
+    scaledBox.getCenter(center);
+
+    model.position.x -= center.x;
+    model.position.z -= center.z;
+}
+
+ 
+  const onGLB = (gltf)=>{
+
+      const av = SkeletonUtils.clone(gltf.scene);
+
+av.rotation.y = Math.PI + (cc.facingOffset || 0);
+
+resizeModelToHeight(av);
+
+if (cc.name === "bat") {
+    av.position.y = 7.0 ;
+}
+
+/* Luna's facing correction lives entirely in the `facingOffset` field on
+   its CHARACTERS entry now (applied above via `Math.PI + (cc.facingOffset||0)`).
+   There used to be a second, redundant correction here
+   ("if (cc.name === 'luna') av.rotation.y += Math.PI/2;") which only ran
+   for remote/bot instances and NOT for the local player's own avatar in
+   setupLocalAvatar(). That meant Luna's remote rotation and Luna's local
+   TPS/behind-view rotation disagreed by 90 degrees - this is the "Luna
+   faces the wrong way in behind view" bug. Removing the duplicate here
+   keeps facingOffset as the single source of truth for both code paths. */
+
+
+
+   av.traverse(o=>{
+  if(o.isMesh){
+
+    o.material = o.material.clone();
+
+    o.material.side = THREE.DoubleSide;
+
+    const tex = o.material.map || null;
+
+    o.material = new THREE.MeshStandardMaterial({
+      map: tex,
+      color: 0xffffff,
+      roughness: 0.8,
+      metalness: 0.1
+    });
+
+    o.castShadow = true;
+    o.receiveShadow = true;
+  }
+});
+       const dab = av.position.y - 0.22;
+       av.position.y = dab; 
+      av.updateMatrixWorld(true);
+      const realBox = new THREE.Box3().setFromObject(av);
+      const topY = realBox.max.y;
+      p.hitHalfX = Math.max(0.4, (realBox.max.x - realBox.min.x)/2);
+      p.hitHalfZ = Math.max(0.4, (realBox.max.z - realBox.min.z)/2);
+      p.hitMinY = realBox.min.y;
+      p.hitMaxY = realBox.max.y;
+
+      group.add(av);
+      p.model = av;
+
+      const mixer=new THREE.AnimationMixer(av);
+      p.mixer=mixer;
+      const clips=gltf.animations||[];
+      const pick=(...names)=>{
+        for(const n of names){
+          /* Prefer a clip matching `n` that does NOT look like a
+             backward/reverse variant (e.g. "WalkBack", "Reverse Walk").
+             Plain substring matching alone would happily return whichever
+             clip happened to come first in the array, even if that was
+             the backward-walking clip - which is almost certainly why
+             some characters (e.g. narutomap.glb) appeared to walk
+             backwards even while moving forward: the wrong clip was
+             selected, not a facing/rotation problem. */
+          const forwardOnly = clips.find(c=>{
+            const cn = c.name.toLowerCase();
+            return cn.includes(n) && !cn.includes("back") && !cn.includes("reverse");
+          });
+          if(forwardOnly) return forwardOnly;
+          const anyMatch = clips.find(c=>c.name.toLowerCase().includes(n));
+          if(anyMatch) return anyMatch;
+        }
+        return null;
+      };
+      const idle = pick("idle","stand") || clips[0];
+      const walk = pick("walk") || clips[1] || idle;
+      const run  = pick("run","sprint") || walk;
+      const shoot= pick("shoot","fire","attack") || idle;
+      const jump = pick("jump","leap") || null;
+      const transformInName = (cc.transformInClip||"transform").toLowerCase();
+      const vehicleLoopName = (cc.vehicleLoopClip||"car").toLowerCase();
+      const transformOutName = cc.transformOutClip ? cc.transformOutClip.toLowerCase() : null;
+      const transformClip = clips.find(c=>c.name.toLowerCase()===transformInName) || null;
+      const carClip = clips.find(c=>c.name.toLowerCase()===vehicleLoopName) || null;
+      const transformOutClip = transformOutName ? (clips.find(c=>c.name.toLowerCase()===transformOutName) || null) : null;
+      const deathClip = pick("death","die") || null;
+      if(idle){ p.actions.idle=mixer.clipAction(idle); p.actions.idle.play(); p.current=p.actions.idle; }
+      if(walk && walk!==idle) p.actions.walk=mixer.clipAction(walk);
+      if(run && run!==walk) p.actions.run=mixer.clipAction(run);
+      if(shoot && shoot!==idle){ p.actions.shoot=mixer.clipAction(shoot); }
+      if(jump && jump!==idle){
+        p.actions.jump=mixer.clipAction(jump);
+        p.actions.jump.setLoop(THREE.LoopOnce);
+        p.actions.jump.clampWhenFinished = true;
+      }
+      if(transformClip){
+        p.actions.transform = mixer.clipAction(transformClip);
+        p.actions.transform.setLoop(THREE.LoopOnce);
+        p.actions.transform.clampWhenFinished = true;
+      }
+      if(carClip){
+        p.actions.car = mixer.clipAction(carClip);
+      }
+      if(transformOutClip){
+        p.actions.transformOut = mixer.clipAction(transformOutClip);
+        p.actions.transformOut.setLoop(THREE.LoopOnce);
+        p.actions.transformOut.clampWhenFinished = true;
+      }
+      if(deathClip){
+        p.actions.death = mixer.clipAction(deathClip);
+        p.actions.death.setLoop(THREE.LoopOnce);
+        p.actions.death.clampWhenFinished = true;
+      }
+
+      /* The name/health/team indicators used to be positioned from the raw
+         bind pose (`realBox` above, before any animation runs). For most
+         characters that's fine, but a shape-shifting rig like bumblebee's
+         bind pose approximates its compact "car" form, not its tall
+         standing form - so the indicators looked right in car mode but
+         floated too low over his head in normal (robot) mode. Fix: force
+         the idle pose (and, if present, the car pose) and measure each
+         one separately, then pick the right measurement depending on
+         whether the character is currently in car mode. */
+      let idleTopY = topY, carTopY = topY;
+      if(idle){
+        mixer.update(0);
+        av.updateMatrixWorld(true);
+        const idleBox = new THREE.Box3().setFromObject(av);
+        if(!idleBox.isEmpty() && isFinite(idleBox.max.y)) idleTopY = idleBox.max.y;
+      }
+      if(carClip){
+        const carAction = mixer.clipAction(carClip);
+        if(p.actions.idle) p.actions.idle.stop();
+        carAction.reset().play();
+        mixer.update(0);
+        av.updateMatrixWorld(true);
+        const carBox = new THREE.Box3().setFromObject(av);
+        if(!carBox.isEmpty() && isFinite(carBox.max.y)) carTopY = carBox.max.y;
+        carAction.stop();
+        if(p.actions.idle){ p.actions.idle.reset().play(); mixer.update(0); }
+      } else {
+        carTopY = idleTopY;
+      }
+      p.spriteTopIdle = idleTopY;
+      p.spriteTopCar = carTopY;
+      applySpriteHeight(p, false);
+
+      const tauntClips = clips.filter(c=>c.name.toLowerCase().includes("taunt"));
+      p.tauntDurations = [];
+      tauntClips.forEach((tc,ti)=>{
+        const act = mixer.clipAction(tc);
+        act.setLoop(THREE.LoopOnce);
+        act.clampWhenFinished = true;
+        p.actions["taunt"+ti] = act;
+        p.tauntDurations[ti] = tc.duration;
+      });
+  };
+  loadCharacterGLB(charUrl, onGLB);
+  return p;
+}
+function setAnim(p, name){
+  if(!p.actions[name] || p.current===p.actions[name]) return;
+  const next=p.actions[name];
+  if(p.current) p.current.fadeOut(0.15);
+  next.reset().fadeIn(0.15).play();
+  p.current=next;
+}
+function playShoot(p){
+  if(p && p.carMode) return;
+  if(p.actions.shoot){ p.actions.shoot.reset().play(); }
+}
+function playJump(p){
+  if(p && p.carMode) return;
+  const a = p.actions && p.actions.jump;
+  let durMs = 550;
+  if(a){
+    if(p.current) p.current.fadeOut(0.05);
+    a.reset().fadeIn(0.05).play();
+    p.current = a;
+    durMs = (a.getClip().duration*1000) || durMs;
+  }
+  p.jumpUntil = performance.now() + durMs;
+}
+function playTaunt(p, idx){
+  if(p.carMode) return;
+  const a = p.actions && p.actions["taunt"+idx];
+  if(!a) return;
+  if(p.current) p.current.fadeOut(0.1);
+  a.reset().fadeIn(0.05).play();
+  p.current = a;
+  const dur = (p.tauntDurations && typeof p.tauntDurations[idx]==="number") ? p.tauntDurations[idx]*1000 : 1500;
+  /* Mark how long this taunt should keep playing. updateRemotes() runs
+     every animation frame and otherwise unconditionally forces the
+     idle/walk/run animation based on movement state - without this guard
+     it would stomp the taunt back to idle on the very next frame (~16ms
+     later), since a stationary character always falls into the "else
+     setAnim(r,'idle')" branch. That's what made taunts appear to do
+     nothing: they *did* play, just for about one frame. */
+  p.tauntUntil = performance.now() + dur;
+  setTimeout(()=>{ if(p.current===a) setAnim(p,"idle"); }, dur+50);
+}
+
+function playRemoteDeath(r){
+  const a = r.actions && r.actions.death;
+  if(!a){ r.deathUntil = 0; return; }
+  if(r.current) r.current.fadeOut(0.1);
+  a.reset().fadeIn(0.05).play();
+  r.current = a;
+  const dur = (a.getClip().duration*1000) || 1000;
+  r.deathUntil = performance.now() + dur;
+}
+
+function playRemoteTransform(r, on){
+  if(on){
+    r.carMode = true;
+    applySpriteHeight(r, true);
+    const a = r.actions && r.actions.transform;
+    if(a){
+      if(r.current) r.current.fadeOut(0.1);
+      a.reset().fadeIn(0.05).play();
+      r.current = a;
+      const dur = (a.getClip().duration*1000) || 800;
+      r.transformUntil = performance.now() + dur;
+      setTimeout(()=>{ if(r.carMode && r.actions.car) setAnim(r,"car"); }, dur+30);
+    } else if(r.actions && r.actions.car){
+      setAnim(r,"car");
+    }
+  } else {
+    r.carMode = false;
+    applySpriteHeight(r, false);
+    const outA = r.actions && r.actions.transformOut;
+    if(outA){
+      if(r.current) r.current.fadeOut(0.1);
+      outA.reset().fadeIn(0.05).play();
+      r.current = outA;
+      const outDur = (outA.getClip().duration*1000) || 800;
+      r.transformUntil = performance.now() + outDur;
+      setTimeout(()=>{ if(!r.carMode) setAnim(r,"idle"); }, outDur+30);
+    } else {
+      r.transformUntil = 0;
+      setAnim(r,"idle");
+    }
+  }
+}
+
+function removeRemotePlayer(id){
+  const r = remote[id];
+  if(!r) return;
+  closeVoicePeer(id);
+  scene.remove(r.mesh);
+  delete remote[id];
+  delete idToPid[id];
+  updateTeamCounts();
+}
+
+function sweepStaleRemotes(){
+  const now = performance.now();
+  /* A player's lastSeen only updates when their "state" broadcast arrives.
+     On mobile connections those broadcasts can drop for a few seconds
+     without the player actually disconnecting. Cross-check Supabase
+     presence (which channel.track() keeps alive independently of state
+     broadcasts) before removing anyone - if presence still lists them,
+     they're still really here, so just refresh lastSeen instead of
+     vanishing them. */
+  let presentIds = null;
+  try{ presentIds = new Set(Object.keys(channel.presenceState())); }
+  catch(e){ presentIds = null; }
+
+  for(const id in remote){
+    const r = remote[id];
+    if (!r) continue;
+    if (r.isBot) continue;
+
+    if ((now - r.lastSeen) > STALE_TIMEOUT_MS) {
+      if(presentIds && presentIds.has(id)){
+        r.lastSeen = now;
+        continue;
+      }
+      removeRemotePlayer(id);
+    }
+  }
+}
+setInterval(sweepStaleRemotes, 2000);
+
+function hideRemoteInstantly(id){
+  const r = remote[id];
+  if(!r) return;
+  r.hp = 0;
+  const a = r.actions && r.actions.death;
+  if(a){
+    playRemoteDeath(r);
+    const dur = (a.getClip().duration*1000) || 1000;
+    setTimeout(()=>{ if(remote[id]===r && r.hp<=0) r.mesh.visible = false; }, dur);
+  } else {
+    r.mesh.visible = false;
+  }
+}
+
+/* ============ VOICE CHAT (General + Team) ============ */
+const VOICE_ICE_SERVERS = [
+  { urls:"stun:stun.l.google.com:19302" },
+  { urls:"stun:stun1.l.google.com:19302" }
+];
+let voiceMode = "off"; // "off" | "all" | "team"
+let localVoiceStream = null;
+const voicePeers = {}; // id -> { pc, audioEl, makingOffer }
+const voiceBtn = document.getElementById("voiceBtn");
+
+function voiceEligible(id){
+  const r = remote[id];
+  if(!r || r.isBot) return false;
+  if(voiceMode==="off") return false;
+  if(voiceMode==="team" && gameMode==="tdm") return r.team===myTeam;
+  return true;
+}
+
+async function ensureLocalVoiceStream(){
+  if(localVoiceStream) return localVoiceStream;
+  localVoiceStream = await navigator.mediaDevices.getUserMedia({audio:true, video:false});
+  return localVoiceStream;
+}
+
+function closeVoicePeer(id){
+  const v = voicePeers[id];
+  if(!v) return;
+  try{ v.pc.close(); }catch(e){}
+  if(v.audioEl){ v.audioEl.srcObject=null; v.audioEl.remove(); }
+  delete voicePeers[id];
+}
+
+function createVoicePeer(id, isInitiator){
+  if(voicePeers[id]) return voicePeers[id];
+  const pc = new RTCPeerConnection({iceServers:VOICE_ICE_SERVERS});
+  const v = { pc, audioEl:null, makingOffer:false };
+  voicePeers[id] = v;
+
+  if(localVoiceStream){
+    localVoiceStream.getTracks().forEach(t=>pc.addTrack(t, localVoiceStream));
+  }
+
+  pc.onicecandidate = (e)=>{
+    if(e.candidate){
+      channel.send({type:"broadcast",event:"voice-signal",payload:{
+        to:id, from:localID, kind:"ice", candidate:e.candidate.toJSON()
+      }});
+    }
+  };
+  pc.ontrack = (e)=>{
+    let audioEl = v.audioEl;
+    if(!audioEl){
+      audioEl = document.createElement("audio");
+      audioEl.autoplay = true;
+      audioEl.style.display = "none";
+      document.body.appendChild(audioEl);
+      v.audioEl = audioEl;
+    }
+    audioEl.srcObject = e.streams[0];
+  };
+  pc.onconnectionstatechange = ()=>{
+    if(pc.connectionState==="failed" || pc.connectionState==="closed"){
+      closeVoicePeer(id);
+    }
+  };
+
+  if(isInitiator){
+    (async ()=>{
+      try{
+        v.makingOffer = true;
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        channel.send({type:"broadcast",event:"voice-signal",payload:{
+          to:id, from:localID, kind:"offer", sdp:pc.localDescription
+        }});
+      }catch(err){
+        console.warn("Voice offer failed:", err && err.message ? err.message : err);
+      }finally{
+        v.makingOffer = false;
+      }
+    })();
+  }
+  return v;
+}
+
+function updateVoiceConnections(){
+  for(const id in remote){
+    const should = voiceEligible(id);
+    const has = !!voicePeers[id];
+    if(should && !has){
+      // Only the lexicographically-lower id initiates, to avoid offer glare.
+      createVoicePeer(id, localID < id);
+    } else if(!should && has){
+      closeVoicePeer(id);
+    }
+  }
+}
+
+async function setVoiceMode(mode){
+  if(mode!=="off"){
+    try{
+      await ensureLocalVoiceStream();
+    }catch(err){
+      console.warn("Microphone permission denied or unavailable:", err && err.message ? err.message : err);
+      voiceMode = "off";
+      voiceBtn.textContent = "VOICE: OFF";
+      voiceBtn.classList.remove("active");
+      return;
+    }
+  }
+  voiceMode = mode;
+  if(mode==="off"){
+    for(const id in voicePeers) closeVoicePeer(id);
+    if(localVoiceStream){
+      localVoiceStream.getTracks().forEach(t=>t.stop());
+      localVoiceStream = null;
+    }
+    voiceBtn.textContent = "VOICE: OFF";
+    voiceBtn.classList.remove("active");
+  } else {
+    voiceBtn.textContent = mode==="team" ? "VOICE: TEAM" : "VOICE: ALL";
+    voiceBtn.classList.add("active");
+    updateVoiceConnections();
+  }
+}
+voiceBtn.addEventListener("click", ()=>{
+  const next = voiceMode==="off" ? "all" : voiceMode==="all" ? "team" : "off";
+  setVoiceMode(next);
+});
+
+const idToPid = {};
+const channel = supabase.channel("snowtown-room", { config:{broadcast:{self:true}, presence:{key:localID}} });
+channel.on("broadcast",{event:"voice-signal"},({payload})=>{
+  if(!payload || payload.to!==localID) return;
+  const fromId = payload.from;
+  if(payload.kind==="offer"){
+    (async ()=>{
+      try{
+        await ensureLocalVoiceStream();
+      }catch(err){ return; }
+      const v = createVoicePeer(fromId, false);
+      try{
+        await v.pc.setRemoteDescription(new RTCSessionDescription(payload.sdp));
+        const answer = await v.pc.createAnswer();
+        await v.pc.setLocalDescription(answer);
+        channel.send({type:"broadcast",event:"voice-signal",payload:{
+          to:fromId, from:localID, kind:"answer", sdp:v.pc.localDescription
+        }});
+      }catch(err){
+        console.warn("Voice answer failed:", err && err.message ? err.message : err);
+      }
+    })();
+  } else if(payload.kind==="answer"){
+    const v = voicePeers[fromId];
+    if(v){
+      v.pc.setRemoteDescription(new RTCSessionDescription(payload.sdp)).catch(err=>{
+        console.warn("Voice setRemoteDescription failed:", err && err.message ? err.message : err);
+      });
+    }
+  } else if(payload.kind==="ice"){
+    const v = voicePeers[fromId];
+    if(v && payload.candidate){
+      v.pc.addIceCandidate(new RTCIceCandidate(payload.candidate)).catch(err=>{
+        console.warn("Voice addIceCandidate failed:", err && err.message ? err.message : err);
+      });
+    }
+  }
+});
+channel.on("broadcast",{event:"join"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  if(!remote[payload.id]) remote[payload.id]=makeRemote(payload.id,payload.name,payload.char,payload.team||0);
+  remote[payload.id].team = payload.team||0;
+  remote[payload.id].lastSeen = performance.now();
+  if(payload.isBot){
+    remote[payload.id].isBot = true;
+    if(typeof remote[payload.id].botLastFire !== "number") remote[payload.id].botLastFire = 0;
+  }
+  const gkey = payload.pid || payload.id;
+  if(payload.pid) idToPid[payload.id]=payload.pid;
+  globalScores[gkey] = {
+    name:payload.name,char:payload.char||0,
+    kills:payload.kills||0,deaths:payload.deaths||0,t:Date.now()
+  };
+  renderLeaderboard();
+  updateTeamCounts();
+  if(voiceMode!=="off") updateVoiceConnections();
+  if(started){
+    channel.send({type:"broadcast",event:"join",payload:{id:localID,pid:persistentPID,name:myName,char:myChar,team:myTeam,kills,deaths}});
+  }
+});
+channel.on("broadcast",{event:"leave"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  removeRemotePlayer(payload.id);
+});
+channel.on("presence",{event:"leave"},({key})=>{
+  if(key && key!==localID) removeRemotePlayer(key);
+});
+channel.on("broadcast",{event:"bullet"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  const origin=new THREE.Vector3(payload.x,payload.y,payload.z);
+  const dir=new THREE.Vector3(payload.dx,payload.dy,payload.dz);
+  if(payload.wpn==="bullet"){
+    spawnBullet(origin,dir,payload.id,false,undefined,payload.char);
+  } else {
+    spawnProjectile(origin,dir,payload.id,payload.char,false);
+  }
+  const p=remote[payload.id];
+  if(p) p.shootingUntil = performance.now() + SHOOT_ANIM_HOLD_MS;
+});
+channel.on("broadcast",{event:"state"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  let p=remote[payload.id];
+  if(!p){ p = remote[payload.id] = makeRemote(payload.id,payload.name,payload.char,payload.team||0); }
+  p.team = (typeof payload.team==="number") ? payload.team : p.team;
+  p.lastSeen = performance.now();
+  p.target.x = payload.x;
+  p.target.z = payload.z;
+  p.groundY = groundLevelAt({x:payload.x, z:payload.z});
+  p.yaw=payload.yaw;
+  p.moving = !!payload.moving;
+  p.running = !!payload.running;
+  if(typeof payload.hp==="number"){
+    const wasDead = p.hp<=0;
+    p.hp = payload.hp;
+    if(wasDead && p.hp>0){
+      p.mesh.visible = true;
+      p.deathUntil = 0;
+      if(p.current) setAnim(p,"idle");
+      p.spawnProtectedUntil = performance.now() + SPAWN_PROTECTION_MS;
+    }
+    if(p.hp<=0) p.mesh.visible = false;
+  }
+});
+channel.on("broadcast",{event:"score"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  const gkey = payload.pid || payload.id;
+  if(payload.pid) idToPid[payload.id]=payload.pid;
+  globalScores[gkey] = {
+    name:payload.name,char:payload.char||0,
+    kills:payload.kills||0,deaths:payload.deaths||0,t:Date.now()
+  };
+  renderLeaderboard();
+});
+channel.on("broadcast",{event:"scoreReq"},()=>{
+  if(started) broadcastScore();
+});
+channel.on("broadcast",{event:"hit"},({payload})=>{
+  if(!payload) return;
+  if(payload.target===localID){
+    if(isDead) return;
+    if(mySpawnProtectedUntil && performance.now() < mySpawnProtectedUntil) return;
+    myHP = Math.max(0, myHP - payload.damage);
+    lastDamageFrom = payload.from;
+    lastDamageTime = performance.now();
+    updateHUD();
+    if(myHP<=0 && !isDead){
+      isDead = true;
+      die(payload.from, payload.fromName);
+    }
+  } else if(typeof payload.target==="string" && payload.target.startsWith("bot_") && isLeader()){
+    const b = remote[payload.target];
+    if(b && b.isBot && b.hp>0){
+      if(b.spawnProtectedUntil && performance.now() < b.spawnProtectedUntil) return;
+      b.hp = Math.max(0, b.hp - payload.damage);
+      channel.send({type:"broadcast",event:"state",payload:{
+        id:payload.target,name:b.name,char:b.char,team:b.team,
+        x:b.mesh.position.x,z:b.mesh.position.z,yaw:b.yaw||0,
+        hp:b.hp, moving:false, running:false
+      }});
+      if(b.hp<=0){
+        channel.send({type:"broadcast",event:"kill",payload:{
+          killer:payload.from, killerName:payload.fromName,
+          victim:payload.target, victimName:b.name
+        }});
+        setTimeout(()=>respawnBot(payload.target), 3000);
+      }
+    }
+  }
+});
+channel.on("broadcast",{event:"kill"},({payload})=>{
+  if(!payload) return;
+  addKillFeed(`${payload.killerName} &#9658; ${payload.victimName}`);
+  if(payload.killer===localID){ kills++; document.getElementById("hK").textContent=kills; broadcastScore(); }
+  const killerKey = idToPid[payload.killer] || payload.killer;
+  const victimKey = idToPid[payload.victim] || payload.victim;
+  if(globalScores[killerKey]){ globalScores[killerKey].kills=(globalScores[killerKey].kills||0)+1; }
+  if(globalScores[victimKey]){ globalScores[victimKey].deaths=(globalScores[victimKey].deaths||0)+1; }
+  renderLeaderboard();
+  if(payload.victim!==localID) hideRemoteInstantly(payload.victim);
+});
+channel.on("broadcast",{event:"chat"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  addChat(payload.name, payload.text);
+});
+channel.on("broadcast",{event:"taunt"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  const r = remote[payload.id];
+  if(r) playTaunt(r, payload.index);
+});
+channel.on("broadcast",{event:"transform"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  const r = remote[payload.id];
+  if(r) playRemoteTransform(r, !!payload.on);
+});
+channel.on("broadcast",{event:"jump"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  const r = remote[payload.id];
+  if(!r || r.hp<=0) return;
+  if(r.carMode) return;
+  r.velY = jumpForceFor(r.char);
+  playJump(r);
+});
+channel.on("broadcast",{event:"tumble"},({payload})=>{
+  if(!payload || payload.id===localID) return;
+  const r = remote[payload.id];
+  if(r) triggerRemoteTumble(r);
+});
+channel.subscribe((status)=>{
+  if(status==="SUBSCRIBED"){
+    channel.track({id:localID,pid:persistentPID,name:myName,char:myChar});
+  }
+});
+setTimeout(()=>channel.send({type:"broadcast",event:"scoreReq",payload:{}}), 800);
+
+function announceLeave(){
+  if(!started) return;
+  channel.send({type:"broadcast",event:"leave",payload:{id:localID}});
+}
+addEventListener("pagehide", announceLeave);
+addEventListener("beforeunload", announceLeave);
+
+function broadcastScore(){
+  globalScores[persistentPID] = {name:myName,char:myChar,kills,deaths,t:Date.now()};
+  renderLeaderboard();
+  channel.send({type:"broadcast",event:"score",payload:{
+    id:localID,pid:persistentPID,name:myName,char:myChar,kills,deaths
+  }});
+  persistScore();
+}
+
+async function loadPersistedLeaderboard(){
+  try{
+    const { data, error } = await supabase
+      .from("leaderboard")
+      .select("pid,name,kills,deaths")
+      .order("kills",{ascending:false})
+      .limit(20);
+    if(error) throw error;
+    (data||[]).forEach(row=>{
+      const existing = globalScores[row.pid];
+      if(!existing || (row.kills||0) > (existing.kills||0)){
+        globalScores[row.pid] = {
+          name:row.name, char:existing?existing.char:0,
+          kills:row.kills||0, deaths:row.deaths||0, t:Date.now()
+        };
+      }
+    });
+    renderLeaderboard();
+  }catch(err){
+    console.warn("Persistent leaderboard unavailable", err && err.message ? err.message : err);
+  }
+}
+loadPersistedLeaderboard();
+
+async function persistScore(){
+  localStorage.setItem("snow_kills", String(kills));
+  localStorage.setItem("snow_deaths", String(deaths));
+  try{
+    await supabase.from("leaderboard").upsert({
+      pid: persistentPID, name: myName, kills, deaths, updated_at: new Date().toISOString()
+    });
+  }catch(err){
+    console.warn("Could not save score to Supabase leaderboard table:", err && err.message ? err.message : err);
+  }
+}
+
+let lastSend=0;
+function sync(){
+  if(!started) return;
+  const now=performance.now();
+  if(now-lastSend<100) return;
+  lastSend=now;
+  const mv = Math.hypot(velocity.x,velocity.z);
+  channel.send({type:"broadcast",event:"state",payload:{
+    id:localID,name:myName, char: myChar, team:myTeam,
+    x:player.position.x,z:player.position.z,
+    yaw, hp:myHP, moving:mv>0.02, running:mv>0.15
+  }});
+}
+
+function updateHUD(){
+  document.getElementById("hHP").textContent = myHP;
+  const pct = myMaxHP>0 ? Math.max(0,Math.min(100,(myHP/myMaxHP)*100)) : 0;
+  document.getElementById("hHPbar").style.width = pct+"%";
+  document.getElementById("hHPbar").style.background = pct>50?"#10b981":pct>25?"#f59e0b":"#ef4444";
+}
+function die(killerId, killerName){
+  deaths++; document.getElementById("hD").textContent=deaths;
+  playLocalDeath();
+  channel.send({type:"broadcast",event:"kill",payload:{
+    killer:killerId, killerName,
+    victim:localID, victimName:myName
+  }});
+  broadcastScore();
+  channel.send({type:"broadcast",event:"state",payload:{
+    id:localID,name:myName, char: myChar, team:myTeam,
+    x:player.position.x,z:player.position.z,
+    yaw, hp:0, moving:false, running:false
+  }});
+  setTimeout(()=>{
+    player.position.copy(spawnPos(gameMode==="tdm" ? myTeam : undefined));
+    velocity.set(0,0,0); myMaxHP = maxHpOf(myChar); myHP=myMaxHP; isDead=false; lastDamageTime=performance.now();
+    mySpawnProtectedUntil = performance.now() + SPAWN_PROTECTION_MS;
+    if(localAvatar){
+      localAvatar.deathUntil = 0;
+      localAvatar.model.visible = (viewMode==="tps");
+      setAnim(localAvatar,"idle");
+    }
+    updateHUD();
+  }, 1200);
+}
+function addKillFeed(text){
+  const kf=document.getElementById("killfeed");
+  const d=document.createElement("div"); d.innerHTML=`<span style="color:#00e5ff">${text}</span>`;
+  kf.appendChild(d); if(kf.children.length>5) kf.removeChild(kf.firstChild);
+  setTimeout(()=>d.remove(), 5000);
+}
+function flashHitmarker(){
+  const hm=document.getElementById("hitmarker");
+  hm.style.opacity=1; setTimeout(()=>hm.style.opacity=0,120);
+}
+
+const chatLog=document.getElementById("chatLog");
+const chatInput=document.getElementById("chatInput");
+document.getElementById("chatBtn").onclick=openChat;
+function openChat(){ chatInput.style.display="block"; chatInput.focus(); }
+function sendChat(){
+  const t=chatInput.value.trim(); chatInput.value=""; chatInput.style.display="none";
+  if(!t) return;
+  addChat(myName,t);
+  channel.send({type:"broadcast",event:"chat",payload:{id:localID,name:myName,text:t}});
+}
+function addChat(name,text){
+  const d=document.createElement("div");
+  d.innerHTML=`<span style="color:#00e5ff"><b>${name}:</b></span> ${text.replace(/[<>]/g,"")}`;
+  chatLog.appendChild(d);
+  while(chatLog.children.length>6) chatLog.removeChild(chatLog.firstChild);
+  setTimeout(()=>d.remove(),8000);
+}
+
+function updateMovement(){
+  const nowM = performance.now();
+  const isTumblingNow = localTumbleUntil && nowM < localTumbleUntil;
+
+  if(isTumblingNow){
+    /* Knockback is integrated directly here, independent of the normal
+       WASD-driven velocity below, since the normal path unconditionally
+       overwrites velocity.x/z from the move input every frame (even to
+       zero when no input is pressed) - that was silently erasing any
+       horizontal knockback the moment it was set, which is why ram
+       victims used to only ever pop straight up instead of actually
+       flying off. */
+    player.position.x += localKnockbackVel.x;
+    player.position.z += localKnockbackVel.z;
+    localKnockbackVel.x *= TUMBLE_KNOCKBACK_DECAY;
+    localKnockbackVel.z *= TUMBLE_KNOCKBACK_DECAY;
+    velocity.x = 0; velocity.z = 0;
+
+    const groundY = groundLevelAt(player.position);
+    currentGroundY = groundY;
+    const targetY = groundY + height;
+    if(!grounded) velocity.y -= gravity;
+    player.position.y += velocity.y;
+    if(player.position.y <= targetY){
+      player.position.y = targetY;
+      velocity.y = 0;
+      grounded = true;
+    } else {
+      grounded = false;
+    }
+    return;
+  }
+
+  let f=(keys["w"]?1:0)-(keys["s"]?1:0) + (-joyY);
+  let s=(keys["d"]?1:0)-(keys["a"]?1:0) + joyX;
+  moveDir.set(s,0,-f);
+  if(moveDir.length()>1) moveDir.normalize();
+  moveDir.applyAxisAngle(new THREE.Vector3(0,1,0), yaw);
+
+  const effSpeed = speed * localSpeedMultiplier();
+
+  const nextX = player.position.x + moveDir.x*effSpeed;
+  const nextZ = player.position.z + moveDir.z*effSpeed;
+  const testPoint = new THREE.Vector3(nextX, player.position.y+1.0, nextZ);
+  const wantsToMove = moveDir.lengthSq()>0.0001;
+  const blockedByCity = wantsToMove && citySphereBlocked(testPoint, PLAYER_MOVE_RADIUS);
+  const blockedByEntity = wantsToMove && !blockedByCity && entityBlockedAt(nextX, nextZ, "local");
+  const blocked = blockedByCity || blockedByEntity;
+
+  if(!blocked){
+    velocity.x=moveDir.x*effSpeed; velocity.z=moveDir.z*effSpeed;
+  } else {
+    velocity.x*=0.2; velocity.z*=0.2;
+  }
+  player.position.x+=velocity.x; player.position.z+=velocity.z;
+
+  const groundY = groundLevelAt(player.position);
+  currentGroundY = groundY;
+  const targetY = groundY + height;
+  const gapToGround = player.position.y - targetY;
+
+  grounded = gapToGround<=0;
+
+  if(grounded){
+    if(gapToGround>-1.2){
+      player.position.y = THREE.MathUtils.lerp(player.position.y, targetY, 0.35);
+    } else {
+      player.position.y = targetY;
+    }
+    velocity.y = 0;
+    grounded = true;
+  }
+
+  if(jumpRequested){
+    jumpRequested = false;
+    if(grounded && !(isBumblebee(myChar) && localAvatar && localAvatar.carMode)){
+      velocity.y = jumpForceFor(myChar);
+      grounded = false;
+      channel.send({type:"broadcast",event:"jump",payload:{id:localID}});
+      if(localAvatar) playJump(localAvatar);
+    }
+  }
+
+  if(!grounded) velocity.y-=gravity;
+  player.position.y+=velocity.y;
+  velocity.x*=friction; velocity.z*=friction;
+}
+
+function updateLocalAvatar(){
+  if(!localAvatar) return;
+  localAvatar.mixer.update(0.016);
+  const isTaunting = localAvatar.tauntUntil && performance.now() < localAvatar.tauntUntil;
+  const isJumping = localAvatar.jumpUntil && performance.now() < localAvatar.jumpUntil;
+  const isTransforming = localAvatar.transformUntil && performance.now() < localAvatar.transformUntil;
+  const isTumbling = localTumbleUntil && performance.now() < localTumbleUntil;
+  const isDying = localAvatar.deathUntil && performance.now() < localAvatar.deathUntil;
+  if(isTumbling){
+    localAvatar.model.rotation.x += TUMBLE_SPIN_SPEED;
+    return;
+  } else if(localAvatar.model.rotation.x !== 0){
+    localAvatar.model.rotation.x = 0;
+  }
+  if(isTaunting || isJumping || isTransforming || isDying) return;
+  if(localAvatar.carMode){
+    if(localAvatar.actions.car) setAnim(localAvatar,"car");
+    return;
+  }
+  const speedMag = Math.hypot(velocity.x, velocity.z);
+  const isMovingNow = speedMag > 0.02;
+  if(localAvatar.actions.run && speedMag>0.15) setAnim(localAvatar,"run");
+  else if(localAvatar.actions.walk && isMovingNow) setAnim(localAvatar,"walk");
+  else if(!isMovingNow && localAvatar.actions.shoot && started && (manualFire || !!lastAimEnemy)) setAnim(localAvatar,"shoot");
+  else setAnim(localAvatar,"idle");
+}
+
+function updateRemotes(){
+  for(const id in remote){
+    const r=remote[id];
+
+    r.mesh.position.x = THREE.MathUtils.lerp(r.mesh.position.x, r.target.x, 0.25);
+    r.mesh.position.z = THREE.MathUtils.lerp(r.mesh.position.z, r.target.z, 0.25);
+
+    const gY = (typeof r.groundY==="number") ? r.groundY : 0.2;
+    const gap = r.mesh.position.y - gY;
+    const rGrounded = gap<=0 && r.velY<=0;
+    if(rGrounded){
+      if(gap>-1.2){
+        r.mesh.position.y = THREE.MathUtils.lerp(r.mesh.position.y, gY, 0.35);
+      } else {
+        r.mesh.position.y = gY;
+      }
+      r.velY = 0;
+    } else {
+      r.velY -= gravity;
+      r.mesh.position.y += r.velY;
+    }
+
+    r.mesh.rotation.y=r.yaw;
+    if(r.mixer) r.mixer.update(0.016);
+    const isTaunting = r.tauntUntil && performance.now() < r.tauntUntil;
+    const isJumping = r.jumpUntil && performance.now() < r.jumpUntil;
+    const isTransforming = r.transformUntil && performance.now() < r.transformUntil;
+    const isTumbling = r.tumbleUntil && performance.now() < r.tumbleUntil;
+    const isDying = r.deathUntil && performance.now() < r.deathUntil;
+    const isShootingNow = r.shootingUntil && performance.now() < r.shootingUntil;
+    if(isTumbling && r.model){
+      r.model.rotation.x += TUMBLE_SPIN_SPEED;
+    } else if(r.model && r.model.rotation.x !== 0){
+      r.model.rotation.x = 0;
+    }
+    if(!isTaunting && !isJumping && !isTransforming && !isTumbling && !isDying){
+      if(r.carMode && r.actions.car) setAnim(r,"car");
+      else if(r.actions.run && r.running) setAnim(r,"run");
+      else if(r.actions.walk && r.moving) setAnim(r,"walk");
+      else if(isShootingNow && r.actions.shoot) setAnim(r,"shoot");
+      else setAnim(r,"idle");
+    }
+
+    if(r.hpCanvas && r.hpLastDrawn !== r.hp){
+      drawHpBarCanvas(r.hpCanvas, r.hpCtx, r.hp, r.maxHp);
+      r.hpTex.needsUpdate = true;
+      r.hpLastDrawn = r.hp;
+    }
+
+    if(r.teamSprite){
+      r.teamSprite.visible = true;
+      const wantTex = (gameMode==="tdm" ? (r.team===myTeam ? TEAM_FRIEND_TEX : TEAM_ENEMY_TEX) : TEAM_ENEMY_TEX);
+      if(r.teamSprite.material.map !== wantTex){
+        r.teamSprite.material.map = wantTex;
+        r.teamSprite.material.needsUpdate = true;
+      }
+    }
+  }
+}
+
+const minimapCanvas = document.getElementById("minimap");
+const mmCtx = minimapCanvas.getContext("2d");
+const MINIMAP_RANGE = 220;
+const MINIMAP_SIZE = minimapCanvas.width;
+function updateMinimap(){
+  const cx = MINIMAP_SIZE/2, cy = MINIMAP_SIZE/2;
+  const scale = (MINIMAP_SIZE/2 - 8) / MINIMAP_RANGE;
+
+  mmCtx.clearRect(0,0,MINIMAP_SIZE,MINIMAP_SIZE);
+  mmCtx.beginPath();
+  mmCtx.arc(cx,cy,MINIMAP_SIZE/2-2,0,Math.PI*2);
+  mmCtx.fillStyle="#0b1220ee";
+  mmCtx.fill();
+  mmCtx.strokeStyle="#00e5ff55";
+  mmCtx.lineWidth=1;
+  mmCtx.stroke();
+
+  for(const id in remote){
+    const r = remote[id];
+    if(!r || r.hp<=0) continue;
+    const isFriendly = gameMode==="tdm" && r.team===myTeam;
+    const dotColor = isFriendly ? "#39ff6a" : "#ff3b4d";
+    const dx = r.mesh.position.x - player.position.x;
+    const dz = r.mesh.position.z - player.position.z;
+    const dist = Math.hypot(dx,dz);
+    if(dist>MINIMAP_RANGE){
+      if(dist>0.001){
+        const nx = dx/dist, nz = dz/dist;
+        const edgeR = MINIMAP_SIZE/2 - 9;
+        const ex = cx + nx*edgeR, ey = cy + nz*edgeR;
+        mmCtx.beginPath();
+        mmCtx.arc(ex, ey, 3, 0, Math.PI*2);
+        mmCtx.fillStyle = dotColor;
+        mmCtx.fill();
+      }
+      continue;
+    }
+    mmCtx.beginPath();
+    mmCtx.arc(cx+dx*scale, cy+dz*scale, 4, 0, Math.PI*2);
+    mmCtx.fillStyle = dotColor;
+    mmCtx.fill();
+  }
+
+  mmCtx.save();
+  mmCtx.translate(cx,cy);
+  mmCtx.rotate(-yaw);
+  mmCtx.beginPath();
+  mmCtx.moveTo(0,-7);
+  mmCtx.lineTo(5,6);
+  mmCtx.lineTo(-5,6);
+  mmCtx.closePath();
+  mmCtx.fillStyle="#00e5ff";
+  mmCtx.fill();
+  mmCtx.restore();
+}
+
+const hPlayersEl = document.getElementById("hPlayers");
+let lastPlayerCount = -1;
+function updatePlayerCount(){
+  if(!hPlayersEl) return;
+  const count = Object.keys(remote).length + 1;
+  if(count !== lastPlayerCount){
+    hPlayersEl.textContent = count;
+    lastPlayerCount = count;
+  }
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  if(started){
+    updateMovement();
+    player.rotation.y=yaw;
+    camera.rotation.x=pitch;
+    updateCameraView();
+    updateProjectiles();
+    updateBullets();
+    updateExplosions();
+    updateRemotes();
+    updateLocalAvatar();
+
+    aimTick=(aimTick+1)%3;
+    if(aimTick===0){
+      lastAimEnemy = aimedAtEnemy();
+      if(lastAimEnemy) crosshairEl.classList.add("locked");
+      else crosshairEl.classList.remove("locked");
+    }
+
+    if(manualFire || lastAimEnemy){
+      tryFire();
+    }
+
+    if(!isDead && myHP<myMaxHP && (performance.now()-lastDamageTime)>REGEN_DELAY_MS){
+      myHP = Math.min(myMaxHP, myHP + REGEN_RATE/60);
+      updateHUD();
+    }
+
+    if(!isDead && (!mySpawnProtectedUntil || performance.now()>mySpawnProtectedUntil)){
+      const nowRam = performance.now();
+      if(nowRam - lastCarRamTime > CAR_RAM_COOLDOWN_MS){
+        const attacker = findCarRamAttacker(player.position, myTeam, "local");
+        if(attacker){
+          lastCarRamTime = nowRam;
+          triggerLocalTumble(attacker.pos);
+          const isFriendly = gameMode==="tdm" && typeof attacker.team==="number" && attacker.team===myTeam;
+          if(!isFriendly){
+            channel.send({type:"broadcast",event:"hit",payload:{target:localID, from:attacker.id, fromName:attacker.name, damage:CAR_RAM_DAMAGE}});
+          }
+          channel.send({type:"broadcast",event:"tumble",payload:{id:localID}});
+        }
+      }
+    }
+
+    sync();
+    updateMinimap();
+    updatePlayerCount();
+  } else {
+    updateExplosions();
+  }
+  updateBots();
+  renderer.render(scene,camera);
+}
+let aimTick=0, lastAimEnemy=null;
+animate();
+
+addEventListener("resize",()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>
