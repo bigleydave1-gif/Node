@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#080b16">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Athena Team Voice</title>
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+html,
+body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:#060914;
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+body{
+  min-height:100vh;
+  min-height:100dvh;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 20% 0%,#283d73 0%,transparent 38%),
+    radial-gradient(circle at 90% 20%,#3b1f68 0%,transparent 35%),
+    linear-gradient(160deg,#080b16,#111a30 55%,#050711);
+}
+button,
+input,
+select{
+  font:inherit;
+}
+button{
+  touch-action:manipulation;
+}
+.app{
+  width:100%;
+  max-width:760px;
+  margin:0 auto;
+  padding:
+    calc(18px + env(safe-area-inset-top))
+    16px
+    calc(28px + env(safe-area-inset-bottom));
+}
+.card{
+  margin:12px 0;
+  padding:18px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(13,20,36,.86);
+  box-shadow:0 18px 45px rgba(0,0,0,.35);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+.header{
+  text-align:center;
+  padding:25px 18px;
+}
+.logo{
+  width:76px;
+  height:76px;
+  margin:0 auto 12px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+  background:
+    radial-gradient(circle,#8d75ff,#4935a5 55%,#16152e);
+  box-shadow:
+    0 0 25px rgba(133,105,255,.45),
+    inset 0 0 25px rgba(255,255,255,.15);
+}
+h1{
+  margin:0;
+  font-size:29px;
+  letter-spacing:.3px;
+}
+.subtitle{
+  margin-top:6px;
+  color:rgba(255,255,255,.62);
+  font-size:13px;
+}
+label{
+  display:block;
+  margin:13px 0 6px;
+  color:rgba(255,255,255,.68);
+  font-size:12px;
+  font-weight:600;
+}
+input,
+select{
+  width:100%;
+  height:48px;
+  padding:0 13px;
+  color:#fff;
+  background:#070c18;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:13px;
+  outline:none;
+}
+input:focus,
+select:focus{
+  border-color:#9c82ff;
+  box-shadow:0 0 0 2px rgba(156,130,255,.15);
+}
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+button{
+  width:100%;
+  min-height:48px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:13px;
+  background:#25375c;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+button:active{
+  transform:scale(.985);
+}
+.primary{
+  margin-top:13px;
+  background:linear-gradient(135deg,#6853d9,#8b6cff);
+  box-shadow:0 8px 22px rgba(111,82,220,.28);
+}
+.status{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:44px;
+  padding:10px 12px;
+  margin-top:16px;
+  border-radius:13px;
+  background:#050914;
+  color:rgba(255,255,255,.78);
+  font-size:13px;
+}
+.statusDot{
+  width:10px;
+  height:10px;
+  flex:none;
+  border-radius:50%;
+  background:#777;
+}
+.statusDot.online{
+  background:#45e69b;
+  box-shadow:0 0 10px rgba(69,230,155,.7);
+}
+.statusDot.error{
+  background:#ff5964;
+  box-shadow:0 0 10px rgba(255,89,100,.65);
+}
+.sectionTitle{
+  margin-bottom:11px;
+  font-size:16px;
+  font-weight:800;
+}
+.modeGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.modeButton{
+  background:#0a1020;
+}
+.modeButton.active{
+  background:rgba(129,99,255,.32);
+  border-color:#a48dff;
+  box-shadow:
+    inset 0 0 18px rgba(145,112,255,.16),
+    0 0 10px rgba(125,93,255,.12);
+}
+.controlGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+.memberList{
+  display:grid;
+  gap:8px;
+}
+.member{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:48px;
+  padding:9px 12px;
+  border-radius:13px;
+  background:#070d1a;
+  border:1px solid rgba(255,255,255,.07);
+}
+.memberName{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+.memberName span{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.memberTeam{
+  flex:none;
+  font-size:10px;
+  font-weight:900;
+  opacity:.65;
+}
+.empty{
+  padding:20px 10px;
+  text-align:center;
+  color:rgba(255,255,255,.42);
+  font-size:13px;
+}
+.log{
+  max-height:180px;
+  overflow:auto;
+  white-space:pre-wrap;
+  word-break:break-word;
+  padding:10px;
+  border-radius:12px;
+  background:#050914;
+  color:rgba(255,255,255,.62);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11px;
+  line-height:1.5;
+}
+.info{
+  color:rgba(255,255,255,.55);
+  font-size:12px;
+  line-height:1.55;
+}
+.warning{
+  margin-top:12px;
+  padding:11px;
+  border-radius:12px;
+  background:rgba(255,190,60,.07);
+  border:1px solid rgba(255,190,60,.13);
+  color:rgba(255,255,255,.58);
+  font-size:11px;
+  line-height:1.5;
+}
+.hidden{
+  display:none!important;
+}
+@media(max-width:520px){
+  .row{
+    grid-template-columns:1fr;
+  }
+  .modeGrid{
+    grid-template-columns:1fr;
+  }
+  .controlGrid{
+    grid-template-columns:1fr;
+  }
+  h1{
+    font-size:25px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="card header">
+<div class="logo">🎙️</div>
+<h1>Athena Team Voice</h1>
+<div class="subtitle">
+  Supabase Realtime + WebRTC
+</div>
+<div class="status">
+  <span id="statusDot" class="statusDot"></span>
+  <span id="statusText">Disconnected</span>
+</div>
+  </div>
+  <div class="card">
+<div class="sectionTitle">
+  Player Connection
+</div>
+<label for="name">
+  Your name
+</label>
+<input
+  id="name"
+  maxlength="32"
+  autocomplete="nickname"
+  placeholder="Player name"
+>
+<div class="row">
+  <div>
+    <label for="room">
+      Room
+    </label>
+    <input
+      id="room"
+      value="snowtown-room"
+      spellcheck="false"
+    >
+  </div>
+  <div>
+    <label for="team">
+      Team
+    </label>
+    <select id="team">
+      <option value="red">RED</option>
+      <option value="blue">BLUE</option>
+    </select>
+  </div>
+</div>
+<button
+  id="connectButton"
+  class="primary">
+  CONNECT
+</button>
+  </div>
+  <div class="card">
+<div class="sectionTitle">
+  Voice
+</div>
+<div class="modeGrid">
+  <button
+    id="voiceOff"
+    class="modeButton active">
+    OFF
+  </button>
+  <button
+    id="voiceAll"
+    class="modeButton">
+    ALL
+  </button>
+  <button
+    id="voiceTeam"
+    class="modeButton">
+    TEAM
+  </button>
+</div>
+<div class="controlGrid">
+  <button id="micButton">
+    🎤 MIC ON
+  </button>
+  <button id="audioButton">
+    🔊 AUDIO ON
+  </button>
+</div>
+<div class="warning">
+  <b>Voice protocol:</b>
+  This app uses the same
+  <b>voice-signal</b>
+  Supabase broadcast event and the same
+  <b>to / from / kind / sdp / candidate</b>
+  payload structure as your existing Snowtown game.
+</div>
+  </div>
+  <div class="card">
+<div class="sectionTitle">
+  Players In Room
+</div>
+<div
+  id="memberList"
+  class="memberList">
+  <div class="empty">
+    Connect to a room to see players.
+  </div>
+</div>
+  </div>
+  <div class="card">
+<div class="sectionTitle">
+  Connection Log
+</div>
+<div
+  id="log"
+  class="log"></div>
+  </div>
+  <div class="card">
+<div class="sectionTitle">
+  About
+</div>
+<div class="info">
+  Athena Team Voice is a lightweight
+  cross-platform voice client.
+  <br><br>
+  It can run from GitHub Pages and can
+  be used from iPhone, iPad, Android,
+  Windows, Mac, and modern browsers.
+  <br><br>
+  The actual voice audio travels through
+  WebRTC. Supabase Realtime is used for
+  presence and WebRTC signaling.
+</div>
+  </div>
+</div>
+<script type="module">
+/* ============================================================
+   SUPABASE
+   ============================================================ */
+import {
+  createClient
+} from "https://esm.sh/@supabase/supabase-js@2";
+const SUPABASE_URL =
+  "https://nojfmikjykgcladaoktu.supabase.co";
+const SUPABASE_KEY =
+  "sb_publishable_KrN0SsJXG3hHUoMHDcv2ww_7jMGQ9PV";
+const supabase =
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+      realtime:{
+        params:{
+          eventsPerSecond:30
+        }
+      }
+    }
+  );
+/* ============================================================
+   WEBRTC ICE
+   SAME BASIC SETUP AS YOUR GAME
+   ============================================================ */
+const VOICE_ICE_SERVERS = [
+  {
+    urls:"stun:stun.l.google.com:19302"
+  },
+  {
+    urls:"stun:stun1.l.google.com:19302"
+  }
+];
+/* ============================================================
+   LOCAL ID
+   ============================================================ */
+const localID =
+  crypto.randomUUID();
+let persistentPID =
+  localStorage.getItem("snow_pid");
+if(!persistentPID){
+  persistentPID =
+    crypto.randomUUID();
+  localStorage.setItem(
+    "snow_pid",
+    persistentPID
+  );
+}
+/* ============================================================
+   STATE
+   ============================================================ */
+let channel = null;
+let voiceMode = "off";
+let localVoiceStream = null;
+let muted = false;
+let deafened = false;
+let connected = false;
+/*
+   id ->
+   {
+      pc,
+      audioEl,
+      makingOffer
+   }
+*/
+const voicePeers = {};
+/*
+   Remote presence:
+   id ->
+   {
+      id,
+      pid,
+      name,
+      char,
+      team
+   }
+*/
+const remote = {};
+/* ============================================================
+   DOM
+   ============================================================ */
+const nameInput =
+  document.getElementById("name");
+const roomInput =
+  document.getElementById("room");
+const teamSelect =
+  document.getElementById("team");
+const connectButton =
+  document.getElementById("connectButton");
+const statusText =
+  document.getElementById("statusText");
+const statusDot =
+  document.getElementById("statusDot");
+const memberList =
+  document.getElementById("memberList");
+const logBox =
+  document.getElementById("log");
+const voiceOff =
+  document.getElementById("voiceOff");
+const voiceAll =
+  document.getElementById("voiceAll");
+const voiceTeam =
+  document.getElementById("voiceTeam");
+const micButton =
+  document.getElementById("micButton");
+const audioButton =
+  document.getElementById("audioButton");
+/* ============================================================
+   LOG
+   ============================================================ */
+function log(message){
+  const time =
+    new Date().toLocaleTimeString();
+  logBox.textContent +=
+    "[" +
+    time +
+    "] " +
+    message +
+    "\n";
+  logBox.scrollTop =
+    logBox.scrollHeight;
+}
+/* ============================================================
+   STATUS
+   ============================================================ */
+function setStatus(
+  message,
+  online=false,
+  error=false
+){
+  statusText.textContent =
+    message;
+  statusDot.className =
+    "statusDot";
+  if(online){
+    statusDot.classList.add(
+      "online"
+    );
+  }
+  if(error){
+    statusDot.classList.add(
+      "error"
+    );
+  }
+}
+/* ============================================================
+   ESCAPE HTML
+   ============================================================ */
+function escapeHTML(value){
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      function(char){
+        return {
+          "&":"&amp;",
+          "<":"&lt;",
+          ">":"&gt;",
+          '"':"&quot;",
+          "'":"&#039;"
+        }[char];
+      }
+    );
+}
+/* ============================================================
+   RENDER PLAYERS
+   ============================================================ */
+function renderPlayers(){
+  memberList.innerHTML = "";
+  const players =
+    Object.values(remote);
+  if(players.length === 0){
+    memberList.innerHTML =
+      '<div class="empty">No other players are currently connected.</div>';
+    return;
+  }
+  players.forEach(
+    function(player){
+      const div =
+        document.createElement("div");
+      div.className =
+        "member";
+      const left =
+        document.createElement("div");
+      left.className =
+        "memberName";
+      const icon =
+        document.createElement("span");
+      icon.textContent =
+        "👤";
+      const name =
+        document.createElement("span");
+      name.textContent =
+        player.name || "Player";
+      left.appendChild(icon);
+      left.appendChild(name);
+      const team =
+        document.createElement("div");
+      team.className =
+        "memberTeam";
+      team.textContent =
+        String(
+          player.team || ""
+        ).toUpperCase();
+      div.appendChild(left);
+      div.appendChild(team);
+      memberList.appendChild(div);
+    }
+  );
+}
+/* ============================================================
+   VOICE ELIGIBILITY
+   SAME LOGIC AS GAME
+   ============================================================ */
+function voiceEligible(id){
+  const r =
+    remote[id];
+  if(!r){
+    return false;
+  }
+  if(voiceMode === "off"){
+    return false;
+  }
+  if(
+    voiceMode === "team" &&
+    teamSelect.value === r.team
+  ){
+    return true;
+  }
+  if(voiceMode === "team"){
+    return false;
+  }
+  return true;
+}
+/* ============================================================
+   MICROPHONE
+   ============================================================ */
+async function ensureLocalVoiceStream(){
+  if(localVoiceStream){
+    return localVoiceStream;
+  }
+  if(
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ){
+    throw new Error(
+      "This browser does not provide microphone access."
+    );
+  }
+  localVoiceStream =
+    await navigator.mediaDevices.getUserMedia({
+      audio:true,
+      video:false
+    });
+  localVoiceStream
+    .getAudioTracks()
+    .forEach(
+      function(track){
+        track.enabled =
+          !muted;
+      }
+    );
+  return localVoiceStream;
+}
+/* ============================================================
+   CLOSE PEER
+   ============================================================ */
+function closeVoicePeer(id){
+  const voice =
+    voicePeers[id];
+  if(!voice){
+    return;
+  }
+  try{
+    voice.pc.close();
+  }catch(error){}
+  if(voice.audioEl){
+    try{
+      voice.audioEl.srcObject =
+        null;
+    }catch(error){}
+    try{
+      voice.audioEl.remove();
+    }catch(error){}
+  }
+  delete voicePeers[id];
+}
+/* ============================================================
+   CREATE WEBRTC PEER
+   SAME PROTOCOL AS GAME
+   ============================================================ */
+function createVoicePeer(
+  id,
+  isInitiator
+){
+  if(voicePeers[id]){
+    return voicePeers[id];
+  }
+  const pc =
+    new RTCPeerConnection({
+      iceServers:
+        VOICE_ICE_SERVERS
+    });
+  const voice = {
+    pc:pc,
+    audioEl:null,
+    makingOffer:false
+  };
+  voicePeers[id] =
+    voice;
+  /*
+    Add our microphone
+  */
+  if(localVoiceStream){
+    localVoiceStream
+      .getTracks()
+      .forEach(
+        function(track){
+          pc.addTrack(
+            track,
+            localVoiceStream
+          );
+        }
+      );
+  }
+  /* ==========================================================
+     ICE
+     ========================================================== */
+  pc.onicecandidate =
+    function(event){
+      if(!event.candidate){
+        return;
+      }
+      if(!channel){
+        return;
+      }
+      channel.send({
+        type:"broadcast",
+        event:"voice-signal",
+        payload:{
+          to:id,
+          from:localID,
+          kind:"ice",
+          candidate:
+            event.candidate.toJSON()
+        }
+      });
+    };
+  /* ==========================================================
+     REMOTE AUDIO
+     ========================================================== */
+  pc.ontrack =
+    function(event){
+      if(deafened){
+        return;
+      }
+      let audioEl =
+        voice.audioEl;
+      if(!audioEl){
+        audioEl =
+          document.createElement(
+            "audio"
+          );
+        audioEl.autoplay =
+          true;
+        audioEl.playsInline =
+          true;
+        audioEl.style.display =
+          "none";
+        document.body.appendChild(
+          audioEl
+        );
+        voice.audioEl =
+          audioEl;
+      }
+      audioEl.srcObject =
+        event.streams[0];
+      audioEl.muted =
+        deafened;
+      audioEl.play()
+        .catch(
+          function(){
+            /*
+              Some browsers wait for
+              user interaction before
+              allowing playback.
+            */
+          }
+        );
+    };
+  /* ==========================================================
+     CONNECTION STATE
+     ========================================================== */
+  pc.onconnectionstatechange =
+    function(){
+      if(
+        pc.connectionState ===
+        "failed"
+      ){
+        log(
+          "Voice connection failed: " +
+          id
+        );
+        closeVoicePeer(id);
+      }
+      if(
+        pc.connectionState ===
+        "closed"
+      ){
+        closeVoicePeer(id);
+      }
+    };
+  /* ==========================================================
+     INITIATOR
+     ========================================================== */
+  if(isInitiator){
+    (async function(){
+      try{
+        voice.makingOffer =
+          true;
+        const offer =
+          await pc.createOffer();
+        await pc.setLocalDescription(
+          offer
+        );
+        if(!channel){
+          return;
+        }
+        channel.send({
+          type:"broadcast",
+          event:"voice-signal",
+          payload:{
+            to:id,
+            from:localID,
+            kind:"offer",
+            sdp:
+              pc.localDescription
+          }
+        });
+      }catch(error){
+        log(
+          "Voice offer failed: " +
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          )
+        );
+      }finally{
+        voice.makingOffer =
+          false;
+      }
+    })();
+  }
+  return voice;
+}
+/* ============================================================
+   UPDATE VOICE CONNECTIONS
+   SAME LOWER-ID INITIATOR RULE AS GAME
+   ============================================================ */
+function updateVoiceConnections(){
+  if(!channel){
+    return;
+  }
+  for(
+    const id in remote
+  ){
+    const shouldConnect =
+      voiceEligible(id);
+    const alreadyConnected =
+      !!voicePeers[id];
+    if(
+      shouldConnect &&
+      !alreadyConnected
+    ){
+      /*
+        Only the lexicographically
+        lower ID creates the offer.
+      */
+      createVoicePeer(
+        id,
+        localID < id
+      );
+    }
+    else if(
+      !shouldConnect &&
+      alreadyConnected
+    ){
+      closeVoicePeer(id);
+    }
+  }
+}
+/* ============================================================
+   SET VOICE MODE
+   ============================================================ */
+async function setVoiceMode(mode){
+  if(!channel){
+    log(
+      "Connect to a room first."
+    );
+    return;
+  }
+  if(mode !== "off"){
+    try{
+      await ensureLocalVoiceStream();
+    }catch(error){
+      log(
+        "Microphone permission denied or unavailable."
+      );
+      return;
+    }
+  }
+  voiceMode =
+    mode;
+  voiceOff.classList.toggle(
+    "active",
+    mode === "off"
+  );
+  voiceAll.classList.toggle(
+    "active",
+    mode === "all"
+  );
+  voiceTeam.classList.toggle(
+    "active",
+    mode === "team"
+  );
+  if(mode === "off"){
+    for(
+      const id in voicePeers
+    ){
+      closeVoicePeer(id);
+    }
+    if(localVoiceStream){
+      localVoiceStream
+        .getTracks()
+        .forEach(
+          function(track){
+            track.stop();
+          }
+        );
+      localVoiceStream =
+        null;
+    }
+    log(
+      "Voice OFF"
+    );
+  }
+  else{
+    log(
+      "Voice " +
+      mode.toUpperCase()
+    );
+    updateVoiceConnections();
+  }
+}
+/* ============================================================
+   MUTE
+   ============================================================ */
+micButton.onclick =
+  async function(){
+    if(!localVoiceStream){
+      try{
+        await ensureLocalVoiceStream();
+      }catch(error){
+        log(
+          "Unable to access microphone."
+        );
+        return;
+      }
+    }
+    muted =
+      !muted;
+    localVoiceStream
+      .getAudioTracks()
+      .forEach(
+        function(track){
+          track.enabled =
+            !muted;
+        }
+      );
+    micButton.textContent =
+      muted
+        ? "🔇 MIC MUTED"
+        : "🎤 MIC ON";
+    log(
+      muted
+        ? "Microphone muted."
+        : "Microphone unmuted."
+    );
+  };
+/* ============================================================
+   DEAFEN
+   ============================================================ */
+audioButton.onclick =
+  function(){
+    deafened =
+      !deafened;
+    for(
+      const id in voicePeers
+    ){
+      const voice =
+        voicePeers[id];
+      if(voice.audioEl){
+        voice.audioEl.muted =
+          deafened;
+      }
+    }
+    audioButton.textContent =
+      deafened
+        ? "🔇 AUDIO DEAFENED"
+        : "🔊 AUDIO ON";
+    log(
+      deafened
+        ? "Remote audio muted."
+        : "Remote audio enabled."
+    );
+  };
+/* ============================================================
+   VOICE BUTTONS
+   ============================================================ */
+voiceOff.onclick =
+  function(){
+    setVoiceMode("off");
+  };
+voiceAll.onclick =
+  function(){
+    setVoiceMode("all");
+  };
+voiceTeam.onclick =
+  function(){
+    setVoiceMode("team");
+  };
+/* ============================================================
+   TEAM CHANGE
+   ============================================================ */
+teamSelect.onchange =
+  async function(){
+    if(!channel){
+      return;
+    }
+    try{
+      await channel.track({
+        id:localID,
+        pid:persistentPID,
+        name:
+          nameInput.value.trim()
+          || "Player",
+        char:"voice-app",
+        team:
+          teamSelect.value
+      });
+      updateVoiceConnections();
+    }catch(error){
+      log(
+        "Unable to update team."
+      );
+    }
+  };
+/* ============================================================
+   NAME CHANGE
+   ============================================================ */
+nameInput.addEventListener(
+  "change",
+  async function(){
+    if(!channel){
+      return;
+    }
+    try{
+      await channel.track({
+        id:localID,
+        pid:persistentPID,
+        name:
+          nameInput.value.trim()
+          || "Player",
+        char:"voice-app",
+        team:
+          teamSelect.value
+      });
+    }catch(error){}
+  }
+);
+/* ============================================================
+   CONNECT
+   ============================================================ */
+connectButton.onclick =
+  async function(){
+    /*
+      Close previous channel.
+    */
+    if(channel){
+      try{
+        await channel.unsubscribe();
+      }catch(error){}
+      channel =
+        null;
+    }
+    /*
+      Close old voice peers.
+    */
+    Object.keys(
+      voicePeers
+    ).forEach(
+      closeVoicePeer
+    );
+    /*
+      Clear remote list.
+    */
+    Object.keys(remote)
+      .forEach(
+        function(id){
+          delete remote[id];
+        }
+      );
+    renderPlayers();
+    /*
+      Reset voice.
+    */
+    voiceMode =
+      "off";
+    voiceOff.classList.add(
+      "active"
+    );
+    voiceAll.classList.remove(
+      "active"
+    );
+    voiceTeam.classList.remove(
+      "active"
+    );
+    if(localVoiceStream){
+      localVoiceStream
+        .getTracks()
+        .forEach(
+          function(track){
+            track.stop();
+          }
+        );
+      localVoiceStream =
+        null;
+    }
+    const room =
+      roomInput.value.trim()
+      || "snowtown-room";
+    const playerName =
+      nameInput.value.trim()
+      || "Player";
+    /*
+      EXACT SAME CHANNEL STRUCTURE
+      USED BY YOUR GAME.
+    */
+    channel =
+      supabase.channel(
+        room,
+        {
+          config:{
+            broadcast:{
+              self:true
+            },
+            presence:{
+              key:localID
+            }
+          }
+        }
+      );
+    /* ========================================================
+       VOICE SIGNALING
+       SAME EVENT NAME AS GAME
+       ======================================================== */
+    channel.on(
+      "broadcast",
+      {
+        event:"voice-signal"
+      },
+      async function({
+        payload
+      }){
+        if(
+          !payload ||
+          payload.to !== localID
+        ){
+          return;
+        }
+        const fromId =
+          payload.from;
+        /*
+          OFFER
+        */
+        if(
+          payload.kind ===
+          "offer"
+        ){
+          try{
+            await ensureLocalVoiceStream();
+          }catch(error){
+            return;
+          }
+          const voice =
+            createVoicePeer(
+              fromId,
+              false
+            );
+          try{
+            await voice.pc
+              .setRemoteDescription(
+                new RTCSessionDescription(
+                  payload.sdp
+                )
+              );
+            const answer =
+              await voice.pc.createAnswer();
+            await voice.pc
+              .setLocalDescription(
+                answer
+              );
+            channel.send({
+              type:"broadcast",
+              event:"voice-signal",
+              payload:{
+                to:fromId,
+                from:localID,
+                kind:"answer",
+                sdp:
+                  voice.pc.localDescription
+              }
+            });
+          }catch(error){
+            log(
+              "Voice answer failed: " +
+              (
+                error.message ||
+                error
+              )
+            );
+          }
+        }
+        /*
+          ANSWER
+        */
+        else if(
+          payload.kind ===
+          "answer"
+        ){
+          const voice =
+            voicePeers[fromId];
+          if(voice){
+            voice.pc
+              .setRemoteDescription(
+                new RTCSessionDescription(
+                  payload.sdp
+                )
+              )
+              .catch(
+                function(error){
+                  log(
+                    "Voice remote description failed: " +
+                    error.message
+                  );
+                }
+              );
+          }
+        }
+        /*
+          ICE
+        */
+        else if(
+          payload.kind ===
+          "ice"
+        ){
+          const voice =
+            voicePeers[fromId];
+          if(
+            voice &&
+            payload.candidate
+          ){
+            voice.pc
+              .addIceCandidate(
+                new RTCIceCandidate(
+                  payload.candidate
+                )
+              )
+              .catch(
+                function(){}
+              );
+          }
+        }
+      }
+    );
+    /* ========================================================
+       PRESENCE SYNC
+       ======================================================== */
+    channel.on(
+      "presence",
+      {
+        event:"sync"
+      },
+      function(){
+        const state =
+          channel.presenceState();
+        /*
+          Rebuild remote list.
+        */
+        Object.keys(remote)
+          .forEach(
+            function(id){
+              delete remote[id];
+            }
+          );
+        for(
+          const id in state
+        ){
+          if(
+            id === localID
+          ){
+            continue;
+          }
+          const entries =
+            state[id];
+          if(
+            !entries ||
+            !entries.length
+          ){
+            continue;
+          }
+          const player =
+            entries[0];
+          remote[id] =
+            {
+              id:id,
+              pid:
+                player.pid,
+              name:
+                player.name ||
+                "Player",
+              char:
+                player.char ||
+                "voice-app",
+              team:
+                player.team ||
+                "red"
+            };
+        }
+        renderPlayers();
+        updateVoiceConnections();
+      }
+    );
+    /* ========================================================
+       PRESENCE LEAVE
+       ======================================================== */
+    channel.on(
+      "presence",
+      {
+        event:"leave"
+      },
+      function(){
+        const state =
+          channel.presenceState();
+        Object.keys(remote)
+          .forEach(
+            function(id){
+              if(!state[id]){
+                closeVoicePeer(id);
+                delete remote[id];
+              }
+            }
+          );
+        renderPlayers();
+      }
+    );
+    /* ========================================================
+       SUBSCRIBE
+       ======================================================== */
+    setStatus(
+      "Connecting...",
+      false,
+      false
+    );
+    try{
+      await channel.subscribe(
+        async function(status){
+          if(
+            status ===
+            "SUBSCRIBED"
+          ){
+            connected =
+              true;
+            setStatus(
+              "Connected • " +
+              room,
+              true,
+              false
+            );
+            connectButton.textContent =
+              "CONNECTED";
+            log(
+              "Connected to room: " +
+              room
+            );
+            /*
+              SAME PRESENCE FIELDS AS GAME.
+            */
+            await channel.track({
+              id:localID,
+              pid:persistentPID,
+              name:playerName,
+              char:"voice-app",
+              team:
+                teamSelect.value
+            });
+            renderPlayers();
+          }
+          else if(
+            status ===
+            "CHANNEL_ERROR"
+          ){
+            connected =
+              false;
+            setStatus(
+              "Channel error",
+              false,
+              true
+            );
+            connectButton.textContent =
+              "CONNECT";
+            log(
+              "Supabase channel error."
+            );
+          }
+          else if(
+            status ===
+            "TIMED_OUT"
+          ){
+            connected =
+              false;
+            setStatus(
+              "Connection timed out",
+              false,
+              true
+            );
+            connectButton.textContent =
+              "CONNECT";
+            log(
+              "Connection timed out."
+            );
+          }
+          else if(
+            status ===
+            "CLOSED"
+          ){
+            connected =
+              false;
+            setStatus(
+              "Disconnected",
+              false,
+              false
+            );
+            connectButton.textContent =
+              "CONNECT";
+          }
+        }
+      );
+    }catch(error){
+      connected =
+        false;
+      setStatus(
+        "Connection failed",
+        false,
+        true
+      );
+      connectButton.textContent =
+        "CONNECT";
+      log(
+        "Connection failed: " +
+        (
+          error.message ||
+          error
+        )
+      );
+    }
+  };
+/* ============================================================
+   PAGE STARTUP
+   ============================================================ */
+const savedName =
+  localStorage.getItem(
+    "athena_voice_name"
+  );
+if(savedName){
+  nameInput.value =
+    savedName;
+}
+nameInput.addEventListener(
+  "input",
+  function(){
+    localStorage.setItem(
+      "athena_voice_name",
+      nameInput.value
+    );
+  }
+);
+/* ============================================================
+   SAFETY / CLEANUP
+   ============================================================ */
+window.addEventListener(
+  "beforeunload",
+  function(){
+    Object.keys(
+      voicePeers
+    ).forEach(
+      closeVoicePeer
+    );
+    if(localVoiceStream){
+      localVoiceStream
+        .getTracks()
+        .forEach(
+          function(track){
+            track.stop();
+          }
+        );
+    }
+  }
+);
+/* ============================================================
+   INITIAL MESSAGE
+   ============================================================ */
+log(
+  "Athena Team Voice ready."
+);
+log(
+  "Supabase + WebRTC voice protocol loaded."
+);
+log(
+  "Room: snowtown-room"
+);
+</script>
+</body>
+</html>
